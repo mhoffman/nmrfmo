@@ -88,6 +88,23 @@ let when = t.enums({
     /*month: 'month',*/
 });
 
+function getCategoryHue(result){
+    if(result.categories !== null && result.categories.length > 0){
+        console.log(result.categories);
+        console.log(whatHues[result.categories[0]]);
+
+        if(whatHues[result.categories[0]]!==undefined){
+            return whatHues[result.categories[0]]
+        } else {
+            return constants.PRIMARY_HUE
+        }
+    } else {
+        return constants.PRIMARY_HUE
+    }
+}
+
+
+
 
 var EventSelection = t.struct({
     what: what,
@@ -363,6 +380,30 @@ class MyMapView extends Component {
     /*this.getMeetupData();*/
     /*}*/
 
+    timeScale(timeRange=''){
+        switch(timeRange || this.props.parent.state.timeRange){
+            case 'now':
+                return 1000*60*60*60*10
+                    break;
+            case 'today':
+                return 1000*60*60*60/10
+                    break;
+            case 'tomorrow':
+                return 1000*60*60*60/30
+                    break;
+            case 'week':
+                return 1000*60*60*60/160
+                    break;
+            case 'weekend':
+                return 1000*60*60*60/10
+                    break;
+            case 'personal':
+                return 1000*60*60*60/10
+                    break;
+            default:
+                return 1000*60*60*60/10
+        }
+    }
     marker_format_title(result, timeRange=''){
         let tz = moment.tz.guess();
         let date_format = '';
@@ -498,13 +539,14 @@ class MyMapView extends Component {
                                 InteractionManager.runAfterInteractions(()=>{
                                     this.setState({event: {
                                         title: result.title,
+                                        categories: result.categories,
                                         url: result.url,
                                         address: result.address,
                                         description: result.description,
                                         publisher: result.publisher,
                                         cost: result.cost,
                                         publisher_url: result.publisher_url,
-                                        datetime: result.datetime
+                                        datetime: result.datetime,
                                     },
                                         event_title: result.title});
 
@@ -538,7 +580,6 @@ class MyMapView extends Component {
                             return false;
                         }})
                     .map((result, x) =>
-
                             <MapView.Marker
                             key={x}
                             coordinate={{
@@ -549,6 +590,7 @@ class MyMapView extends Component {
                                 InteractionManager.runAfterInteractions(()=>{
                                     this.setState({event: {
                                         title: result.title,
+                                        categories: result.categories,
                                         url: result.url,
                                         address: result.address,
                                         description: result.description,
@@ -565,8 +607,8 @@ class MyMapView extends Component {
                             >
                                 <View
                                 style={[styles.marker,
-                                    { backgroundColor: 'hsl('+constants.PRIMARY_HUE+',' + (100 - (new Date(result.datetime).getTime() - new Date().getTime())/1000/60/60*10) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
-                                        borderColor: 'hsl('+constants.PRIMARY_HUE+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + (100 - (new Date(result.datetime).getTime() - new Date().getTime())/this.timeScale()) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                                        borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
                                         borderWidth: 1,
                                     }]}
                             >
@@ -581,24 +623,31 @@ class MyMapView extends Component {
 
 
                 </MapView>
-                    <View style={this.state.event.title == "" ? styles.nobottomline : [styles.bottomline, styles.clickable]}>
-                    <TouchableHighlight
-                    onPress={this.navigate.bind(this, "event_details",
-                            {event: this.state})}
-                >
-                    <Text style={styles.bottom_message}>
-                    {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/> 
-                </Text>
-                    </TouchableHighlight>
-                    </View>
-                    </View>
+                    <View style={this.state.event.title == "" ? styles.nobottomline : [
+                        styles.bottomline,
+                        styles.clickable,
+                        {
+                            borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
+
+                        }
+                    ]}>
+                        <TouchableHighlight
+                        onPress={this.navigate.bind(this, "event_details",
+                                {event: this.state})}
+                    >
+                        <Text style={styles.bottom_message}>
+                        {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/> 
+                    </Text>
+                        </TouchableHighlight>
+                        </View>
+                        </View>
 
 
-                    </SideMenu>
-                    );
+                        </SideMenu>
+                        );
 
 
-                return map
+                    return map
     }
 
 }
@@ -658,15 +707,8 @@ class EventDetails extends Component {
                 <TouchableHighlight
                 style={styles.clickable}
                 onPress={(index)=>Communications.web(this.props.event.event.url)}
-                >
-                    <Text>
-                    website <FontAwesome name='external-link'/>
-                    </Text>
-                    </TouchableHighlight><TouchableHighlight style={styles.clickable} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                    <Text>
-                    Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/>
-                    </Text>
-                    </TouchableHighlight>
+                ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight><TouchableHighlight style={styles.clickable} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
+                    <Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
                     <Text style={styles.p}></Text>
                     <TouchableHighlight
                     style={styles.clickable}
