@@ -246,8 +246,10 @@ export default class Menu extends Component {
                 onChange={this.onChange.bind(this)}
                 value={this.state.value} />
 
+                {/*}
                 <Text>Private Events</Text>
                 <FBLogin parent={this}/>
+                */}
 
 
                 <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>

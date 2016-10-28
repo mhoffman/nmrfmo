@@ -387,7 +387,7 @@ class MyMapView extends Component {
                 saturation =  100 - diff/1000/60/60/60/10;
                 break;
             case 'tomorrow':
-                saturation =  100 - diff/1000/60/30;
+                saturation =  100 - diff/1000/60/18;
                 break;
             case 'week':
                 saturation =  100 - diff/1000/60/24/7;
