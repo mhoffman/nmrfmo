@@ -17,5 +17,8 @@
   },
   "packagerOpts": {
     "assetExts": ["ttf", "mp4"]
+  },
+  "ios":{
+      "bundleIdentifier": "com.nmrfmo"
   }
 }
