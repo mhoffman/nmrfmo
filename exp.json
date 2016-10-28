@@ -1,6 +1,6 @@
 {
   "name": "nmrfmo",
-  "description": "An empty new project",
+  "description": "Explore what is going on around you.",
   "slug": "nmrfmo",
   "sdkVersion": "10.0.0",
   "version": "1.0.0",
@@ -20,5 +20,8 @@
   },
   "ios":{
       "bundleIdentifier": "com.nmrfmo"
+  },
+  "android":{
+      "package":"com.nmrfmo"
   }
 }
