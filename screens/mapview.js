@@ -62,19 +62,18 @@ let what = t.enums({
 }, "Categories");
 
 const whatHues = {
-    "All": 0,
     "Arts": 40,
-    "Charity": 60,
+    "Charity": 0,
     "Community": 80,
     "Concerts": 100,
     "Dance": 120,
-    "Educational": 140,
+    "Educational": 206,
     "Festivals": 160,
     "Film": 180,
     "Health & Fitness": 240,
-    "Kids & Family": 260,
+    "Kids & Family": 314,
     "Museums & Attractions": 280,
-    "Nightlife": 300,
+    "Nightlife": 279,
     "Theater": 320,
     "Outdoors": 340,
 }
@@ -373,37 +372,43 @@ class MyMapView extends Component {
         });
     }
 
-    /*componentDidUpdate(prevProps, prevState){*/
-    /*console.log("ComponentDidUpdate");*/
-    /*console.log(this.state);*/
-    /*console.log(prevState);*/
-    /*this.getMeetupData();*/
-    /*}*/
-
-    timeScale(timeRange=''){
-        switch(timeRange || this.props.parent.state.timeRange){
+    getSaturation(datetime){
+        const now = new Date().getTime();
+        const diff =  new Date(datetime).getTime() - now;
+        let saturation = 0;
+        if(diff>0){
+            saturation = 100
+        }
+        switch(this.props.parent.state.timeRange){
             case 'now':
-                return 1000*60*60*60*10
-                    break;
+                saturation =  100 - diff/1000./60.;
+                break;
             case 'today':
-                return 1000*60*60*60/10
-                    break;
+                saturation =  100 - diff/1000/60/60/60/10;
+                break;
             case 'tomorrow':
-                return 1000*60*60*60/30
-                    break;
+                saturation =  100 - diff/1000/60/30;
+                break;
             case 'week':
-                return 1000*60*60*60/160
-                    break;
+                saturation =  100 - diff/1000/60/24/7;
+                break;
             case 'weekend':
-                return 1000*60*60*60/10
+                saturation = 100 - diff/1000/60/60/60/10
                     break;
             case 'personal':
-                return 1000*60*60*60/10
+                saturation = 1000*60*60*60/10
                     break;
             default:
-                return 1000*60*60*60/10
+                saturation = 1000*60*60*60/10
         }
+        console.log('DATETIME ' + datetime);
+        console.log('DIFF ' + diff);
+        console.log('TIMERANGE ' + this.props.parent.state.timeRange);
+        console.log(saturation);
+        return saturation
     }
+
+
     marker_format_title(result, timeRange=''){
         let tz = moment.tz.guess();
         let date_format = '';
@@ -607,7 +612,7 @@ class MyMapView extends Component {
                             >
                                 <View
                                 style={[styles.marker,
-                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + (100 - (new Date(result.datetime).getTime() - new Date().getTime())/this.timeScale()) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
                                         borderWidth: 1,
                                     }]}
@@ -704,20 +709,30 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {this.props.event.event.address}
                 </Text>
-                <TouchableHighlight
-                style={styles.clickable}
-                onPress={(index)=>Communications.web(this.props.event.event.url)}
-                ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight><TouchableHighlight style={styles.clickable} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                    <Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
-                    <Text style={styles.p}></Text>
-                    <TouchableHighlight
-                    style={styles.clickable}
-        onPress={()=>this.props.navigator.pop()}>
-            <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
+                <Text style={styles.p}>
+                { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
+                </Text>
+                <TouchableHighlight style={[styles.clickable,
+                    {
+                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                    }
 
-            </TouchableHighlight>
-            </View>
-            )
+                ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}><Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
+                    <TouchableHighlight style={[styles.clickable,{
+                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                        backgroundColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'
+                    }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight>
+                <Text style={styles.p}></Text>
+                    <TouchableHighlight
+                    style={[styles.clickable,{
+                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                    }]}
+                onPress={()=>this.props.navigator.pop()}>
+                    <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
+
+                    </TouchableHighlight>
+                    </View>
+                    )
     }
 }
 
