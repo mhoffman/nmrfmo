@@ -11,11 +11,9 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Communications from 'react-native-communications';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@exponent/vector-icons';
 import moment from 'moment-timezone';
 
-var t = require('tcomb-form-native');
-var Form = t.form.Form;
 
 import constants from './constants'
 
@@ -32,47 +30,9 @@ const {
 
 
 
-let what = t.enums({
-    "All": "All",
-    "Arts": "Arts",
-    /*"Business": "Business",*/
-    "Charity": "Charity",
-    /*"Comedy": "Comedy",*/
-    "Community": "Community",
-    "Concerts": "Concerts",
-    "Dance": "Dance",
-    "Educational": "Educational",
-    "Festivals": "Festivals",
-    "Film": "Film",
-    /*"Food & Drink": "Food & Drink",*/
-    /*"Health & Fitness": "Health & Fitness",*/
-    /*"Holiday": "Holiday",*/
-    "Kids & Family": "Kids & Family",
-    "Museums & Attractions": "Museums & Attractions",
-    "Nightlife": "Nightlife",
-    "Theater": "Theater",
-    /*"Other": "Other",*/
-    "Outdoors": "Outdoors",
-    /*"Religious": "Religious",*/
-    /*"Shopping": "Shopping",*/
-}, "Categories");
 
-
-let when = t.enums({
-    now: 'now',
-    today: 'today',
-    tomorrow: 'tomorrow',
-    week: 'week',
-    weekend: 'weekend',
-    /*month: 'month',*/
-});
-
-
-var EventSelection = t.struct({
-    what: what,
-    when: when
-})
-
+var t = require('tcomb-form-native');
+var Form = t.form.Form;
 const options = {
     fields: {
         what: {
@@ -129,6 +89,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const menuStyle = StyleSheet.create({
+    menuList : {
+        backgroundColor: 'red',
+    }
+});
+
 
 
 // Create a graph request asking for user information with a callback to handle the response.
@@ -148,7 +114,6 @@ class FBLogin extends Component {
             console.log(result);
         }
     }
-
 
     async handleUserEvents(error, result){
         if (error) {
@@ -274,7 +239,12 @@ export default class Menu extends Component {
                 <Text style={styles.name}>nmrfmo</Text>
                 </View>
 
-                <Form ref="form" type={EventSelection} options={options} onChange={this.onChange.bind(this)} value={this.state.value} />
+                <Form ref="form"
+                type={this.props.EventSelection}
+                style={menuStyle.menuList}
+                options={options}
+                onChange={this.onChange.bind(this)}
+                value={this.state.value} />
 
                 <Text>Private Events</Text>
                 <FBLogin parent={this}/>
