@@ -1,3 +1,6 @@
 node_modules/**/*
 .exponent/*
 npm-debug.*
+
+# BACKEND is it's own git hub repository
+/backend/
