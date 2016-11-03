@@ -693,8 +693,11 @@ class EventDetails extends Component {
         /*console.log("DETAIL PROPS");*/
         /*console.log(this.props);*/
         return (
-                <View style={styles.topContainer}>
-                <Text style={styles.welcome}>
+                <ScrollView
+                style={{ flex: 1 }}
+                >
+                <View >
+                <Text style={[styles.welcome,{marginTop:30}]}>
                 {this.props.event.event.title}
                 </Text>
                 <Text style={styles.p}>
@@ -703,36 +706,38 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 200)}
                 </Text>
-                <Text style={styles.p}>
-                {this.props.event.event.cost}
+                    <Text style={styles.p}>
+                    {this.props.event.event.cost}
                 </Text>
-                <Text style={styles.p}>
-                {this.props.event.event.address}
+                    <Text style={styles.p}>
+                    {this.props.event.event.address}
                 </Text>
-                <Text style={styles.p}>
-                { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
+                    <Text style={styles.p}>
+                    { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
                 </Text>
-                <TouchableHighlight style={[styles.clickable,
-                    {
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
-                    }
+                    <TouchableHighlight style={[styles.clickable,
+                        {
+                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                        }
 
-                ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}><Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
-                    <TouchableHighlight style={[styles.clickable,{
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
-                        backgroundColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'
-                    }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight>
-                <Text style={styles.p}></Text>
-                    <TouchableHighlight
-                    style={[styles.clickable,{
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
-                    }]}
-                onPress={()=>this.props.navigator.pop()}>
-                    <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
+                    ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}><Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
+                        <TouchableHighlight style={[styles.clickable,{
+                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                            backgroundColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'
+                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight>
+                    <Text style={styles.p}></Text>
+                        <TouchableHighlight
+                        style={[styles.clickable,{
+                            marginBottom:20,
+                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                        }]}
+                    onPress={()=>this.props.navigator.pop()}>
+                        <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
 
-                    </TouchableHighlight>
-                    </View>
-                    )
+                        </TouchableHighlight>
+                        </View>
+                        </ScrollView>
+                        )
     }
 }
 
