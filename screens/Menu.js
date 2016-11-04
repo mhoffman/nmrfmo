@@ -34,14 +34,15 @@ const {
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 const options = {
+    order: ['when', 'what'],
     fields: {
-        what: {
-            nullOption: false,
-        },
         when: {
             nullOption: false,
 
-        }
+        },
+        what: {
+            nullOption: false,
+        },
     }
 }
 
