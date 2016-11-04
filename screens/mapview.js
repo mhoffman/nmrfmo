@@ -66,7 +66,7 @@ const whatHues = {
     "Arts": 40,
     "Charity": 0,
     "Community": 80,
-    "Concerts": 100,
+    "Concerts": 23,
     "Dance": 120,
     "Educational": 206,
     "Festivals": 160,
