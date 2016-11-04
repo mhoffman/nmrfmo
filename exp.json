@@ -1,25 +1,25 @@
 {
   "name": "nmrfmo",
-  "description": "Explore what is going on around you.",
+  "description": "Discover events around you on a map.",
   "slug": "nmrfmo",
   "sdkVersion": "10.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo.png",
+  "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo_120.png",
   "notification": {
-    "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo.png",
+    "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo_120.png",
     "color": "#000000"
   },
   "loading": {
-    "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo.png",
+    "iconUrl": "http://nomorefomo.herokuapp.com/static/images/nmrfmo_120.png",
     "hideExponentText": false
   },
   "packagerOpts": {
     "assetExts": ["ttf", "mp4"]
   },
   "ios":{
-      "bundleIdentifier": "com.nmrfmo"
+      "bundleIdentifier": "nmrfmo"
   },
   "android":{
       "package":"com.nmrfmo"
