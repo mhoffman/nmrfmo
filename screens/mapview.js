@@ -66,7 +66,7 @@ const whatHues = {
     "Arts": 40,
     "Charity": 0,
     "Community": 80,
-    "Concerts": 23,
+    "Concerts": 31,
     "Dance": 120,
     "Educational": 206,
     "Festivals": 160,
@@ -727,7 +727,7 @@ class EventDetails extends Component {
                         <TouchableHighlight style={[styles.clickable,{
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
                             backgroundColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'
-                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website<FontAwesome name='external-link'/></Text></TouchableHighlight>
+                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website <FontAwesome name='external-link'/></Text></TouchableHighlight>
                     <Text style={styles.p}></Text>
                         <TouchableHighlight
                         style={[styles.clickable,{
