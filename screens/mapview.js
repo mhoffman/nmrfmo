@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         padding: 10,
+        /*zIndex: 3,*/
     },
     marker: {
         backgroundColor: PRIMARY_COLOR,
@@ -514,10 +515,6 @@ class MyMapView extends Component {
 
 
                 <View style={styles.container}>
-                <Button style={styles.menu_button} onPress={() => this.toggle()}>
-                <Image
-                source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
-                </Button>
                 <MapView
                 provider='google'
                 style={this.state.event.title == "" ? styles.fullmap : styles.map}
@@ -648,6 +645,10 @@ class MyMapView extends Component {
                         </TouchableHighlight>
                         </View>
                         </View>
+                <Button style={styles.menu_button} onPress={() => this.toggle()}>
+                <Image
+                source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
+                </Button>
 
 
                         </SideMenu>
