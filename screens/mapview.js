@@ -50,8 +50,9 @@ let what = t.enums({
     "Kids & Family": "Kids & Family",
     "Museums & Attractions": "Museums & Attractions",
     "Nightlife": "Nightlife",
-    "Theater": "Theater",
     "Outdoors": "Outdoors",
+    "Sports": "Sports",
+    "Theater": "Theater",
     /*"Comedy": "Comedy",*/
     /*"Business": "Business",*/
     /*"Food & Drink": "Food & Drink",*/
@@ -74,6 +75,7 @@ const whatHues = {
     "Kids & Family": 314,
     "Museums & Attractions": 280,
     "Nightlife": 279,
+    "Sports": 59,
     "Theater": 320,
     "Outdoors": 340,
 }
