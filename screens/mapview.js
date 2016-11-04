@@ -645,10 +645,10 @@ class MyMapView extends Component {
                         </TouchableHighlight>
                         </View>
                         </View>
-                <Button style={styles.menu_button} onPress={() => this.toggle()}>
-                <Image
-                source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
-                </Button>
+                        <Button style={styles.menu_button} onPress={() => this.toggle()}>
+                        <Image
+                        source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
+                        </Button>
 
 
                         </SideMenu>
@@ -707,10 +707,10 @@ class EventDetails extends Component {
                 {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                 </Text>
                 <Text style={styles.p}>
-                {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 200)}
+                {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                 </Text>
-                    <Text style={styles.p}>
-                    {this.props.event.event.cost}
+                <Text style={styles.p}>
+                {this.props.event.event.cost}
                 </Text>
                     <Text style={styles.p}>
                     {this.props.event.event.address}
