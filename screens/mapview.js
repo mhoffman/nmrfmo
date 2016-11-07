@@ -32,6 +32,8 @@ import { Components, Location, Permissions } from 'exponent';
 /*using exponent component*/
 const MapView = Components.MapView;
 
+const LOCATION_RADIUS = 5e-5
+
 
 import Menu from './Menu'
 
@@ -89,6 +91,8 @@ let when = t.enums({
     weekend: 'weekend',
     /*month: 'month',*/
 });
+
+
 
 function getCategoryHue(result){
     if(result.categories !== null && result.categories.length > 0){
@@ -201,7 +205,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex: 15,
     },
     nobottomline: {
         position: 'absolute',
@@ -517,7 +522,6 @@ class MyMapView extends Component {
 
                 <View style={styles.container}>
                 <MapView
-                provider='google'
                 style={this.state.event.title == "" ? styles.fullmap : styles.map}
                 initialRegion={{latitude : latitude,
                     longitude: longitude,
@@ -537,8 +541,8 @@ class MyMapView extends Component {
                             <MapView.Marker
                             key={x}
                             coordinate={{
-                                longitude: result.lon + 8e-5 * Math.sin(result.row_number/result.count*2*Math.PI),
-                                latitude: result.lat + 8e-5 * Math.cos(result.row_number/result.count*2*Math.PI),
+                                longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
+                                latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI),
                             }}
                             onPress={()=>{
                                 InteractionManager.runAfterInteractions(()=>{
@@ -588,8 +592,8 @@ class MyMapView extends Component {
                             <MapView.Marker
                             key={x}
                             coordinate={{
-                                longitude: result.lon + 8e-5 * Math.sin(result.row_number/result.count*2*Math.PI),
-                                latitude: result.lat + 8e-5 * Math.cos(result.row_number/result.count*2*Math.PI)
+                                longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
+                                latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
                             }}
                             onPress={()=>{
                                 InteractionManager.runAfterInteractions(()=>{
