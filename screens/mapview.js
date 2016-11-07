@@ -20,7 +20,8 @@ import {
 
 } from 'react-native';
 
-import constants from './constants'
+import constants from './constants';
+import Hr from 'react-native-hr';
 
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
@@ -66,7 +67,7 @@ const whatHues = {
     "Arts": 40,
     "Charity": 0,
     "Community": 80,
-    "Concerts": 31,
+    "Concerts": 30,
     "Dance": 120,
     "Educational": 206,
     "Festivals": 160,
@@ -536,8 +537,8 @@ class MyMapView extends Component {
                             <MapView.Marker
                             key={x}
                             coordinate={{
-                                longitude: result.lon,
-                                latitude: result.lat
+                                longitude: result.lon + 8e-5 * Math.sin(result.row_number/result.count*2*Math.PI),
+                                latitude: result.lat + 8e-5 * Math.cos(result.row_number/result.count*2*Math.PI),
                             }}
                             onPress={()=>{
                                 InteractionManager.runAfterInteractions(()=>{
@@ -587,8 +588,8 @@ class MyMapView extends Component {
                             <MapView.Marker
                             key={x}
                             coordinate={{
-                                longitude: result.lon,
-                                latitude: result.lat
+                                longitude: result.lon + 8e-5 * Math.sin(result.row_number/result.count*2*Math.PI),
+                                latitude: result.lat + 8e-5 * Math.cos(result.row_number/result.count*2*Math.PI)
                             }}
                             onPress={()=>{
                                 InteractionManager.runAfterInteractions(()=>{
@@ -645,7 +646,7 @@ class MyMapView extends Component {
                         </TouchableHighlight>
                         </View>
                         </View>
-                        <Button style={styles.menu_button} onPress={() => this.toggle()}>
+                        <Button style={[styles.menu_button,{marginTop:20}]} onPress={() => this.toggle()}>
                         <Image
                         source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
                         </Button>
@@ -706,15 +707,18 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                 </Text>
+                <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                 <Text style={styles.p}>
                 {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                 </Text>
                 <Text style={styles.p}>
                 {this.props.event.event.cost}
                 </Text>
+                <Hr lineColor='#b3b3b3' text='Place' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     {this.props.event.event.address}
                 </Text>
+                <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
                 </Text>
