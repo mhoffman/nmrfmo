@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 2,
         borderColor: PRIMARY_COLOR,
+        flex: 1,
         padding: 2,
         margin: 2
     },
@@ -718,14 +719,20 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {this.props.event.event.cost}
                 </Text>
-                <Hr lineColor='#b3b3b3' text='Place' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     {this.props.event.event.address}
                 </Text>
+                <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&longitude=' + this.props.event.event.longitude + '&latitude=' + this.props.event.event.latitude + '&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        <Text>Uber</Text>
+                    </TouchableHighlight>
                 <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
                 </Text>
+                <Hr lineColor='#b3b3b3' text='Links' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <TouchableHighlight style={[styles.clickable,
                         {
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
