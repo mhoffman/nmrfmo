@@ -25,7 +25,7 @@ import Hr from 'react-native-hr';
 
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
-import { FontAwesome } from '@exponent/vector-icons';
+import { FontAwesome, Ionicons } from '@exponent/vector-icons';
 import { Components, Location, Permissions } from 'exponent';
 
 /*import MapView from 'react-native-maps';*/
@@ -96,8 +96,8 @@ let when = t.enums({
 
 function getCategoryHue(result){
     if(result.categories !== null && result.categories.length > 0){
-        console.log(result.categories);
-        console.log(whatHues[result.categories[0]]);
+        /*console.log(result.categories);*/
+        /*console.log(whatHues[result.categories[0]]);*/
 
         if(whatHues[result.categories[0]]!==undefined){
             return whatHues[result.categories[0]]
@@ -121,162 +121,163 @@ var EventSelection = t.struct({
 /*console.log(Menu);*/
 
 
-import queryString from 'query-string';
-import moment from 'moment-timezone';
-/*import styles from '../styles/styles';*/
+import querystring from 'querystring';
+console.log(querystring)
+    import moment from 'moment-timezone';
+    /*import styles from '../styles/styles';*/
 
-const BOTTOM_HEIGHT = 120;
-const window = Dimensions.get('window');
-const PRIMARY_COLOR = constants.PRIMARY_COLOR;
+    const BOTTOM_HEIGHT = 120;
+    const window = Dimensions.get('window');
+    const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 
-const styles = StyleSheet.create({
-    contentContainer:{
-        paddingTop: 400,
-        paddingBottom: 600,
-        alignItems: 'flex-start',
-        flex: 1,
-    },
-    clickable: {
-        borderWidth: 2,
-        borderRadius: 2,
-        borderColor: PRIMARY_COLOR,
-        flex: 1,
-        padding: 2,
-        margin: 2
-    },
-    customcallout: {
-        width: 140,
-        /*backgroundColor: '#4da2ab',*/
-        paddingHorizontal: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 2,
-        borderRadius: 6,
-        borderColor: '#007a87',
-        borderWidth: 0.5,
-    },
-    topContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 150,
-    },
-    container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    menu: {
-        flex: 1,
-        width: window.width,
-        height: window.height,
-        backgroundColor: 'white',
-        padding: 20,
-        zIndex: -10,
-    },
-    map: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: BOTTOM_HEIGHT,
-    },
-    fullmap: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    bottomline: {
-        position: 'absolute',
-        top: window.height - BOTTOM_HEIGHT,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 15,
-    },
-    nobottomline: {
-        position: 'absolute',
-        top: window.height+100,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    bubble: {
-        flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 5,
-        paddingVertical: 5,
-        borderRadius: 5,
-    },
-    button: {
-        width: 80,
-        paddingHorizontal: 5,
-        alignItems: 'center',
-        marginHorizontal: 5,
-    },
-    menu_button: {
-        position: 'absolute',
-        top: 20,
-        padding: 10,
-        /*zIndex: 3,*/
-    },
-    marker: {
-        backgroundColor: PRIMARY_COLOR,
-        position: 'relative',
-        borderRadius: 3,
-        padding: 2
-    },
-    marker_info: {
-        backgroundColor: 'crimson',
-        position: 'absolute',
-        color: 'white',
-        borderRadius: 2,
-        padding: 0,
-        fontSize: 8,
-        top:-3,
-        left:-2,
-        zIndex:0,
-    },
-    bottom_message: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    p: {
-        fontSize: 16,
-        textAlign: 'center',
-        margin: 10,
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    buttonContainer: {
-        flexDirection: 'column',
-        marginVertical: 20,
-        marginHorizontal: 10,
-        alignItems: 'flex-start',
-        backgroundColor: 'transparent',
-    }
-});
+    const styles = StyleSheet.create({
+        contentContainer:{
+            paddingTop: 400,
+            paddingBottom: 600,
+            alignItems: 'flex-start',
+            flex: 1,
+        },
+        clickable: {
+            borderWidth: 2,
+            borderRadius: 2,
+            borderColor: PRIMARY_COLOR,
+            flex: 1,
+            padding: 2,
+            margin: 2
+        },
+        customcallout: {
+            width: 140,
+            /*backgroundColor: '#4da2ab',*/
+            paddingHorizontal: 2,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 2,
+            borderRadius: 6,
+            borderColor: '#007a87',
+            borderWidth: 0.5,
+        },
+        topContainer: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 150,
+        },
+        container: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        menu: {
+            flex: 1,
+            width: window.width,
+            height: window.height,
+            backgroundColor: 'white',
+            padding: 20,
+            zIndex: -10,
+        },
+        map: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: BOTTOM_HEIGHT,
+        },
+        fullmap: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+        },
+        bottomline: {
+            position: 'absolute',
+            top: window.height - BOTTOM_HEIGHT,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 15,
+        },
+        nobottomline: {
+            position: 'absolute',
+            top: window.height+100,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'flex-end',
+        },
+        bubble: {
+            flex: 1,
+            backgroundColor: 'rgba(255,255,255,0.7)',
+            paddingHorizontal: 5,
+            paddingVertical: 5,
+            borderRadius: 5,
+        },
+        button: {
+            width: 80,
+            paddingHorizontal: 5,
+            alignItems: 'center',
+            marginHorizontal: 5,
+        },
+        menu_button: {
+            position: 'absolute',
+            top: 20,
+            padding: 10,
+            /*zIndex: 3,*/
+        },
+        marker: {
+            backgroundColor: PRIMARY_COLOR,
+            position: 'relative',
+            borderRadius: 3,
+            padding: 2
+        },
+        marker_info: {
+            backgroundColor: 'crimson',
+            position: 'absolute',
+            color: 'white',
+            borderRadius: 2,
+            padding: 0,
+            fontSize: 8,
+            top:-3,
+            left:-2,
+            zIndex:0,
+        },
+        bottom_message: {
+            fontSize: 20,
+            textAlign: 'center',
+            margin: 10,
+        },
+        p: {
+            fontSize: 16,
+            textAlign: 'center',
+            margin: 10,
+        },
+        welcome: {
+            fontSize: 20,
+            textAlign: 'center',
+            margin: 10,
+        },
+        buttonContainer: {
+            flexDirection: 'column',
+            marginVertical: 20,
+            marginHorizontal: 10,
+            alignItems: 'flex-start',
+            backgroundColor: 'transparent',
+        }
+    });
 
 class Button extends Component {
     handlePress(e) {
@@ -343,10 +344,18 @@ class MyMapView extends Component {
             let lon = this.state.longitude;
             let lat = this.state.latitude;
 
-            let url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange;
-            /*console.log("MARKER URL");*/
+            var url = ""
+                console.log(this)
+                if(this.props.parent.state.search.length==0){
+                    url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange;
+                }else{
+                    url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search)
+                }
+
+            console.log("MARKER URL");
             /*console.log(this.props.parent.state.timeRange);*/
-            /*console.log(url);*/
+            /*console.log(this.props.parent.state.search)*/
+            console.log(url);
             fetch (url, {
                 headers: {
                     'Accept': 'application/json',
@@ -356,7 +365,6 @@ class MyMapView extends Component {
             })
             .then((response) => response.json())
                 .then((response) => {
-                    /*console.log(response);*/
                     this.setState({meetings: response});
                     this.setState({lastUpdatedAt: Date.now()})
                 })
@@ -411,10 +419,10 @@ class MyMapView extends Component {
             default:
                 saturation = 1000*60*60*60/10
         }
-        console.log('DATETIME ' + datetime);
-        console.log('DIFF ' + diff);
-        console.log('TIMERANGE ' + this.props.parent.state.timeRange);
-        console.log(saturation);
+        /*console.log('DATETIME ' + datetime);*/
+        /*console.log('DIFF ' + diff);*/
+        /*console.log('TIMERANGE ' + this.props.parent.state.timeRange);*/
+        /*console.log(saturation);*/
         return saturation
     }
 
@@ -548,6 +556,8 @@ class MyMapView extends Component {
                             onPress={()=>{
                                 InteractionManager.runAfterInteractions(()=>{
                                     this.setState({event: {
+                                        longitude: result.lon,
+                                        latitude: result.lat,
                                         title: result.title,
                                         categories: result.categories,
                                         url: result.url,
@@ -601,6 +611,8 @@ class MyMapView extends Component {
                                     this.setState({event: {
                                         title: result.title,
                                         categories: result.categories,
+                                        longitude: result.lon,
+                                        latitude: result.lat,
                                         url: result.url,
                                         address: result.address,
                                         description: result.description,
@@ -706,7 +718,17 @@ class EventDetails extends Component {
                 style={{ flex: 1 }}
                 >
                 <View >
-                <Text style={[styles.welcome,{marginTop:30}]}>
+                <TouchableHighlight
+                style={[styles.clickable,{
+                    marginTop:30,
+                    marginBottom:20,
+                    borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                }]}
+                onPress={()=>this.props.navigator.pop()}>
+                <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
+
+                </TouchableHighlight>
+                <Text style={[styles.welcome]}>
                 {this.props.event.event.title}
                 </Text>
                 <Text style={styles.p}>
@@ -716,23 +738,36 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                 </Text>
-                <Text style={styles.p}>
-                {this.props.event.event.cost}
+                    <Text style={styles.p}>
+                    {this.props.event.event.cost}
                 </Text>
-                <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     {this.props.event.event.address}
                 </Text>
-                <TouchableHighlight
-                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&longitude=' + this.props.event.event.longitude + '&latitude=' + this.props.event.event.latitude + '&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                        <Text>Uber</Text>
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={{textAlign: 'center'}}>Street View <FontAwesome name="street-view" color="#000"/></Text>
                     </TouchableHighlight>
-                <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address) +  '/')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={{textAlign: 'center'}}>Directions <Ionicons name="md-map" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={{textAlign: 'center'}}>order Uber <Ionicons name="ios-car" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <Text style={styles.p}>
                     { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
                 </Text>
-                <Hr lineColor='#b3b3b3' text='Links' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Hr lineColor='#b3b3b3' text='Links' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <TouchableHighlight style={[styles.clickable,
                         {
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
@@ -765,6 +800,7 @@ class Navi extends Component {
         this.state = {
             category: 'All',
             timeRange: 'now',
+            search: '',
             lastUpdatedAt: 0
         };
     }

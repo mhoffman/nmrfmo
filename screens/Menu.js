@@ -1,6 +1,7 @@
 'use strict';
 import React, { PropTypes, Component } from 'react';
 import {
+    Alert,
     Dimensions,
     StyleSheet,
     ScrollView,
@@ -8,6 +9,7 @@ import {
     Image,
     InteractionManager,
     Text,
+    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import Communications from 'react-native-communications';
@@ -212,6 +214,7 @@ export default class Menu extends Component {
                 when: this.props.parent.props.parent.state.timeRange,
                 lastUpdatedAt: 0,
                 what: this.props.parent.props.parent.state.category,
+                search: this.props.parent.props.parent.state.search,
             },
 
         }
@@ -222,11 +225,22 @@ export default class Menu extends Component {
         this.setState({value});
         if(true){
             InteractionManager.runAfterInteractions(()=>{
-                this.props.parent.setState({meetings: []})
-                    this.props.parent.props.parent.setState({lastUpdatedAt: 0, timeRange: value.when, category: value.what});
+                this.props.parent.setState({meetings: []});
+                this.props.parent.props.parent.setState({lastUpdatedAt: 0, timeRange: value.when, category: value.what, search: ''});
                 this.props.parent.setState({event: {title: ''}})
             });
         }
+    };
+
+    textSearch(event){
+        console.log(event.nativeEvent);
+        let search = event.nativeEvent.text;
+        if(search.length > 0){
+            this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: search, timeRange: 'personal'});
+        }else{
+            this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: ''});
+        }
+
     };
 
     render() {
@@ -239,6 +253,11 @@ export default class Menu extends Component {
                 <Text style={styles.name}>nmrfmo</Text>
                 <Text style={styles.name}>nmrfmo</Text>
                 </View>
+                <TextInput
+                style={{marginBottom:20}}
+                placeholder="Search events"
+                onSubmitEditing={this.textSearch.bind(this)}
+                />
 
                 <Form ref="form"
                 type={this.props.EventSelection}
@@ -248,9 +267,9 @@ export default class Menu extends Component {
                 value={this.state.value} />
 
                 {/*}
-                <Text>Private Events</Text>
-                <FBLogin parent={this}/>
-                */}
+                   <Text>Private Events</Text>
+                   <FBLogin parent={this}/>
+                   */}
 
 
                 <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>
@@ -262,13 +281,13 @@ export default class Menu extends Component {
                             'Have you found a bug or miss a venue? Thx. Max.'
                             )
                 }>
-        <Text>
-            Feedback    <FontAwesome name='envelope-o' color='#000000' size={20}/>
-            </Text>
-            </TouchableOpacity>
+                <Text>
+                    Feedback    <FontAwesome name='envelope-o' color='#000000' size={20}/>
+                    </Text>
+                    </TouchableOpacity>
 
 
-            </ScrollView>
-            );
+                    </ScrollView>
+                    );
     };
     };
