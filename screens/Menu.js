@@ -40,7 +40,6 @@ const options = {
     fields: {
         when: {
             nullOption: false,
-
         },
         what: {
             nullOption: false,
@@ -127,8 +126,8 @@ class FBLogin extends Component {
             /*console.log(result);*/
             result.data.map((event, ievent) =>{
             });
-            console.log("PROCESSING PRIVATE MEETINGS");
-            console.log(result.data);
+            /*console.log("PROCESSING PRIVATE MEETINGS");*/
+            /*console.log(result.data);*/
             AccessToken.getCurrentAccessToken().then( (data) =>{
                 console.log(data.accessToken.toString());
                 this.props.parent.setState({accessToken: data.accessToken.toString()})
@@ -136,13 +135,13 @@ class FBLogin extends Component {
             try {
                 const private_meetings = await result.data
                     .filter((event) => {
-                        console.log(moment(event.start_time));
-                        console.log(event.start_time);
-                        console.log(event.hasOwnProperty('place')
-                                && event.place.hasOwnProperty('location')
-                                && event.hasOwnProperty('start_time')
-                                && (moment(event.start_time) > moment().startOf('day').subtract(1, 'day').toDate())
-                                );
+                        /*console.log(moment(event.start_time));*/
+                        /*console.log(event.start_time);*/
+                        /*console.log(event.hasOwnProperty('place')*/
+                        /*&& event.place.hasOwnProperty('location')*/
+                        /*&& event.hasOwnProperty('start_time')*/
+                        /*&& (moment(event.start_time) > moment().startOf('day').subtract(1, 'day').toDate())*/
+                        /*);*/
                         return (event.hasOwnProperty('place')
                                 && event.place.hasOwnProperty('location')
                                 && event.hasOwnProperty('start_time')
@@ -164,9 +163,9 @@ class FBLogin extends Component {
                     };
                 });
                 this.props.parent.props.parent.setState({private_meetings});
-                console.log("SET PRIVATE MEETINGS");
-                console.log(private_meetings);
-                console.log(this.props.parent.props.parent.state);
+                /*console.log("SET PRIVATE MEETINGS");*/
+                /*console.log(private_meetings);*/
+                /*console.log(this.props.parent.props.parent.state);*/
             } catch (error) {
                 console.log("ASYNC ERROR");
                 console.log(error);
@@ -233,26 +232,42 @@ export default class Menu extends Component {
     };
 
     textSearch(event){
-        console.log(event.nativeEvent);
         let search = event.nativeEvent.text;
         if(search.length > 0){
             this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: search, timeRange: 'personal'});
         }else{
             this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: ''});
         }
+    };
 
+    venueFeedback(event){
+        this.refs.VenueFeedback.clear()
+            let feedback = event.nativeEvent.text;
+        let url = 'https://nomorefomo.herokuapp.com/venue_feedback?feedback=' + encodeURI(feedback);
+        fetch (url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            method: 'GET'
+        })
+        .then((response) => response.json())
+            .then((response) => {
+                /*console.log(response)*/
+                Alert.alert(
+                        'Feedback',
+                        response.message
+                        )
+            })
     };
 
     render() {
         return (
-                <ScrollView scrollsToTop={false} style={styles.menu}>
-                <View style={styles.avatarContainer}>
-                <Image
-                style={styles.avatar}
-                source={{ uri, }}/>
-                <Text style={styles.name}>nmrfmo</Text>
-                <Text style={styles.name}>nmrfmo</Text>
-                </View>
+                <View style={[styles.menu,
+                    {
+                        paddingTop:50
+                    }
+                ]}>
                 <TextInput
                 style={{marginBottom:20}}
                 placeholder="Search events"
@@ -266,28 +281,36 @@ export default class Menu extends Component {
                 onChange={this.onChange.bind(this)}
                 value={this.state.value} />
 
+                <TextInput
+                ref='VenueFeedback'
+                style={{marginBottom:20}}
+                placeholder="Suggest a venue."
+                    onSubmitEditing={this.venueFeedback.bind(this)}
+                />
+
                 {/*}
                    <Text>Private Events</Text>
                    <FBLogin parent={this}/>
                    */}
 
 
-                <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>
-                    Communications.email(
-                            ['feedback@nmrfmo.33mail.com'],
-                            null,
-                            null,
-                            'nmrfmo Feedback',
-                            'Have you found a bug or miss a venue? Thx. Max.'
-                            )
-                }>
-                <Text>
-                    Feedback    <FontAwesome name='envelope-o' color='#000000' size={20}/>
-                    </Text>
-                    </TouchableOpacity>
+
+                {/*<TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
+                    /*Communications.email(*/
+                    /*['feedback@nmrfmo.33mail.com'],*/
+                    /*null,*/
+                    /*null,*/
+                    /*'nmrfmo Feedback',*/
+                    /*'Have you found a bug or miss a venue? Thx. Max.'*/
+                    /*)*/
+                    /*}>*/
+                    /*<Text>*/
+                    /*Feedback    <FontAwesome name='envelope-o' color='#000000' size={20}/>*/
+                    /*</Text>*/
+                    /*</TouchableOpacity>*/}
 
 
-                    </ScrollView>
+                </View>
                     );
     };
     };

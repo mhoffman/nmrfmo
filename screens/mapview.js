@@ -122,162 +122,162 @@ var EventSelection = t.struct({
 
 
 import querystring from 'querystring';
-console.log(querystring)
-    import moment from 'moment-timezone';
-    /*import styles from '../styles/styles';*/
+/*console.log(querystring)*/
+import moment from 'moment-timezone';
+/*import styles from '../styles/styles';*/
 
-    const BOTTOM_HEIGHT = 120;
-    const window = Dimensions.get('window');
-    const PRIMARY_COLOR = constants.PRIMARY_COLOR;
+const BOTTOM_HEIGHT = 120;
+const window = Dimensions.get('window');
+const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 
-    const styles = StyleSheet.create({
-        contentContainer:{
-            paddingTop: 400,
-            paddingBottom: 600,
-            alignItems: 'flex-start',
-            flex: 1,
-        },
-        clickable: {
-            borderWidth: 2,
-            borderRadius: 2,
-            borderColor: PRIMARY_COLOR,
-            flex: 1,
-            padding: 2,
-            margin: 2
-        },
-        customcallout: {
-            width: 140,
-            /*backgroundColor: '#4da2ab',*/
-            paddingHorizontal: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 2,
-            borderRadius: 6,
-            borderColor: '#007a87',
-            borderWidth: 0.5,
-        },
-        topContainer: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 150,
-        },
-        container: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        menu: {
-            flex: 1,
-            width: window.width,
-            height: window.height,
-            backgroundColor: 'white',
-            padding: 20,
-            zIndex: -10,
-        },
-        map: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: BOTTOM_HEIGHT,
-        },
-        fullmap: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-        },
-        bottomline: {
-            position: 'absolute',
-            top: window.height - BOTTOM_HEIGHT,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 15,
-        },
-        nobottomline: {
-            position: 'absolute',
-            top: window.height+100,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            flex: 1,
-            justifyContent: 'flex-end',
-        },
-        bubble: {
-            flex: 1,
-            backgroundColor: 'rgba(255,255,255,0.7)',
-            paddingHorizontal: 5,
-            paddingVertical: 5,
-            borderRadius: 5,
-        },
-        button: {
-            width: 80,
-            paddingHorizontal: 5,
-            alignItems: 'center',
-            marginHorizontal: 5,
-        },
-        menu_button: {
-            position: 'absolute',
-            top: 20,
-            padding: 10,
-            /*zIndex: 3,*/
-        },
-        marker: {
-            backgroundColor: PRIMARY_COLOR,
-            position: 'relative',
-            borderRadius: 3,
-            padding: 2
-        },
-        marker_info: {
-            backgroundColor: 'crimson',
-            position: 'absolute',
-            color: 'white',
-            borderRadius: 2,
-            padding: 0,
-            fontSize: 8,
-            top:-3,
-            left:-2,
-            zIndex:0,
-        },
-        bottom_message: {
-            fontSize: 20,
-            textAlign: 'center',
-            margin: 10,
-        },
-        p: {
-            fontSize: 16,
-            textAlign: 'center',
-            margin: 10,
-        },
-        welcome: {
-            fontSize: 20,
-            textAlign: 'center',
-            margin: 10,
-        },
-        buttonContainer: {
-            flexDirection: 'column',
-            marginVertical: 20,
-            marginHorizontal: 10,
-            alignItems: 'flex-start',
-            backgroundColor: 'transparent',
-        }
-    });
+const styles = StyleSheet.create({
+    contentContainer:{
+        paddingTop: 400,
+        paddingBottom: 600,
+        alignItems: 'flex-start',
+        flex: 1,
+    },
+    clickable: {
+        borderWidth: 2,
+        borderRadius: 2,
+        borderColor: PRIMARY_COLOR,
+        flex: 1,
+        padding: 2,
+        margin: 2
+    },
+    customcallout: {
+        width: 140,
+        /*backgroundColor: '#4da2ab',*/
+        paddingHorizontal: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 2,
+        borderRadius: 6,
+        borderColor: '#007a87',
+        borderWidth: 0.5,
+    },
+    topContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 150,
+    },
+    container: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    menu: {
+        flex: 1,
+        width: window.width,
+        height: window.height,
+        backgroundColor: 'white',
+        padding: 20,
+        zIndex: -10,
+    },
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: BOTTOM_HEIGHT,
+    },
+    fullmap: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    bottomline: {
+        position: 'absolute',
+        top: window.height - BOTTOM_HEIGHT,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 15,
+    },
+    nobottomline: {
+        position: 'absolute',
+        top: window.height+100,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    bubble: {
+        flex: 1,
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 5,
+    },
+    button: {
+        width: 80,
+        paddingHorizontal: 5,
+        alignItems: 'center',
+        marginHorizontal: 5,
+    },
+    menu_button: {
+        position: 'absolute',
+        top: 20,
+        padding: 10,
+        /*zIndex: 3,*/
+    },
+    marker: {
+        backgroundColor: PRIMARY_COLOR,
+        position: 'relative',
+        borderRadius: 3,
+        padding: 2
+    },
+    marker_info: {
+        backgroundColor: 'crimson',
+        position: 'absolute',
+        color: 'white',
+        borderRadius: 2,
+        padding: 0,
+        fontSize: 8,
+        top:-3,
+        left:-2,
+        zIndex:0,
+    },
+    bottom_message: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    p: {
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 10,
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'column',
+        marginVertical: 20,
+        marginHorizontal: 10,
+        alignItems: 'flex-start',
+        backgroundColor: 'transparent',
+    }
+});
 
 class Button extends Component {
     handlePress(e) {
@@ -344,18 +344,18 @@ class MyMapView extends Component {
             let lon = this.state.longitude;
             let lat = this.state.latitude;
 
-            var url = ""
-                console.log(this)
-                if(this.props.parent.state.search.length==0){
-                    url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange;
-                }else{
-                    url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search)
-                }
+            var url = "";
+            /*console.log(this)*/
+            if(this.props.parent.state.search.length==0){
+                url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange;
+            }else{
+                url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search)
+            }
 
-            console.log("MARKER URL");
+            /*console.log("MARKER URL");*/
             /*console.log(this.props.parent.state.timeRange);*/
             /*console.log(this.props.parent.state.search)*/
-            console.log(url);
+            /*console.log(url);*/
             fetch (url, {
                 headers: {
                     'Accept': 'application/json',
@@ -734,9 +734,9 @@ class EventDetails extends Component {
                 <Text style={styles.p}>
                 {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                 </Text>
-                <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
-                <Text style={styles.p}>
-                {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
+                    <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Text style={styles.p}>
+                    {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                 </Text>
                     <Text style={styles.p}>
                     {this.props.event.event.cost}
