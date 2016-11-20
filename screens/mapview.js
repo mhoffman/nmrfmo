@@ -325,6 +325,7 @@ class MyMapView extends Component {
     }
     updateMenuState(isOpen) {
         this.setState({ isOpen, });
+        this.setState({event: {title: ''}})
     }
 
     onMenuItemSelected(item){
@@ -621,7 +622,8 @@ class MyMapView extends Component {
                                         publisher_url: result.publisher_url,
                                         datetime: result.datetime
                                     },
-                                        event_title: result.title});
+                                        event_title: result.title
+                                    });
 
                                 });
                             }}
