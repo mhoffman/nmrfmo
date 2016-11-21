@@ -269,7 +269,7 @@ export default class Menu extends Component {
                     }
                 ]}>
                 <TextInput
-                style={{marginBottom:20}}
+                style={{marginBottom:20, height:60}}
                 placeholder="Search events"
                 onSubmitEditing={this.textSearch.bind(this)}
                 />
@@ -283,7 +283,7 @@ export default class Menu extends Component {
 
                 <TextInput
                 ref='VenueFeedback'
-                style={{marginBottom:20}}
+                style={{marginBottom:20,height:60}}
                 placeholder="Suggest a venue."
                     onSubmitEditing={this.venueFeedback.bind(this)}
                 />
