@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         zIndex: -10,
     },
     clickable: {
-        borderWidth: 2,
+        borderWidth: 1.,
         borderRadius: 2,
         borderColor: PRIMARY_COLOR,
         padding: 2,

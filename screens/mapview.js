@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     clickable: {
-        borderWidth: 2,
+        borderWidth: 1.,
         borderRadius: 2,
         borderColor: PRIMARY_COLOR,
         flex: 1,
@@ -255,6 +255,11 @@ const styles = StyleSheet.create({
         top:-3,
         left:-2,
         zIndex:0,
+    },
+    action_link : {
+        textAlign: 'center',
+        fontSize: 14,
+        paddingVertical: 5,
     },
     bottom_message: {
         fontSize: 20,
@@ -745,49 +750,60 @@ class EventDetails extends Component {
                     <Text style={styles.p}>
                     {this.props.event.event.cost}
                 </Text>
-                    <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
-                    <Text style={styles.p}>
-                    {this.props.event.event.address}
-                </Text>
-                    <TouchableHighlight
-                    onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
-                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                    <Text style={{textAlign: 'center'}}>Street View <FontAwesome name="street-view" color="#000"/></Text>
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                    onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
-                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                    <Text style={{textAlign: 'center'}}>Directions <Ionicons name="md-map" color="#000"/></Text>
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                    <Text style={{textAlign: 'center'}}>order Uber <Ionicons name="ios-car" color="#000"/></Text>
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                    onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                    <Text style={{textAlign: 'center'}}>Copy to Google Calendar <FontAwesome name="calendar-plus-o" color="#000"/></Text>
-                    </TouchableHighlight>
-
-                    <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
-                    <Text style={styles.p}>
-                    { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
-                </Text>
-                    <Hr lineColor='#b3b3b3' text='Links' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Hr lineColor='#b3b3b3' text='Actions' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
                     <TouchableHighlight style={[styles.clickable,
                         {
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
                         }
 
-                    ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}><Text> Credit: {this.props.event.event.publisher} <FontAwesome name='external-link'/></Text></TouchableHighlight>
+                    ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
+                        <Text style={styles.action_link}> Venue Website: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></Text>
+                        </TouchableHighlight>
+
                         <TouchableHighlight style={[styles.clickable,{
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
-                            backgroundColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'
-                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} ><Text>website <FontAwesome name='external-link'/></Text></TouchableHighlight>
+                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
+                    <Text style={styles.action_link}>Event Website <FontAwesome name='external-link' size={18}/></Text>
+                        </TouchableHighlight>
+
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={styles.action_link}>Street View <FontAwesome size={18} name="street-view" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={styles.action_link}>Directions <Ionicons size={18} name="md-map" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={styles.action_link}>Order Uber <Ionicons size={18} name="ios-car" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={styles.action_link}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+                style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                    <Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Text style={styles.p}>{this.props.event.event.address}</Text>
+
+                    <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                    <Text style={styles.p}>
+                    { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
+                </Text>
                     <Text style={styles.p}></Text>
                         <TouchableHighlight
                         style={[styles.clickable,{
