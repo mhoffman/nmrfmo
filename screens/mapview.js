@@ -30,7 +30,7 @@ import Hr from 'react-native-hr';
 
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
-import { FontAwesome, Ionicons } from '@exponent/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
 import { Components, Location, Permissions } from 'exponent';
 
 /*import MapView from 'react-native-maps';*/
@@ -304,6 +304,56 @@ class MyButton extends Component {
                );
     }
 }
+
+/*class ResultIcons extends Component{*/
+/*constructor(props){*/
+/*super(props)*/
+/*}*/
+/*render(){*/
+/*let icons = (*/
+/*{this.props.result.categories.map((category) => */
+/*if(category=='Arts'){*/
+/*<MaterialIcons name='palette'/>*/
+/*}else if(category=="Business"){*/
+/*<MaterialIcons name="business-center"/>*/
+/*}else if(category=="Charity"){*/
+/*<FontAwesome name='heart-o'/>*/
+/*}else if(category=="Comedy"){*/
+/*<FontAwesome name='smile-o'/>*/
+/*}else if(category=="Community"){*/
+/*<FontAwesome name='group'/>*/
+/*}else if(category=="Concerts"){*/
+/*<FontAwesome name='music'/>*/
+/*}else if(category=="Dance"){*/
+/*<MaterialIcons name='speaker'/>*/
+/*}else if(category=="Educational"){*/
+/*<FontAwesome name='graduation-cap'/>*/
+/*}else if(category=="Festivals"){*/
+/*<FontAwesome name='tree'/>*/
+/*}else if(category=="Film"){*/
+/*<FontAwesome name='film'/>*/
+/*}else if(category=="Food & Drink"){*/
+/*<MaterialIcons name='dining'/>*/
+/*}else if(category=="Health & Fitness"){*/
+/*<MaterialIcons name='fitness-center'/>*/
+/*}else if(category=="Holiday"){*/
+/*}else if(category=="Kids & Family"){*/
+/*<FontAwesome name='child'/>*/
+/*}else if(category=="Museums & Attractions"){*/
+/*}else if(category=="Nightlife"){*/
+/*}else if(category=="Outdoors"){*/
+/*<Foundation name='mountains'/>*/
+/*}else if(category=="Religious"){*/
+/*}else if(category=="Shopping"){*/
+/*<FontAwesome name='shopping-cart'/>*/
+/*}else if(category=="Sports"){*/
+/*<Ionicons name='ios-american-football'/>*/
+/*}*/
+
+/*)});*/
+/*return (icons);*/
+/*}*/
+/*}*/
 
 class MyMapView extends Component {
     constructor(props) {
@@ -644,6 +694,7 @@ class MyMapView extends Component {
                                         borderWidth: 1,
                                     }]}
                             >
+                            {/*<ResultIcons result={result}/>*/}
                                 <Text style={{color: 'white'}}>{this.marker_format_title(result)}</Text>
                                 <Text style={styles.marker_info}>{this.marker_infotext(result)}</Text>
                                 </View>
@@ -806,21 +857,22 @@ class EventDetails extends Component {
                         </TouchableHighlight>
 
                         <TouchableHighlight
-                        onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
-                        <Text style={styles.action_link}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
-                        </TouchableHighlight>
-
-                        <TouchableHighlight
                         onPress={()=>{Share.share({
-                                  title: "Event",
-                                  message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
-                                  url: "http://facebook.github.io/react-native/",
-                                  subject: "Share Link" //  for email
-                                });
+                            title: "Event",
+                            message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
+                            url: "http://facebook.github.io/react-native/",
+                            subject: "Share Link" //  for email
+                        });
                         }}
                     style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
                         <Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></Text>
+                        </TouchableHighlight>
+
+
+                        <TouchableHighlight
+                        onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        <Text style={styles.action_link}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
                         </TouchableHighlight>
 
                         <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
@@ -841,7 +893,7 @@ class EventDetails extends Component {
 
                         </TouchableHighlight>
 
-                    </View>
+                        </View>
                         </ScrollView>
                         )
     }
