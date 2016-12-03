@@ -120,12 +120,6 @@ var EventSelection = t.struct({
     when: when
 })
 
-/*console.log("IMPORTED MENU")*/
-/*console.log(Menu);*/
-
-
-import querystring from 'querystring';
-/*console.log(querystring)*/
 import moment from 'moment-timezone';
 /*import styles from '../styles/styles';*/
 
@@ -773,14 +767,6 @@ class EventDetails extends Component {
         this.state = {
             sharing_visible: true,
         };
-    }
-    onOpenShare() {
-        console.log("OPEN SHARE");
-        this.setState({sharing_visible: true});
-    }
-    onCancelShare() {
-        console.log("CANCEL SHARE");
-        this.setState({sharing_visible: false});
     }
     render () {
         /*console.log("DETAIL PROPS");*/
