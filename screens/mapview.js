@@ -28,6 +28,7 @@ import {
 import constants from './constants';
 import Hr from 'react-native-hr';
 
+import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
@@ -282,6 +283,9 @@ const styles = StyleSheet.create({
 });
 
 class MyButton extends Component {
+    constructor(props){
+        super(props);
+    }
     handlePress(e) {
         if (this.props.onPress) {
             this.props.onPress(e);
@@ -291,7 +295,8 @@ class MyButton extends Component {
     render() {
         return (
                 <TouchableOpacity
-                onPress={this.handlePress.bind(this)}
+                /*onPress={this.handlePress.bind(this)}*/
+                 onPress={() => this.props.parent._drawerLayout.openDrawer()}
                 style={this.props.style}>
                 <Text>{this.props.children}</Text>
                 </TouchableOpacity>
@@ -364,6 +369,11 @@ class MyMapView extends Component {
             lastUpdatedAt: 0,
             event: {title: ''},
         };
+        navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    this.setState({longitude: position['coords']['longitude'],
+                        latitude: position['coords']['latitude']})
+                });
         this.getMeetupData();
         // automatically updated every n minutes
         setInterval(()=>{this.getMeetupData();}, 1000 * 60 * 10)
@@ -377,7 +387,7 @@ class MyMapView extends Component {
     }
     updateMenuState(isOpen) {
         this.setState({ isOpen, });
-        this.setState({event: {title: ''}})
+        /*this.setState({event: {title: ''}})*/
     }
 
     onMenuItemSelected(item){
@@ -574,9 +584,13 @@ class MyMapView extends Component {
         />;
 
         let map = (
-                <SideMenu
+                <DrawerLayout
+                ref={(view) => { this._drawerLayout = view; }}
                 style={styles.menu}
                 menu={menu}
+                drawerWidth={320}
+                drawerPosition={DrawerLayout.positions.Left}
+                renderNavigationView={()=>menu}
                 isOpen={this.state.isOpen}
                 onChange={(isOpen) => this.updateMenuState(isOpen)}
                 >
@@ -592,8 +606,10 @@ class MyMapView extends Component {
                 }}
                 showsUserLocation={true}
                 followsUserLocation={true}
-                showsCompass={true}
+                showsCompass={false}
                 zoomEnabled={true}
+                rotateEnabled={false}
+                showsBuildings={false}
                 mapType='standard'
                     showPointsOfInterest={true}
                 >
@@ -607,7 +623,6 @@ class MyMapView extends Component {
                                 latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI),
                             }}
                             onPress={()=>{
-                                InteractionManager.runAfterInteractions(()=>{
                                     this.setState({event: {
                                         longitude: result.lon,
                                         latitude: result.lat,
@@ -623,7 +638,6 @@ class MyMapView extends Component {
                                     },
                                         event_title: result.title});
 
-                                });
                             }}
 
                             >
@@ -718,13 +732,13 @@ class MyMapView extends Component {
                         </TouchableHighlight>
                         </View>
                         </View>
-                        <MyButton style={[styles.menu_button,{marginTop:20}]} onPress={() => this.toggle()}>
+                        <MyButton style={[styles.menu_button,{marginTop:0}]} parent={this} onPress={() => this.toggle()}>
                         <Image
                         source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
                         </MyButton>
 
 
-                        </SideMenu>
+                        </DrawerLayout>
                         );
 
 
