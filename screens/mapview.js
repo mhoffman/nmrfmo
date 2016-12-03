@@ -453,34 +453,40 @@ class MyMapView extends Component {
         });
     }
 
-    getSaturation(datetime){
-        const now = new Date().getTime();
-        const diff =  new Date(datetime).getTime() - now;
+    getSaturation(datetime, time_span=-1, min_time=-1){
+        if(min_time<0){
+            min_time = new Date().getTime();
+        }
+        const diff =  new Date(datetime).getTime() - min_time;
         let saturation = 0;
         if(diff>0){
             saturation = 100
         }
-        switch(this.props.parent.state.timeRange){
-            case 'now':
-                saturation =  100 - diff/1000./60.;
-                break;
-            case 'today':
-                saturation =  100 - diff/1000/60/60/60/10;
-                break;
-            case 'tomorrow':
-                saturation =  100 - diff/1000/60/18;
-                break;
-            case 'week':
-                saturation =  100 - diff/1000/60/24/7;
-                break;
-            case 'weekend':
-                saturation = 100 - diff/1000/60/60/60/10
+        if(time_span>0){
+            saturation = 100 * (1 - diff / time_span)
+        } else {
+            switch(this.props.parent.state.timeRange){
+                case 'now':
+                    saturation =  100 - diff/1000./60.;
                     break;
-            case 'personal':
-                saturation = 1000*60*60*60/10
+                case 'today':
+                    saturation =  100 - diff/1000/60/60/60/10;
                     break;
-            default:
-                saturation = 1000*60*60*60/10
+                case 'tomorrow':
+                    saturation =  100 - diff/1000/60/18;
+                    break;
+                case 'week':
+                    saturation =  100 - diff/1000/60/24/7;
+                    break;
+                case 'weekend':
+                    saturation = 100 - diff/1000/60/60/60/10
+                        break;
+                case 'personal':
+                    saturation = 1000*60*60*60/10
+                        break;
+                default:
+                    saturation = 1000*60*60*60/10
+            }
         }
         /*console.log('DATETIME ' + datetime);*/
         /*console.log('DIFF ' + diff);*/
@@ -582,6 +588,13 @@ class MyMapView extends Component {
         when={when}
         whatHues={whatHues}
         />;
+        var time_span = 60*60*24*1000;
+        var min_time = -1
+        if(this.state.meetings!== undefined && this.state.meetings.length > 0 ){
+            min_time = new Date(this.state.meetings[0].datetime);
+            var max_time = new Date(this.state.meetings[this.state.meetings.length-1].datetime);
+            time_span = max_time - min_time;
+        }
 
         let map = (
                 <DrawerLayout
@@ -697,7 +710,7 @@ class MyMapView extends Component {
                             >
                                 <View
                                 style={[styles.marker,
-                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
                                         borderWidth: 1,
                                     }]}
