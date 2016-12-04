@@ -304,55 +304,56 @@ class MyButton extends Component {
     }
 }
 
-/*class ResultIcons extends Component{*/
-/*constructor(props){*/
-/*super(props)*/
-/*}*/
-/*render(){*/
-/*let icons = (*/
-/*{this.props.result.categories.map((category) => */
-/*if(category=='Arts'){*/
-/*<MaterialIcons name='palette'/>*/
-/*}else if(category=="Business"){*/
-/*<MaterialIcons name="business-center"/>*/
-/*}else if(category=="Charity"){*/
-/*<FontAwesome name='heart-o'/>*/
-/*}else if(category=="Comedy"){*/
-/*<FontAwesome name='smile-o'/>*/
-/*}else if(category=="Community"){*/
-/*<FontAwesome name='group'/>*/
-/*}else if(category=="Concerts"){*/
-/*<FontAwesome name='music'/>*/
-/*}else if(category=="Dance"){*/
-/*<MaterialIcons name='speaker'/>*/
-/*}else if(category=="Educational"){*/
-/*<FontAwesome name='graduation-cap'/>*/
-/*}else if(category=="Festivals"){*/
-/*<FontAwesome name='tree'/>*/
-/*}else if(category=="Film"){*/
-/*<FontAwesome name='film'/>*/
-/*}else if(category=="Food & Drink"){*/
-/*<MaterialIcons name='dining'/>*/
-/*}else if(category=="Health & Fitness"){*/
-/*<MaterialIcons name='fitness-center'/>*/
-/*}else if(category=="Holiday"){*/
-/*}else if(category=="Kids & Family"){*/
-/*<FontAwesome name='child'/>*/
-/*}else if(category=="Museums & Attractions"){*/
-/*}else if(category=="Nightlife"){*/
-/*}else if(category=="Outdoors"){*/
-/*<Foundation name='mountains'/>*/
-/*}else if(category=="Religious"){*/
-/*}else if(category=="Shopping"){*/
-/*<FontAwesome name='shopping-cart'/>*/
-/*}else if(category=="Sports"){*/
-/*<Ionicons name='ios-american-football'/>*/
-/*}*/
+class ResultIcons extends Component{
+    constructor(props){
+        super(props)
+    }
+    render(){
+        return (null);
+        /*return (*/
+        /*let icons = ({this.props.result.categories.map( (category) => */
+        /*if(category=='Arts'){*/
+        /*<MaterialIcons name='palette'/>*/
+        /*}else if(category=="Business"){*/
+        /*<MaterialIcons name="business-center"/>*/
+        /*}else if(category=="Charity"){*/
+        /*<FontAwesome name='heart-o'/>*/
+        /*}else if(category=="Comedy"){*/
+        /*<FontAwesome name='smile-o'/>*/
+        /*}else if(category=="Community"){*/
+        /*<FontAwesome name='group'/>*/
+        /*}else if(category=="Concerts"){*/
+        /*<FontAwesome name='music'/>*/
+        /*}else if(category=="Dance"){*/
+        /*<MaterialIcons name='speaker'/>*/
+        /*}else if(category=="Educational"){*/
+        /*<FontAwesome name='graduation-cap'/>*/
+        /*}else if(category=="Festivals"){*/
+        /*<FontAwesome name='tree'/>*/
+        /*}else if(category=="Film"){*/
+        /*<FontAwesome name='film'/>*/
+        /*}else if(category=="Food & Drink"){*/
+        /*<MaterialIcons name='dining'/>*/
+        /*}else if(category=="Health & Fitness"){*/
+        /*<MaterialIcons name='fitness-center'/>*/
+        /*}else if(category=="Holiday"){*/
+        /*}else if(category=="Kids & Family"){*/
+        /*<FontAwesome name='child'/>*/
+        /*}else if(category=="Museums & Attractions"){*/
+        /*}else if(category=="Nightlife"){*/
+        /*}else if(category=="Outdoors"){*/
+        /*<Foundation name='mountains'/>*/
+        /*}else if(category=="Religious"){*/
+        /*}else if(category=="Shopping"){*/
+        /*<FontAwesome name='shopping-cart'/>*/
+        /*}else if(category=="Sports"){*/
+        /*<Ionicons name='ios-american-football'/>*/
+        /*}*/
 
-/*)});*/
-/*return (icons);*/
-/*}*/
-/*}*/
+        /*)});*/
+            /*);*/
+    }
+}
 
 class MyMapView extends Component {
     constructor(props) {
@@ -843,7 +844,7 @@ class EventDetails extends Component {
                             }
 
                         ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                            <Text style={styles.action_link}> Venue Website: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></Text>
+                            <Text style={styles.action_link}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></Text>
                             </TouchableHighlight>
 
                             <TouchableHighlight style={[styles.clickable,{
