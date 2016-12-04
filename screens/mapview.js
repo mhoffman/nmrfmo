@@ -73,18 +73,36 @@ const whatHues = {
     "Arts": 40,
     "Charity": 0,
     "Community": 80,
-    "Concerts": 30,
+    "Concerts": 238,
     "Dance": 120,
     "Educational": 206,
     "Festivals": 160,
-    "Film": 180,
-    "Health & Fitness": 240,
-    "Kids & Family": 314,
+    "Film": 205,
+    "Health & Fitness": 120,
+    "Kids & Family": 330,
     "Museums & Attractions": 280,
     "Nightlife": 279,
     "Sports": 59,
     "Theater": 320,
     "Outdoors": 340,
+}
+
+const whatLightness = {
+    "Arts": 50,
+    "Charity": 50,
+    "Community": 23,
+    "Concerts": 24,
+    "Dance": 50,
+    "Educational": 50,
+    "Festivals": 50,
+    "Film": 50,
+    "Health & Fitness": 60,
+    "Kids & Family": 45,
+    "Museums & Attractions": 50,
+    "Nightlife": 50,
+    "Sports": 50,
+    "Theater": 50,
+    "Outdoors": 50,
 }
 
 let when = t.enums({
@@ -100,8 +118,6 @@ let when = t.enums({
 
 function getCategoryHue(result){
     if(result.categories !== null && result.categories.length > 0){
-        /*console.log(result.categories);*/
-        /*console.log(whatHues[result.categories[0]]);*/
 
         if(whatHues[result.categories[0]]!==undefined){
             return whatHues[result.categories[0]]
@@ -110,6 +126,20 @@ function getCategoryHue(result){
         }
     } else {
         return constants.PRIMARY_HUE
+    }
+}
+
+
+function getCategoryLightness(result){
+    if(result.categories !== null && result.categories.length > 0){
+
+        if(whatLightness[result.categories[0]]!==undefined){
+            return whatLightness[result.categories[0]]
+        } else {
+            return constants.PRIMARY_LIGHTNESS
+        }
+    } else {
+        return constants.PRIMARY_LIGHTNESS
     }
 }
 
@@ -711,8 +741,8 @@ class MyMapView extends Component {
                             >
                                 <View
                                 style={[styles.marker,
-                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+constants.PRIMARY_LIGHTNESS+'%)',
-                                        borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
+                                        borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
                                         borderWidth: 1,
                                     }]}
                             >
@@ -732,7 +762,7 @@ class MyMapView extends Component {
                         styles.bottomline,
                         styles.clickable,
                         {
-                            borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+constants.PRIMARY_LIGHTNESS+'%)',
+                            borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+getCategoryLightness(this.state.event)+'%)',
 
                         }
                     ]}>
@@ -818,7 +848,7 @@ class EventDetails extends Component {
                     {
                         marginTop:30,
                         marginBottom:20,
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                     }]}
                     onPress={()=>this.props.navigator.pop()}>
                     <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
@@ -830,17 +860,17 @@ class EventDetails extends Component {
                     <Text style={styles.p}>
                     {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                     </Text>
-                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
                         <Text style={styles.p}>
                         {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                     </Text>
                         <Text style={styles.p}>
                         {this.props.event.event.cost}
                     </Text>
-                        <Hr lineColor='#b3b3b3' text='Actions' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                        <Hr lineColor='#b3b3b3' text='Actions' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
                         <TouchableHighlight style={[styles.clickable,
                             {
-                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                             }
 
                         ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
@@ -848,7 +878,7 @@ class EventDetails extends Component {
                             </TouchableHighlight>
 
                             <TouchableHighlight style={[styles.clickable,{
-                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                             }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
                         <Text style={styles.action_link}>Event Website <FontAwesome name='external-link' size={18}/></Text>
                             </TouchableHighlight>
@@ -856,19 +886,19 @@ class EventDetails extends Component {
 
                             <TouchableHighlight
                             onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
-                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                             <Text style={styles.action_link}>Street View <FontAwesome size={18} name="street-view" color="#000"/></Text>
                             </TouchableHighlight>
 
                             <TouchableHighlight
                             onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
-                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                             <Text style={styles.action_link}>Directions <Ionicons size={18} name="md-map" color="#000"/></Text>
                             </TouchableHighlight>
 
                             <TouchableHighlight
                             onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                             <Text style={styles.action_link}>Order Uber <Ionicons size={18} name="ios-car" color="#000"/></Text>
                             </TouchableHighlight>
 
@@ -880,21 +910,21 @@ class EventDetails extends Component {
                                 subject: "Share Link" //  for email
                             });
                             }}
-                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                             <Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></Text>
                             </TouchableHighlight>
 
 
                             <TouchableHighlight
                             onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'} ]}>
+                        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                             <Text style={styles.action_link}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
                             </TouchableHighlight>
 
-                            <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                            <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
                             <Text style={styles.p}>{this.props.event.event.address}</Text>
 
-                            <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)'}/>
+                            <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
                             <Text style={styles.p}>
                             { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
                         </Text>
@@ -904,7 +934,7 @@ class EventDetails extends Component {
                                 styles.action_link,
                                 {
                                     marginBottom:20,
-                                    borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + constants.PRIMARY_LIGHTNESS+ '%)',
+                                    borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
                                 }]}
                         onPress={()=>this.props.navigator.pop()}>
                             <Text><FontAwesome name='chevron-left' color='#000000'/> BACK</Text>
