@@ -238,6 +238,7 @@ export default class Menu extends Component {
         }else{
             this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: ''});
         }
+        this.props.parent._drawerLayout.closeDrawer();
     };
 
     venueFeedback(event){
