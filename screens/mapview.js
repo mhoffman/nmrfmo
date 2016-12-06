@@ -78,8 +78,8 @@ const whatHues = {
     "Educational": 206,
     "Festivals": 160,
     "Film": 205,
-    "Health & Fitness": 120,
-    "Kids & Family": 330,
+    "Health & Fitness": 82,
+    "Kids & Family": 125,
     "Museums & Attractions": 280,
     "Nightlife": 279,
     "Sports": 59,
@@ -97,7 +97,7 @@ const whatLightness = {
     "Festivals": 50,
     "Film": 50,
     "Health & Fitness": 60,
-    "Kids & Family": 45,
+    "Kids & Family": 50,
     "Museums & Attractions": 50,
     "Nightlife": 50,
     "Sports": 50,
@@ -400,11 +400,6 @@ class MyMapView extends Component {
             lastUpdatedAt: 0,
             event: {title: ''},
         };
-        navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    this.setState({longitude: position['coords']['longitude'],
-                        latitude: position['coords']['latitude']})
-                });
         this.getMeetupData();
         // automatically updated every n minutes
         setInterval(()=>{this.getMeetupData();}, 1000 * 60 * 10)
@@ -552,7 +547,11 @@ class MyMapView extends Component {
             default:
                 date_format = "M/D h:mm A";
         }
+        if(moment.tz(result.datetime, tz).format("HH:mm") == '00:00'){
+        return  "All Day";
+        }else{
         return  moment.tz(result.datetime, tz).format(date_format);
+        }
     }
 
     marker_infotext(result){
