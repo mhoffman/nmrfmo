@@ -108,6 +108,7 @@ const whatLightness = {
 let when = t.enums({
     now: 'now',
     today: 'today',
+    tonight: 'tonight',
     tomorrow: 'tomorrow',
     days_2: moment(moment.now()).add(2, "days").format("dddd"),
     days_3: moment(moment.now()).add(3, "days").format("dddd"),
@@ -447,6 +448,7 @@ class MyMapView extends Component {
             /*console.log(this.props.parent.state.timeRange);*/
             /*console.log(this.props.parent.state.search)*/
             /*console.log(url);*/
+
             fetch (url, {
                 headers: {
                     'Accept': 'application/json',
@@ -529,10 +531,9 @@ class MyMapView extends Component {
         let date_format = '';
         switch(timeRange || this.props.parent.state.timeRange){
             case 'now':
-                date_format = "h:mm A";
-                break;
             case 'today':
-                date_format = "dd h:mm A";
+            case 'tonight':
+                date_format = "h:mm A";
                 break;
             case 'tomorrow':
                 date_format = "dd h:mm A";
@@ -960,7 +961,7 @@ class Navi extends Component {
         super(props);
         this.state = {
             category: 'All',
-            timeRange: 'now',
+            timeRange: 'tonight',
             search: '',
             lastUpdatedAt: 0
         };
