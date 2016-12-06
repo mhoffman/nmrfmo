@@ -70,7 +70,7 @@ let what = t.enums({
 }, "Categories");
 
 const whatHues = {
-    "Arts": 40,
+    "Arts": 315,
     "Charity": 0,
     "Community": 80,
     "Concerts": 238,
@@ -109,9 +109,11 @@ let when = t.enums({
     now: 'now',
     today: 'today',
     tomorrow: 'tomorrow',
-    week: 'week',
-    weekend: 'weekend',
-    /*month: 'month',*/
+    days_2: moment(moment.now()).add(2, "days").format("dddd"),
+    days_3: moment(moment.now()).add(3, "days").format("dddd"),
+    days_4: moment(moment.now()).add(4, "days").format("dddd"),
+    days_5: moment(moment.now()).add(5, "days").format("dddd"),
+    days_6: moment(moment.now()).add(6, "days").format("dddd"),
 });
 
 
@@ -534,6 +536,13 @@ class MyMapView extends Component {
                 break;
             case 'tomorrow':
                 date_format = "dd h:mm A";
+                break;
+            case 'days_2':
+            case 'days_3':
+            case 'days_4':
+            case 'days_5':
+            case 'days_6':
+                date_format = "ddd h:mm A";
                 break;
             case 'week':
                 date_format = "dd h:mm A";
