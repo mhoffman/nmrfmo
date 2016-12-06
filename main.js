@@ -26,7 +26,7 @@ class SView extends Component {
     render(){
     return(
             <View>
-            <Text>Somestuff</Text>
+            <Text style={{marginTop: 40, textAlign: 'center'}}>Nothing there.</Text>
             </View>
             )
     }
