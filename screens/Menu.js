@@ -15,6 +15,7 @@ import {
 import Communications from 'react-native-communications';
 import { FontAwesome } from '@exponent/vector-icons';
 import moment from 'moment-timezone';
+import _ from 'lodash'
 
 
 import constants from './constants'
@@ -33,16 +34,24 @@ const {
 
 
 
-var t = require('tcomb-form-native');
+import t from 'tcomb-form-native';
+var form_styles = _.cloneDeep(t.form.Form.stylesheet);
+
+form_styles.select.normal.color = 'black';
+form_styles.select.normal.backgroundColor = 'white';
+
+
 var Form = t.form.Form;
 const options = {
     order: ['when', 'what'],
     fields: {
         when: {
             nullOption: false,
+            stylesheet: form_styles,
         },
         what: {
             nullOption: false,
+            stylesheet: form_styles,
         },
     }
 }

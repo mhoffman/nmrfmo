@@ -8,6 +8,7 @@
   "dependencies": {
     "@exponent/vector-icons": "^1.0.4",
     "exponent": "^10.0.4",
+    "lodash": "^4.17.2",
     "moment": "^2.15.1",
     "moment-timezone": "^0.5.5",
     "react": "~15.3.2",
