@@ -171,9 +171,9 @@ const styles = StyleSheet.create({
         borderWidth: 1.,
         borderRadius: 2,
         borderColor: PRIMARY_COLOR,
-        flex: 1,
         padding: 2,
-        margin: 2
+        margin: 2,
+        fontSize:14
     },
     customcallout: {
         width: 140,
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     action_link : {
         textAlign: 'center',
         fontSize: 14,
-        paddingVertical: 5,
+        paddingVertical: 6,
     },
     bottom_message: {
         fontSize: 20,
@@ -882,7 +882,7 @@ class EventDetails extends Component {
                             }
 
                         ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                            <Text style={styles.action_link}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></Text>
+                            <Text style={[styles.action_link]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></Text>
                             </TouchableHighlight>
 
                             <TouchableHighlight style={[styles.clickable,{
