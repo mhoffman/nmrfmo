@@ -78,8 +78,9 @@ const whatHues = {
     "Educational": 206,
     "Festivals": 160,
     "Film": 205,
-    "Health & Fitness": 82,
-    "Kids & Family": 125,
+    "Health & Fitness": 120,
+    "Fitness": 120,
+    "Kids & Family": 330,
     "Museums & Attractions": 280,
     "Nightlife": 279,
     "Sports": 59,
@@ -97,10 +98,11 @@ const whatLightness = {
     "Festivals": 50,
     "Film": 50,
     "Health & Fitness": 60,
-    "Kids & Family": 50,
+    "Fitness": 60,
+    "Kids & Family": 45,
     "Museums & Attractions": 50,
     "Nightlife": 50,
-    "Sports": 50,
+    "Sports": 35,
     "Theater": 50,
     "Outdoors": 50,
 }
@@ -780,7 +782,7 @@ class MyMapView extends Component {
                                 {event: this.state})}
                     >
                         <Text style={styles.bottom_message}>
-                        {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/> 
+                        {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/>
                     </Text>
                         </TouchableHighlight>
                         </View>
