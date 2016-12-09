@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
         borderColor: PRIMARY_COLOR,
         padding: 2,
         margin: 2,
-        fontSize:14
     },
     customcallout: {
         width: 140,
@@ -386,7 +385,7 @@ class ResultIcons extends Component{
         /*}*/
 
         /*)});*/
-            /*);*/
+        /*);*/
     }
 }
 
@@ -410,6 +409,18 @@ class MyMapView extends Component {
         setInterval(()=>{this.getMeetupData();}, 1000 * 60 * 10)
     }
 
+    async componentDidMount(){
+        let loc_permission = await Permissions.askAsync(Permissions.LOCATION);
+
+        if(loc_permission.status === 'granted'){
+                navigator.geolocation.getCurrentPosition((position) => {
+                    this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
+                    this.map.animateToCoordinate(position.coords);
+                });
+        } else {
+            Alert.alert("Too bad. nmrfmo doesn't permanently store your location.");
+        }
+    }
 
     toggle() {
         this.setState({
@@ -471,11 +482,6 @@ class MyMapView extends Component {
         }else{
             /*console.log("Refusing to update, yet.")*/
         }
-    }
-
-    componentDidMount(){
-        /*console.log("DidMount");*/
-        this.getMeetupData();
     }
 
     componentWillReceiveProps(nextProps){
@@ -560,9 +566,9 @@ class MyMapView extends Component {
                 date_format = "M/D h:mm A";
         }
         if(moment.tz(result.datetime, tz).format("HH:mm") == '00:00'){
-        return  "All Day";
+            return  "All Day";
         }else{
-        return  moment.tz(result.datetime, tz).format(date_format);
+            return  moment.tz(result.datetime, tz).format(date_format);
         }
     }
 
@@ -584,29 +590,6 @@ class MyMapView extends Component {
             name: routeName,
             passProps: passProps
         });
-    }
-
-
-    /*componentDidMount() {*/
-    /*navigator.geolocation.getCurrentPosition(*/
-    /*(position) => {*/
-    /*this.setState({longitude: position['coords']['longitude'],*/
-    /*latitude: position['coords']['latitude']})*/
-    /*})*/
-    /*}*/
-    async alertIfRemoteNotificationsDisabledAsync() {
-        const { status  } = await Permissions.askAsync(Permissions.LOCATION);
-
-        if (status !== 'granted') {
-            alert('Hi, the app needs to know your location.');
-        }
-    }
-    async componentDidMount() {
-        let loc_permission = await this.alertIfRemoteNotificationsDisabledAsync();
-        if(loc_permission){
-            position = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
-            this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
-        }
     }
 
 
@@ -632,11 +615,11 @@ class MyMapView extends Component {
         />;
         var time_span = 60*60*24*1000;
         var min_time = -1
-        if(this.state.meetings!== undefined && this.state.meetings.length > 0 ){
-            min_time = new Date(this.state.meetings[0].datetime);
-            var max_time = new Date(this.state.meetings[this.state.meetings.length-1].datetime);
-            time_span = max_time - min_time;
-        }
+            if(this.state.meetings!== undefined && this.state.meetings.length > 0 ){
+                min_time = new Date(this.state.meetings[0].datetime);
+                var max_time = new Date(this.state.meetings[this.state.meetings.length-1].datetime);
+                time_span = max_time - min_time;
+            }
 
         let map = (
                 <DrawerLayout
@@ -653,6 +636,7 @@ class MyMapView extends Component {
 
                 <View style={styles.container}>
                 <MapView
+                ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
                 style={this.state.event.title == "" ? styles.fullmap : styles.map}
                 initialRegion={{latitude : latitude,
                     longitude: longitude,
@@ -660,7 +644,7 @@ class MyMapView extends Component {
                     longitudeDelta: 0.1321
                 }}
                 showsUserLocation={true}
-                followsUserLocation={true}
+                followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
                 showsCompass={false}
                 zoomEnabled={true}
                 rotateEnabled={false}
