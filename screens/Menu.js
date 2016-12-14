@@ -37,7 +37,7 @@ const {
 import t from 'tcomb-form-native';
 var form_styles = _.cloneDeep(t.form.Form.stylesheet);
 
-form_styles.select.normal.color = 'black';
+form_styles.select.normal.borderColor = 'black';
 form_styles.select.normal.backgroundColor = 'white';
 
 
