@@ -650,13 +650,14 @@ class MyMapView extends Component {
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                         alignItems: 'stretch',
+                        marginTop: 15,
 
 
                     }
                 ]}>
                 <View
                 style={{
-                    height: LISTVIEW_BORDER,
+                    height: 0,
                     backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
                 }}/>
                 <View
@@ -922,10 +923,11 @@ class MyMapView extends Component {
                     <View
                         key={rowID}
                     style={{
-                        /*width:  this.state.activeEventSeparatorID === parseInt(rowID) || this.state.activeEventLeftSeparatorID === parseInt(rowID)? 10 : 0 ,*/
-                        /*backgroundColor: 'hsl(100,100%,50%)',*/
-                        width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,
-                        backgroundColor: 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)',
+                        height: 10,
+                        width:  LISTVIEW_BLOCKWIDTH,
+                        /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
+                        backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
+                        marginRight: - LISTVIEW_BLOCKWIDTH,
                     }}>
                     </View>
 
