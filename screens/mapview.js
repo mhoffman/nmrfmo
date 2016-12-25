@@ -140,8 +140,8 @@ function getCategoryHue(result){
             return constants.PRIMARY_HUE
         }
     } else {
-        console.log("Warning: getCategoryHue received undefined result.")
-        return constants.PRIMARY_HUE
+        console.log("Warning: getCategoryHue received undefined result.");
+            return constants.PRIMARY_HUE
     }
 }
 
@@ -159,7 +159,7 @@ function getCategoryLightness(result){
             return constants.PRIMARY_LIGHTNESS
         }
     } else {
-        console.log("Warning: getCategoryHue received undefined result.")
+        console.log("Warning: getCategoryHue received undefined result.");
         return constants.PRIMARY_HUE
     }
 }
@@ -428,10 +428,10 @@ class MyMapView extends Component {
 
         if(loc_permission.status === 'granted'){
             try {
-            navigator.geolocation.getCurrentPosition((position) => {
-                this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
-                this.map.animateToCoordinate(position.coords);
-            });
+                navigator.geolocation.getCurrentPosition((position) => {
+                    this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
+                    this.map.animateToCoordinate(position.coords);
+                });
             } catch(e){
                 console.log("Could not fetch location.")
             }
@@ -625,9 +625,11 @@ class MyMapView extends Component {
         }
     }
     onScroll(event){
-        /*event.persist();*/
-        console.log("Scrolling");
-        console.log(event);
+        if(event!==null && event!==undefined){
+            /*event.persist();*/
+            console.log("Scrolling");
+            console.log(event);
+        }
     }
     onChangeVisibleRows(visibleRows, changedRows){
         console.log("ONCHANGEVISIBLEROWS");
