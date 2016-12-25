@@ -1,7 +1,7 @@
 {
   "name": "nmrfmo",
   "description": "Discover events around you on a map.",
-  "slug": "nmrfmo",
+  "slug": "nmrfmo3",
   "sdkVersion": "10.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
@@ -22,6 +22,12 @@
       "bundleIdentifier": "nmrfmo"
   },
   "android":{
-      "package":"com.nmrfmo"
+      "package":"com.nmrfmo",
+      "config": {
+          "googleMaps": {
+              "apiKey": "AIzaSyCxEElDKdsU6gWBJ7L6JMQ_2otOcrW1Ivw"
+          }
+
+      }
   }
 }
