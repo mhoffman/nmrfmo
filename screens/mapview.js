@@ -131,7 +131,6 @@ let when = t.enums({
 function getCategoryHue(result){
     if(result !== null && result !== undefined){
         if(result.categories !== null && result.categories!==undefined && result.categories.length > 0){
-
             if(whatHues[result.categories[0]]!==undefined){
                 return whatHues[result.categories[0]]
             } else {
@@ -140,6 +139,9 @@ function getCategoryHue(result){
         } else {
             return constants.PRIMARY_HUE
         }
+    } else {
+        console.log("Warning: getCategoryHue received undefined result.")
+        return constants.PRIMARY_HUE
     }
 }
 
@@ -156,6 +158,9 @@ function getCategoryLightness(result){
         } else {
             return constants.PRIMARY_LIGHTNESS
         }
+    } else {
+        console.log("Warning: getCategoryHue received undefined result.")
+        return constants.PRIMARY_HUE
     }
 }
 
@@ -410,6 +415,7 @@ class MyMapView extends Component {
             private_meetings: [],
             lastUpdatedAt: 0,
             dataSource: ds.cloneWithRows([]),
+            markers: [],
             event: {title: ''},
         };
         this.getMeetupData();
@@ -612,9 +618,15 @@ class MyMapView extends Component {
             return ''
         }
     }
+    onScroll(event){
+        /*event.persist();*/
+        console.log("Scrolling");
+        console.log(event);
+    }
     onChangeVisibleRows(visibleRows, changedRows){
-        /*console.log("ONCHANGEVISIBLEROWS");*/
-        /*console.log(visibleRows);*/
+        console.log("ONCHANGEVISIBLEROWS");
+        console.log(visibleRows);
+        console.log(changedRows);
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
             let activeEventID = parseInt(Object.keys(visibleRows.s1)[1]);
@@ -637,6 +649,24 @@ class MyMapView extends Component {
 
     }
 
+    renderSeparator(sectionID, rowID, adjacentRowHighlight){
+        console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);
+        return (
+                <View
+                key={rowID}
+                style={{
+                    height: 10,
+                    width:  LISTVIEW_BLOCKWIDTH,
+                    borderBottomColor: '#bbb',
+                    borderBottomWidth: StyleSheet.hairLineWidth,
+                    /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
+                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
+                    marginRight: - LISTVIEW_BLOCKWIDTH,
+                    zIndex:10,
+                }}>
+                </View>
+               );
+    }
     renderRow(event, sectionID, rowID){
         console.log("RENDERROW")
             console.log(this.state.activeEventID);
@@ -844,6 +874,7 @@ class MyMapView extends Component {
                         }})
                     .map((result, x) =>
                             <MapView.Marker
+                            ref={(marker)=>{this.state.markers[x] = marker}}
                             key={'marker_' + x}
                             coordinate={{
                                 longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
@@ -919,20 +950,7 @@ class MyMapView extends Component {
                 horizontal={true}
                 onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
                 renderRow={this.renderRow.bind(this)}
-                renderSeparator={(sectionID, rowID, adjacentRowHighlight)=>
-                    <View
-                        key={rowID}
-                    style={{
-                        height: 10,
-                        width:  LISTVIEW_BLOCKWIDTH,
-                        /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
-                        backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
-                        marginRight: - LISTVIEW_BLOCKWIDTH,
-                    }}>
-                    </View>
-
-
-                }
+                renderSeparator={this.renderSeparator.bind(this)}
                 />
                 {/*END OF LISTVIEW*/}
                 </View>
