@@ -427,10 +427,14 @@ class MyMapView extends Component {
         let loc_permission = await Permissions.askAsync(Permissions.LOCATION);
 
         if(loc_permission.status === 'granted'){
+            try {
             navigator.geolocation.getCurrentPosition((position) => {
                 this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
                 this.map.animateToCoordinate(position.coords);
             });
+            } catch(e){
+                console.log("Could not fetch location.")
+            }
         } else {
             Alert.alert("Too bad. nmrfmo doesn't permanently store your location.");
         }
@@ -485,6 +489,8 @@ class MyMapView extends Component {
             })
             .then((response) => response.json())
                 .then((response) => {
+                    console.log("WHAT");
+                    console.log(EventSelection);
                     this.setState({
                         meetings: response,
                         dataSource: this.state.dataSource.cloneWithRows(response),
@@ -650,7 +656,7 @@ class MyMapView extends Component {
     }
 
     renderSeparator(sectionID, rowID, adjacentRowHighlight){
-        console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);
+        /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
         return (
                 <View
                 key={rowID}
@@ -668,9 +674,9 @@ class MyMapView extends Component {
                );
     }
     renderRow(event, sectionID, rowID){
-        console.log("RENDERROW")
-            console.log(this.state.activeEventID);
-        console.log(rowID);
+        /*console.log("RENDERROW");*/
+        /*console.log(this.state.activeEventID);*/
+        /*console.log(rowID);*/
         return(
                 <View style={[
                     {
