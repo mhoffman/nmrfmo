@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 150,
     },
     container: {
         backgroundColor: 'darkgreen',
@@ -230,7 +229,6 @@ const styles = StyleSheet.create({
         width: window.width,
         height: window.height,
         padding: 20,
-        zIndex: -10,
     },
     map: {
         position: 'absolute',
@@ -255,7 +253,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 15,
         backgroundColor: '#ffffff',
     },
     nobottomline: {
@@ -284,7 +281,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 20,
         padding: 10,
-        /*zIndex: 3,*/
     },
     marker: {
         backgroundColor: PRIMARY_COLOR,
@@ -301,7 +297,6 @@ const styles = StyleSheet.create({
         fontSize: 8,
         top:-3,
         left:-2,
-        zIndex:0,
     },
     action_link : {
         /*textAlign: 'center',*/
@@ -443,7 +438,6 @@ class BottomlineList extends Component {
                     /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
                     backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
                     marginRight: - LISTVIEW_BLOCKWIDTH,
-                    zIndex:10,
                 }}/>
                );
     }
@@ -548,7 +542,7 @@ class BottomlineList extends Component {
                         /*borderWidth: 1,*/
                     }}>
                 <TouchableHighlight
-                    onPress={this.props.parent.navigate.bind(this, "event_details",
+                    onPress={this.props.parent.navigate.bind(this.props.parent, "event_details",
                             {event: {event: event}})}
                 >
                     <Text
@@ -560,7 +554,8 @@ class BottomlineList extends Component {
                     {this.props.parent.marker_format_title(event) + ' '}
                 </Text>
                 {event.title}
-                </Text>
+                <FontAwesome name='chevron-right' color='#000000'/>
+                    </Text>
                     </TouchableHighlight>
                     </View>
                     </View>
@@ -570,6 +565,7 @@ class BottomlineList extends Component {
 
 class MyMapView extends Component {
     constructor(props) {
+        console.log(Object.keys(props));
         super(props);
         this.state = {text: '',
             isOpen: false,
@@ -779,6 +775,11 @@ class MyMapView extends Component {
 
 
     navigate(routeName, passProps) {
+        console.log("NAVIGATE CLASS NAME")
+            console.log(this.constructor.name);
+        console.log("NAVIGATE CLASS END")
+            console.log(Object.keys(this));
+        console.log(Object.keys(this.props));
         this.props.navigator.push({
             name: routeName,
             passProps: passProps
@@ -978,9 +979,14 @@ class EventDetails extends Component {
 
         return (
                 <ScrollView
-                style={{ flex: 1 }}
+                style={{
+                    flex: 1,
+                }}
                 >
-                <View >
+                <View
+                style={{
+                }}
+                >
                 <TouchableHighlight
                 style={[styles.clickable,
                     styles.action_link,
@@ -996,8 +1002,8 @@ class EventDetails extends Component {
                     <Text style={[styles.welcome]}>
                     {this.props.event.event.title}
                     </Text>
-                    <Text style={styles.p}>
-                    {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
+                        <Text style={styles.p}>
+                        {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                     </Text>
                         <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
                         <Text style={styles.p}>
