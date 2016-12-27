@@ -13,10 +13,6 @@ import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
 import Exponent from 'exponent';
 
-/*import MapView from 'react-native-maps';*/
-/*using exponent component*/
-
-
 const window = ReactNative.Dimensions.get('window');
 const BOTTOM_HEIGHT = 120;
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
