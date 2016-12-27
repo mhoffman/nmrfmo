@@ -1,5 +1,5 @@
 'use strict';
-import React, { Component } from 'react';
+import React from 'react';
 import ReactNative from 'react-native'
 
 import UpdatingListView from './vendor/UpdatingListView'
@@ -301,7 +301,7 @@ const styles = ReactNative.StyleSheet.create({
     }
 });
 
-class MyButton extends Component {
+class MyButton extends React.Component {
     constructor(props){
         super(props);
     }
@@ -323,7 +323,7 @@ class MyButton extends Component {
     }
 }
 
-class ResultIcons extends Component{
+class ResultIcons extends React.Component{
     constructor(props){
         super(props)
     }
@@ -373,7 +373,7 @@ class ResultIcons extends Component{
         /*);*/
     }
 }
-class BottomlineList extends Component {
+class BottomlineList extends React.Component {
     constructor(props) {
         super(props);
         const ds = new ReactNative.ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -538,7 +538,7 @@ class BottomlineList extends Component {
     }
 }
 
-class MyMapView extends Component {
+class MyMapView extends React.Component {
     constructor(props) {
         console.log(Object.keys(props));
         super(props);
@@ -934,7 +934,7 @@ class MyMapView extends Component {
 
 }
 
-class EventDetails extends Component {
+class EventDetails extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -1067,7 +1067,7 @@ class EventDetails extends Component {
     }
 }
 
-class Navi extends Component {
+class Navi extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -1101,7 +1101,7 @@ class Navi extends Component {
     }
 }
 
-class CustomCallout extends Component {
+class CustomCallout extends React.Component {
     constructor(props){
         super(props);
     };
