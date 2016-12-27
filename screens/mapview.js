@@ -958,34 +958,6 @@ class MyMapView extends Component {
 
 }
 
-class CustomCallout extends Component {
-    constructor(props){
-        super(props);
-    };
-    publisher_text(event){
-        if(event.publisher !== null){
-            return '(' + event.publisher + ')'
-        } else {
-            return ''
-        }
-    };
-    render(){
-        return (
-                <View
-                >
-                <TouchableHighlight
-                onPress={this.props.parent.navigate.bind(this, "event_details",
-                        {event: this.state})}
-                >
-                <Text>{this.props.parent.state.event.title} {this.publisher_text(this.props.parent.state.event)}</Text>
-
-                </TouchableHighlight>
-                </View>
-               );
-    }
-
-}
-
 class EventDetails extends Component {
     constructor(props){
         super(props);
@@ -1146,6 +1118,34 @@ class Navi extends Component {
             return <EventDetails navigator={navigator} parent={this} {...route.passProps}/>
         }
     }
+}
+
+class CustomCallout extends Component {
+    constructor(props){
+        super(props);
+    };
+    publisher_text(event){
+        if(event.publisher !== null){
+            return '(' + event.publisher + ')'
+        } else {
+            return ''
+        }
+    };
+    render(){
+        return (
+                <View
+                >
+                <TouchableHighlight
+                onPress={this.props.parent.navigate.bind(this, "event_details",
+                        {event: this.state})}
+                >
+                <Text>{this.props.parent.state.event.title} {this.publisher_text(this.props.parent.state.event)}</Text>
+
+                </TouchableHighlight>
+                </View>
+               );
+    }
+
 }
 
 module.exports = Navi
