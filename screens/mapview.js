@@ -429,7 +429,7 @@ class BottomlineList extends Component {
                );
     }
     renderSeparator(sectionID, rowID, adjacentRowHighlight){
-        /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
+        console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);
         return (
                 <View
                 key={'blt_sep_' + rowID}
@@ -440,8 +440,6 @@ class BottomlineList extends Component {
                     width:  LISTVIEW_BLOCKWIDTH,
                     borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)',
                     borderWidth: 1,
-                    borderBottomColor: '#bbb',
-                    borderBottomWidth: StyleSheet.hairLineWidth,
                     /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
                     backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
                     marginRight: - LISTVIEW_BLOCKWIDTH,
@@ -476,9 +474,7 @@ class BottomlineList extends Component {
     }
 
     renderRow(event, sectionID, rowID){
-        console.log("RENDERROW");
-        console.log(this.state.activeEventID);
-        console.log(rowID);
+        console.log("RENDER ROW " + rowID + '/' + this.state.activeEventLeftSeparatorID);
         return(
                 <View
                 onLayout={(e)=>{this.childSizes[parseInt(rowID)] = e.nativeEvent.layout}}
