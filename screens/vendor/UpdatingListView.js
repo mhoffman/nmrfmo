@@ -428,6 +428,7 @@ var UpdatingListView = React.createClass({
                             this._visibleRows[sectionID[rowIdx]]
                             )
                         );
+                var isVisible = true;
                 if (isVisible) {
                     var row =
                         <StaticRenderer
@@ -435,7 +436,7 @@ var UpdatingListView = React.createClass({
                     shouldUpdate={!!shouldUpdateRow}
                     render={this.props.renderRow.bind(
                             null,
-                            dataSource.getRowData(sectionIdx, rowID),
+                            dataSource.getRowData(sectionIdx, rowIdx),
                             sectionID,
                             rowID,
                             this._onRowHighlighted
@@ -444,7 +445,7 @@ var UpdatingListView = React.createClass({
                 } else {
                     var row = <View
                         key={'blt_empty_elem_' + rowID}
-                        style={{height:this._childFrames[totalIndex].height}} />;
+                    style={{height:this._childFrames[totalIndex].height}} />;
                 }
                 bodyComponents.push(row);
                 totalIndex++;
@@ -595,6 +596,9 @@ var UpdatingListView = React.createClass({
     },
 
     _updateVisibleRows: function(updatedFrames?: Array<Object>) {
+        /*if (!this.props.onChangeVisibleRows) {*/
+        /*return; // No need to compute visible rows if there is no callback*/
+        /*}*/
         var updatedFrames = [];
         const horizontal = this.props.horizontal;
         if (this.props.dataSource._dataBlob.s1){
@@ -603,7 +607,7 @@ var UpdatingListView = React.createClass({
                     updatedFrames.push({
                         ...this.props.childSizes[i],
                         index: i
-                    })
+                    });
                 } else {
                     updatedFrames.push({
                         index: i,
@@ -611,7 +615,7 @@ var UpdatingListView = React.createClass({
                         width: horizontal ? this.props.defaultRowSize: 0,
                         y: horizontal ? 0 : i * this.props.defaultRowSize,
                         x: horizontal ? i * this.props.defaultRowSize : 0
-                    })
+                    });
                 }
             }
         }
@@ -686,6 +690,7 @@ var UpdatingListView = React.createClass({
         }
         if (visibilityChanged){
             this.forceUpdate();
+            this.props.onChangeVisibleRows(this._visibleRows, changedRows)
         }
         visibilityChanged && this.props.onChangeVisibleRows && this.props.onChangeVisibleRows(this._visibleRows, changedRows);
     },
