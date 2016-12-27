@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 15,
-        backgroundColor: 'black',
+        backgroundColor: '#ffffff',
     },
     nobottomline: {
         position: 'absolute',
@@ -415,7 +415,7 @@ class BottomlineList extends Component {
     render(){
         /*console.log("RENDER BOTTOMLINELIST")*/
         return (
-                <ListView
+                <UpdatingListView
                 key='ulv_00'
                 renderRow={this.renderRow.bind(this)}
                 renderSeparator={this.renderSeparator.bind(this)}
@@ -435,7 +435,11 @@ class BottomlineList extends Component {
                 key={'blt_sep_' + rowID}
                 style={{
                     height: 10,
+                    position: 'relative',
+                    left: - LISTVIEW_BLOCKWIDTH,
                     width:  LISTVIEW_BLOCKWIDTH,
+                    borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)',
+                    borderWidth: 1,
                     borderBottomColor: '#bbb',
                     borderBottomWidth: StyleSheet.hairLineWidth,
                     /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
