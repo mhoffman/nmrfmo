@@ -37,11 +37,11 @@ import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
-import { Components, Constants, Location, Permissions } from 'exponent';
+import Exponent from 'exponent';
 
 /*import MapView from 'react-native-maps';*/
 /*using exponent component*/
-const MapView = Components.MapView;
+const MapView = Exponent.Components.MapView;
 
 
 const window = Dimensions.get('window');
@@ -232,14 +232,14 @@ const styles = StyleSheet.create({
     },
     map: {
         position: 'absolute',
-        top: Constants.statusBarHeight,
+        top: Exponent.Constants.statusBarHeight,
         left: 0,
         right: 0,
         bottom: BOTTOM_HEIGHT,
     },
     fullmap: {
         position: 'absolute',
-        top: Constants.statusBarHeight,
+        top: Exponent.Constants.statusBarHeight,
         left: 0,
         right: 0,
         bottom: 0,
@@ -585,7 +585,7 @@ class MyMapView extends Component {
     }
 
     async componentDidMount(){
-        let loc_permission = await Permissions.askAsync(Permissions.LOCATION);
+        let loc_permission = await Exponent.Permissions.askAsync(Permissions.LOCATION);
 
         if(loc_permission.status === 'granted'){
             try {
