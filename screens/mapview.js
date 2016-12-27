@@ -3,7 +3,6 @@ import React from 'react';
 import ReactNative from 'react-native'
 
 import UpdatingListView from './vendor/UpdatingListView'
-import OrigListView from './vendor/OrigListView'
 
 import constants from './constants';
 import Hr from 'react-native-hr';
@@ -16,7 +15,6 @@ import Exponent from 'exponent';
 
 /*import MapView from 'react-native-maps';*/
 /*using exponent component*/
-const MapView = Exponent.Components.MapView;
 
 
 const window = ReactNative.Dimensions.get('window');
@@ -804,7 +802,7 @@ class MyMapView extends React.Component {
 
 
                 <ReactNative.View style={styles.container}>
-                <MapView
+                <Exponent.Components.MapView
                 ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
                 style={this.state.meetings.length == 0 ? styles.fullmap : styles.map}
                 initialRegion={{latitude : latitude,
@@ -837,7 +835,7 @@ class MyMapView extends React.Component {
                             return false;
                         }})
                     .map((result, x) =>
-                            <MapView.Marker
+                            <Exponent.Components.MapView.Marker
                             ref={(marker)=>{this.state.markers[x] = marker}}
                             key={'marker_' + x}
                             coordinate={{
@@ -878,14 +876,14 @@ class MyMapView extends React.Component {
                             <ReactNative.Text style={{color: 'white'}}>{this.marker_format_title(result)}</ReactNative.Text>
                                 <ReactNative.Text style={styles.marker_info}>{this.marker_infotext(result)}</ReactNative.Text>
                                 </ReactNative.View>
-                                </MapView.Marker>
+                                </Exponent.Components.MapView.Marker>
 
                                 )}
 
 
 
 
-                </MapView>
+                </Exponent.Components.MapView>
 
                 {/*
                     <ReactNative.View style={this.state.event.title == "" ? styles.nobottomline : [
