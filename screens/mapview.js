@@ -389,6 +389,7 @@ class BottomlineList extends React.Component {
                 enableEmptySections={true}
                 horizontal={true}
                 onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
+                ref={(x) => { this.listView = x; }}
                 />
                );
     }
@@ -400,7 +401,7 @@ class BottomlineList extends React.Component {
                 style={{
                     height: 10,
                     position: 'relative',
-                    left: - LISTVIEW_BLOCKWIDTH,
+                    /*left: - LISTVIEW_BLOCKWIDTH,*/
                     width:  LISTVIEW_BLOCKWIDTH,
                     borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)',
                     borderWidth: 1,
@@ -411,9 +412,7 @@ class BottomlineList extends React.Component {
                );
     }
     onChangeVisibleRows(visibleRows, changedRows){
-        console.log("ONCHANGEVISIBLEROWS");
-        console.log(visibleRows);
-        console.log(changedRows);
+        console.log("ONCHANGEVISIBLEROWS " + visibleRows + '; ' + changedRows);
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
             let activeEventID = parseInt(Object.keys(visibleRows.s1)[1]);
@@ -554,7 +553,7 @@ class MyMapView extends React.Component {
     }
 
     async componentDidMount(){
-        let loc_permission = await Exponent.Permissions.askAsync(Permissions.LOCATION);
+        let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
 
         if(loc_permission.status === 'granted'){
             try {
@@ -840,7 +839,7 @@ class MyMapView extends React.Component {
                             }}
                             onPress={()=>{
                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                    this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
+                                    this.listView.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
                                     /*this.setState({event: {*/
                                     /*title: result.title,*/
                                     /*categories: result.categories,*/
@@ -903,9 +902,8 @@ class MyMapView extends React.Component {
                 <ReactNative.View style={styles.bottomline}>
                     <BottomlineList
                     key='blt_00'
-                    parent={this}
-                ref={(x) => { this.listView = x; }}
-
+                    ref={(x) => { this.listView = x; }}
+                parent={this}
                 />
                 {/*END OF LISTVIEW*/}
                 </ReactNative.View>
