@@ -52,7 +52,7 @@ var DEFAULT_PAGE_SIZE = 1;
 var DEFAULT_INITIAL_ROWS = 10;
 var DEFAULT_SCROLL_RENDER_AHEAD = 1000;
 var DEFAULT_END_REACHED_THRESHOLD = 1000;
-var DEFAULT_SCROLL_CALLBACK_THROTTLE = 50;
+var DEFAULT_SCROLL_CALLBACK_THROTTLE = 1;
 
 
 /**
@@ -665,7 +665,7 @@ var UpdatingListView = React.createClass({
                 var min = isVertical ? frame.y : frame.x ;
                 /*HORRIBLE HACK, PLEASE CHANGE*/
                 /*var min = 120 * rowIdx*/
-                console.log("ROWIDX " + rowIdx + "; ROWID " + rowID + "; MAX " + max + "; MIN " + min + "; ROWIDS " + rowIDs + "; TOTALINDEX " + totalIndex);
+                /*console.log("ROWIDX " + rowIdx + "; ROWID " + rowID + "; MAX " + max + "; MIN " + min + "; ROWIDS " + rowIDs + "; TOTALINDEX " + totalIndex);*/
                 /*console.log(frame);*/
                 var max = min + (isVertical ? frame.height : frame.width);
                 if ((!min && !max) || (min === max)) {
@@ -696,8 +696,8 @@ var UpdatingListView = React.createClass({
             }
         }
         if (visibilityChanged){
-            console.log("VISIBILITYCHANGED");
-            console.log(this._visibleRows);
+            /*console.log("VISIBILITYCHANGED");*/
+            /*console.log(this._visibleRows);*/
             this.forceUpdate();
             this.props.onChangeVisibleRows(this._visibleRows, changedRows)
         }
