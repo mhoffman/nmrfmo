@@ -394,14 +394,14 @@ class BottomlineList extends React.Component {
                );
     }
     renderSeparator(sectionID, rowID, adjacentRowHighlight){
-        console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);
+        /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
         return (
                 <ReactNative.View
                 key={'blt_sep_' + rowID}
                 style={{
                     height: 10,
                     position: 'relative',
-                    /*left: - LISTVIEW_BLOCKWIDTH,*/
+                    left: - LISTVIEW_BLOCKWIDTH,
                     width:  LISTVIEW_BLOCKWIDTH,
                     borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)',
                     borderWidth: 1,
@@ -412,12 +412,16 @@ class BottomlineList extends React.Component {
                );
     }
     onChangeVisibleRows(visibleRows, changedRows){
-        console.log("ONCHANGEVISIBLEROWS " + visibleRows + '; ' + changedRows);
+        /*console.log("ONCHANGEVISIBLEROWS ");*/
+        /*if (visibleRows.hasOwnProperty('s1')){*/
+        /*console.log(Object.keys(visibleRows.s1));*/
+        /*}*/
+        /*console.log(changedRows);*/
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
-            let activeEventID = parseInt(Object.keys(visibleRows.s1)[1]);
-            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[1]);
-            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[1]) - 1;
+            let activeEventID = parseInt(Object.keys(visibleRows.s1)[2]);
+            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[2]);
+            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[2]) - 1;
             this.setState({activeEventID});
             this.setState({activeEventSeparatorID});
             this.setState({activeEventLeftSeparatorID});
@@ -428,7 +432,7 @@ class BottomlineList extends React.Component {
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                 /*console.log(coords);*/
-                this.props.parent.map.animateToCoordinate(coords);
+                this.props.parent.map.animateToCoordinate(coords, 1000);
             }
         }
 
@@ -436,7 +440,7 @@ class BottomlineList extends React.Component {
     }
 
     renderRow(event, sectionID, rowID){
-        console.log("RENDER ROW " + rowID + '/' + this.state.activeEventLeftSeparatorID);
+        /*console.log("RENDER ROW " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
         return(
                 <ReactNative.View
                 onLayout={(e)=>{this.childSizes[parseInt(rowID)] = e.nativeEvent.layout}}
@@ -521,7 +525,7 @@ class BottomlineList extends React.Component {
                     style={{color:'#cccccc'}}>
                     {this.props.parent.marker_format_title(event) + ' '}
                 </ReactNative.Text>
-                {event.title}
+                    [[{rowID}]] {event.title}
                 <FontAwesome name='chevron-right' color='#000000'/>
                     </ReactNative.Text>
                     </ReactNative.TouchableHighlight>
@@ -963,7 +967,7 @@ class EventDetails extends React.Component {
                         borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                     }]}
                     onPress={()=>this.props.navigator.pop()}>
-                    <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> BACK</ReactNative.Text>
+                    <ReactNative.Text><FontAwesome name='chevron-down' color='#000000'/> Back to Map</ReactNative.Text>
 
                     </ReactNative.TouchableHighlight>
                     <ReactNative.Text style={[styles.welcome]}>
@@ -1049,7 +1053,7 @@ class EventDetails extends React.Component {
                                     borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
                                 }]}
                         onPress={()=>this.props.navigator.pop()}>
-                            <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> BACK</ReactNative.Text>
+                            <ReactNative.Text><FontAwesome name='chevron-down' color='#000000'/> Back to Map</ReactNative.Text>
 
                             </ReactNative.TouchableHighlight>
 
