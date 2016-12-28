@@ -52,7 +52,7 @@ var DEFAULT_PAGE_SIZE = 1;
 var DEFAULT_INITIAL_ROWS = 10;
 var DEFAULT_SCROLL_RENDER_AHEAD = 1000;
 var DEFAULT_END_REACHED_THRESHOLD = 1000;
-var DEFAULT_SCROLL_CALLBACK_THROTTLE = 1;
+var DEFAULT_SCROLL_CALLBACK_THROTTLE = 50;
 
 
 /**
@@ -627,7 +627,10 @@ var UpdatingListView = React.createClass({
         var isVertical = !this.props.horizontal;
         var dataSource = this.props.dataSource;
         var visibleMin = this.scrollProperties.offset;
-        var visibleMax = visibleMin + this.scrollProperties.visibleLength;
+        var visibleMax = visibleMin + 2 *  this.scrollProperties.visibleLength ;
+        /*console.log("OFFSET " + parseInt(this.scrollProperties.offset)  + "; VLENGTH " + parseInt(this.scrollProperties.visibleLength) + "; VISIBLEMIN " + parseInt(visibleMin) + '; VISIBLEMAX ' + parseInt(visibleMax));*/
+        /*console.log("CHILDFRAMES");*/
+        /*console.log(this._childFrames);*/
         var allRowIDs = dataSource.rowIdentities;
 
         var header = this.props.renderHeader && this.props.renderHeader();
@@ -653,13 +656,17 @@ var UpdatingListView = React.createClass({
                 totalIndex++;
                 if (this.props.renderSeparator &&
                         (rowIdx !== rowIDs.length - 1 || sectionIdx === allRowIDs.length - 1)){
-                    totalIndex++;
+                    /*totalIndex++;*/
                 }
                 if (!frame) {
                     break;
                 }
                 var rowVisible = visibleSection[rowID];
-                var min = isVertical ? frame.y : frame.x;
+                var min = isVertical ? frame.y : frame.x ;
+                /*HORRIBLE HACK, PLEASE CHANGE*/
+                /*var min = 120 * rowIdx*/
+                console.log("ROWIDX " + rowIdx + "; ROWID " + rowID + "; MAX " + max + "; MIN " + min + "; ROWIDS " + rowIDs + "; TOTALINDEX " + totalIndex);
+                /*console.log(frame);*/
                 var max = min + (isVertical ? frame.height : frame.width);
                 if ((!min && !max) || (min === max)) {
                     break;
@@ -689,6 +696,8 @@ var UpdatingListView = React.createClass({
             }
         }
         if (visibilityChanged){
+            console.log("VISIBILITYCHANGED");
+            console.log(this._visibleRows);
             this.forceUpdate();
             this.props.onChangeVisibleRows(this._visibleRows, changedRows)
         }
