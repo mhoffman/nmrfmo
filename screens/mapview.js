@@ -747,9 +747,9 @@ class MyMapView extends React.Component {
 
 
     navigate(routeName, passProps) {
-        console.log("NAVIGATE CLASS NAME")
-            console.log(this.constructor.name);
-        console.log("NAVIGATE CLASS END")
+        console.log("NAVIGATE KLASS NAME");
+        console.log(this.constructor.name);
+        console.log("NAVIGATE KLASS END")
             console.log(Object.keys(this));
         console.log(Object.keys(this.props));
         this.props.navigator.push({
