@@ -21,6 +21,7 @@ const LISTVIEW_BORDER = 5
 const LISTVIEW_BLOCKWIDTH  = window.width/3.
 
 import Menu from './Menu'
+import CustomCallout from './CustomCallout'
 
 var t = require('tcomb-form-native');
 let what = t.enums({
@@ -183,7 +184,7 @@ const styles = ReactNative.StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        backgroundColor: 'darkgreen',
+        backgroundColor: 'black',
         position: 'absolute',
         top: 0,
         left: 0,
@@ -373,6 +374,9 @@ class BottomlineList extends React.Component {
         const ds = new ReactNative.ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRows([]),
+            activeEventId: 0,
+            activeEventSeparatorID: 0,
+            activeEventLeftSeparatorID: 0,
         }
         this.childSizes = [];
     }
@@ -403,10 +407,10 @@ class BottomlineList extends React.Component {
                     position: 'relative',
                     left: - LISTVIEW_BLOCKWIDTH,
                     width:  LISTVIEW_BLOCKWIDTH,
-                    borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)',
+                    borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)])+ '%)',
                     borderWidth: 1,
                     /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
-                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
+                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)])+ '%)' : '#fff',
                     marginRight: - LISTVIEW_BLOCKWIDTH,
                 }}/>
                );
@@ -419,15 +423,20 @@ class BottomlineList extends React.Component {
         /*console.log(changedRows);*/
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
-            let activeEventID = parseInt(Object.keys(visibleRows.s1)[2]);
-            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[2]);
-            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[2]) - 1;
-            this.setState({activeEventID});
-            this.setState({activeEventSeparatorID});
-            this.setState({activeEventLeftSeparatorID});
+            const dx = 2;
+            let activeEventID = parseInt(Object.keys(visibleRows.s1)[dx]);
+            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[dx]);
+            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[dx]) - 1;
+            this.setState({activeEventID:activeEventID});
+            this.setState({activeEventSeparatorID:activeEventSeparatorID});
+            this.setState({activeEventLeftSeparatorID:activeEventLeftSeparatorID});
             /*console.log(activeEventID);*/
             /*console.log(activeEventSeparatorID);*/
-            const activeEvent = this.props.parent.state.meetings[activeEventID];
+
+            if(this.props.parent.state.markers[activeEventID]!==null && this.props.parent.state.markers[activeEventID] !== undefined){
+                this.props.parent.state.markers[activeEventID-1].showCallout()
+            }
+            const activeEvent = this.props.parent.state.meetings[activeEventID-1];
             if(activeEvent!==null && activeEvent!==undefined){
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
@@ -525,7 +534,7 @@ class BottomlineList extends React.Component {
                     style={{color:'#cccccc'}}>
                     {this.props.parent.marker_format_title(event) + ' '}
                 </ReactNative.Text>
-                    [[{rowID}]] {event.title}
+                {event.title}
                 <FontAwesome name='chevron-right' color='#000000'/>
                     </ReactNative.Text>
                     </ReactNative.TouchableHighlight>
@@ -809,7 +818,8 @@ class MyMapView extends React.Component {
                     latitudeDelta: 0.135,
                     longitudeDelta: 0.1321
                 }}
-                showsUserLocation={true}
+                provider='google'
+                    showsUserLocation={true}
                 followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
                 showsCompass={false}
                 zoomEnabled={true}
@@ -826,58 +836,97 @@ class MyMapView extends React.Component {
                         /*console.log(elem);*/
                         /*console.log("PARENT STATE");*/
                         /*console.log(this.props.parent.state);*/
-                        if(this.props.parent.state.category === 'All'){
-                            return true;
-                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
-                            return true;
-                        } else {
-                            return false;
-                        }})
+                        console.log('activeEventId');
+                        console.log(parseInt(this.listView.state.activeEventId) )
+
+                            if(this.props.parent.state.category === 'All'){
+                                return true;
+                            }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                                return true;
+                            } else {
+                                return false;
+                            }})
                     .map((result, x) =>
                             <Exponent.Components.MapView.Marker
+                            pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
                             ref={(marker)=>{this.state.markers[x] = marker}}
-                            key={'marker_' + x}
                             coordinate={{
                                 longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
                                 latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
                             }}
+                            calloutOffset={{ x: -35, y: -42  }} // for ios
+                            calloutAnchor={{x:0.5, y:1.75}} // for android
+                            style={[
+                                {
+                                    zIndex: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 1 : 0,
+                                }
+                            ]}
+                            key={'marker_' + x}
                             onPress={()=>{
                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
                                     this.listView.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
-                                    /*this.setState({event: {*/
-                                    /*title: result.title,*/
-                                    /*categories: result.categories,*/
-                                    /*longitude: result.lon,*/
-                                    /*latitude: result.lat,*/
-                                    /*url: result.url,*/
-                                    /*address: result.address,*/
-                                    /*description: result.description,*/
-                                    /*publisher: result.publisher,*/
-                                    /*cost: result.cost,*/
-                                    /*publisher_url: result.publisher_url,*/
-                                    /*datetime: result.datetime*/
-                                    /*},*/
-                                    /*event_title: result.title*/
-                                    /*});*/
-
                                 });
                             }}
 
                             >
                                 <ReactNative.View
                                 style={[styles.marker,
-                                    { backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
+                                    {
+                                        backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                        borderWidth: 1,
+                                        borderWidth: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 3: 1,
                                     }]}
                             >
                             {/*<ResultIcons result={result}/>*/}
-                            <ReactNative.Text style={{color: 'white'}}>{this.marker_format_title(result)}</ReactNative.Text>
-                                <ReactNative.Text style={styles.marker_info}>{this.marker_infotext(result)}</ReactNative.Text>
-                                </ReactNative.View>
-                                </Exponent.Components.MapView.Marker>
+                            <ReactNative.Text style={{
+                                color: 'white',
+                                fontSize: 14,
+                            }}
+                            numberOfLines={2}
+                            ellipsizeMode={'tail'}
+                            >{this.marker_format_title(result)}</ReactNative.Text>
+                                <ReactNative.Text style={[
+                                    styles.marker_info,
+                                    {
+                                    }
+                                ]}>{this.marker_infotext(result)}</ReactNative.Text>
+                                    </ReactNative.View>
+                                    <Exponent.Components.MapView.Callout tooltip
+                                style={{
+                                    height:ReactNative.Platform.OS === 'ios' ? 0 : 100,
+                                    width:ReactNative.Platform.OS === 'ios' ? 0 : 140,
+                                }}
+                                >
+                                    <CustomCallout
+                                    color={'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)'}
+                                >
+                                    <ReactNative.View
+                                    style={[styles.marker,
+                                        {
+                                            backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
+                                            borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
+                                            borderWidth: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 3: 1,
+                                        }]}
+                                >
+                                {/*<ResultIcons result={result}/>*/}
+                                <ReactNative.Text style={{
+                                    color: 'white',
+                                    fontSize: 14,
+                                }}
+                                numberOfLines={2}
+                                ellipsizeMode={'tail'}
+                                >{this.marker_format_title(result) + ' ' + result.title}</ReactNative.Text>
+                                    <ReactNative.Text style={[
+                                        styles.marker_info,
+                                        {
+                                        }
+                                    ]}>{this.marker_infotext(result)}</ReactNative.Text>
+                                        </ReactNative.View>
+                                        </CustomCallout>
+                                        </Exponent.Components.MapView.Callout>
+                                        </Exponent.Components.MapView.Marker>
 
-                                )}
+                                        )}
 
 
 
@@ -967,7 +1016,7 @@ class EventDetails extends React.Component {
                         borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                     }]}
                     onPress={()=>this.props.navigator.pop()}>
-                    <ReactNative.Text><FontAwesome name='chevron-down' color='#000000'/> Back to Map</ReactNative.Text>
+                    <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
 
                     </ReactNative.TouchableHighlight>
                     <ReactNative.Text style={[styles.welcome]}>
@@ -1053,7 +1102,7 @@ class EventDetails extends React.Component {
                                     borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
                                 }]}
                         onPress={()=>this.props.navigator.pop()}>
-                            <ReactNative.Text><FontAwesome name='chevron-down' color='#000000'/> Back to Map</ReactNative.Text>
+                            <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
 
                             </ReactNative.TouchableHighlight>
 
@@ -1095,34 +1144,6 @@ class Navi extends React.Component {
             return <EventDetails navigator={navigator} parent={this} {...route.passProps}/>
         }
     }
-}
-
-class CustomCallout extends React.Component {
-    constructor(props){
-        super(props);
-    };
-    publisher_text(event){
-        if(event.publisher !== null){
-            return '(' + event.publisher + ')'
-        } else {
-            return ''
-        }
-    };
-    render(){
-        return (
-                <ReactNative.View
-                >
-                <ReactNative.TouchableHighlight
-                onPress={this.props.parent.navigate.bind(this, "event_details",
-                        {event: this.state})}
-                >
-                <ReactNative.Text>{this.props.parent.state.event.title} {this.publisher_text(this.props.parent.state.event)}</ReactNative.Text>
-
-                </ReactNative.TouchableHighlight>
-                </ReactNative.View>
-               );
-    }
-
 }
 
 module.exports = Navi
