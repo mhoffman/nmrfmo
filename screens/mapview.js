@@ -108,14 +108,15 @@ function getCategoryHue(result){
             if(whatHues[result.categories[0]]!==undefined){
                 return whatHues[result.categories[0]]
             } else {
-                return constants.PRIMARY_HUE
+                return constants.PRIMARY_HUE;
             }
         } else {
-            return constants.PRIMARY_HUE
+            return constants.PRIMARY_HUE;
         }
     } else {
         console.log("Warning: getCategoryHue received undefined result.");
-        return constants.PRIMARY_HUE
+        console.log(result);
+        return constants.PRIMARY_HUE;
     }
 }
 
@@ -420,7 +421,7 @@ class BottomlineList extends React.Component {
         /*if (visibleRows.hasOwnProperty('s1')){*/
         /*console.log(Object.keys(visibleRows.s1));*/
         /*}*/
-        /*console.log(changedRows);*/
+        console.log(changedRows);
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
             const dx = 2;
@@ -430,8 +431,8 @@ class BottomlineList extends React.Component {
             this.setState({activeEventID:activeEventID});
             this.setState({activeEventSeparatorID:activeEventSeparatorID});
             this.setState({activeEventLeftSeparatorID:activeEventLeftSeparatorID});
-            /*console.log(activeEventID);*/
-            /*console.log(activeEventSeparatorID);*/
+            console.log(activeEventID);
+            console.log(activeEventSeparatorID);
 
             if(this.props.parent.state.markers[activeEventID]!==null && this.props.parent.state.markers[activeEventID] !== undefined){
                 this.props.parent.state.markers[activeEventID-1].showCallout()
@@ -441,11 +442,9 @@ class BottomlineList extends React.Component {
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                 /*console.log(coords);*/
-                this.props.parent.map.animateToCoordinate(coords, 1000);
+                this.props.parent.map.animateToCoordinate(coords, 4000);
             }
         }
-
-
     }
 
     renderRow(event, sectionID, rowID){
@@ -546,8 +545,8 @@ class BottomlineList extends React.Component {
 
 class MyMapView extends React.Component {
     constructor(props) {
-        console.log(Object.keys(props));
         super(props);
+        console.log(Object.keys(props));
         this.state = {text: '',
             isOpen: false,
             position: '',
@@ -644,19 +643,19 @@ class MyMapView extends React.Component {
                         });
                     })
                     console.log("HEREIAM")
-                    this.listView.setState({
-                        dataSource: this.listView.state.dataSource.cloneWithRows(response),
-                    });
+                        this.listView.setState({
+                            dataSource: this.listView.state.dataSource.cloneWithRows(response),
+                        });
 
                     console.log("Updated state.");
 
-                    })
-                    /*.catch((error) => {*/
-                    /*console.log("ERROR while fetching events");*/
-                    /*console.log(error);*/
-                    /*console.log("ERROR END")*/
-                    /*return null;*/
-                    /*});*/
+                })
+            /*.catch((error) => {*/
+            /*console.log("ERROR while fetching events");*/
+            /*console.log(error);*/
+            /*console.log("ERROR END")*/
+            /*return null;*/
+            /*});*/
         }else{
             /*console.log("Refusing to update, yet.")*/
         }
@@ -761,13 +760,11 @@ class MyMapView extends React.Component {
             return '';
         }
     }
-
-
     navigate(routeName, passProps) {
         console.log("NAVIGATE KLASS NAME");
         console.log(this.constructor.name);
-        console.log("NAVIGATE KLASS END")
-            console.log(Object.keys(this));
+        console.log("NAVIGATE KLASS END");
+        console.log(Object.keys(this));
         console.log(Object.keys(this.props));
         this.props.navigator.push({
             name: routeName,
@@ -826,8 +823,7 @@ class MyMapView extends React.Component {
                     latitudeDelta: 0.135,
                     longitudeDelta: 0.1321
                 }}
-                provider='google'
-                    showsUserLocation={true}
+                showsUserLocation={true}
                 followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
                 showsCompass={false}
                 zoomEnabled={true}
@@ -862,8 +858,8 @@ class MyMapView extends React.Component {
                                 longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
                                 latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
                             }}
-                            calloutOffset={{ x: -35, y: -42  }} // for ios
-                            calloutAnchor={{x:0.5, y:1.75}} // for android
+                            calloutOffset={{ x: -15, y: -12  }} // for ios
+                            /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
                             style={[
                                 {
                                     zIndex: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 1 : 0,
@@ -900,10 +896,10 @@ class MyMapView extends React.Component {
                                 ]}>{this.marker_infotext(result)}</ReactNative.Text>
                                     </ReactNative.View>
                                     <Exponent.Components.MapView.Callout tooltip
-                                    onPress={this.navigate.bind(this.props.parent, "event_details",
+                                    onPress={this.navigate.bind(this, "event_details",
                                             {event: {event: result}})}
                                 style={{
-                                    height:ReactNative.Platform.OS === 'ios' ? 0 : 100,
+                                    height:ReactNative.Platform.OS === 'ios' ? 40 : 100,
                                     width:ReactNative.Platform.OS === 'ios' ? 0 : constants.CALLOUT_WIDTH,
                                 }}
                                 >
