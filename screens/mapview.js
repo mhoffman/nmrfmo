@@ -634,21 +634,29 @@ class MyMapView extends React.Component {
                     if(response.length===0){
                         ReactNative.Alert.alert("Backend sent no results.")
                     }
-                    this.setState({
-                        meetings: response,
-                        lastUpdatedAt: Date.now(),
-                    });
+                    console.log("Received " + response.length + " results.");
+                    console.log("FOO");
+                    console.log(response);
+                    ReactNative.InteractionManager.runAfterInteractions(()=>{
+                        this.setState({
+                            meetings: response,
+                            lastUpdatedAt: Date.now(),
+                        });
+                    })
+                    console.log("HEREIAM")
                     this.listView.setState({
                         dataSource: this.listView.state.dataSource.cloneWithRows(response),
                     });
 
-                })
-            .catch((error) => {
-                console.log("ERROR while fetching events");
-                console.log(error);
-                console.log("ERROR END")
-                    return null;
-            });
+                    console.log("Updated state.");
+
+                    })
+                    /*.catch((error) => {*/
+                    /*console.log("ERROR while fetching events");*/
+                    /*console.log(error);*/
+                    /*console.log("ERROR END")*/
+                    /*return null;*/
+                    /*});*/
         }else{
             /*console.log("Refusing to update, yet.")*/
         }
@@ -836,16 +844,16 @@ class MyMapView extends React.Component {
                         /*console.log(elem);*/
                         /*console.log("PARENT STATE");*/
                         /*console.log(this.props.parent.state);*/
-                        console.log('activeEventId');
-                        console.log(parseInt(this.listView.state.activeEventId) )
+                        /*console.log('activeEventId');*/
+                        /*console.log(parseInt(this.listView.state.activeEventId) )*/
 
-                            if(this.props.parent.state.category === 'All'){
-                                return true;
-                            }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
-                                return true;
-                            } else {
-                                return false;
-                            }})
+                        if(this.props.parent.state.category === 'All'){
+                            return true;
+                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                            return true;
+                        } else {
+                            return false;
+                        }})
                     .map((result, x) =>
                             <Exponent.Components.MapView.Marker
                             pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
@@ -892,9 +900,11 @@ class MyMapView extends React.Component {
                                 ]}>{this.marker_infotext(result)}</ReactNative.Text>
                                     </ReactNative.View>
                                     <Exponent.Components.MapView.Callout tooltip
+                                    onPress={this.navigate.bind(this.props.parent, "event_details",
+                                            {event: {event: result}})}
                                 style={{
                                     height:ReactNative.Platform.OS === 'ios' ? 0 : 100,
-                                    width:ReactNative.Platform.OS === 'ios' ? 0 : 140,
+                                    width:ReactNative.Platform.OS === 'ios' ? 0 : constants.CALLOUT_WIDTH,
                                 }}
                                 >
                                     <CustomCallout
@@ -1131,7 +1141,7 @@ class Navi extends React.Component {
                 <ReactNative.Navigator initialRoute={{name: 'main'}}
                 renderScene={this.renderScene.bind(this)}
                 configureScene={(route, routeStack)=>
-                    ReactNative.Navigator.SceneConfigs.PushFromRight
+                    ReactNative.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                 } />
                );
     }

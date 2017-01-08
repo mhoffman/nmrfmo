@@ -18,3 +18,4 @@ module.exports = {
 
 }
 
+const CALLOUT_WIDTH = 200
