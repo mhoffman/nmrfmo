@@ -30,6 +30,7 @@ import Exponent from 'exponent'
 
 import constants from './constants';
 import Hr from 'react-native-hr';
+import UpdatingListView from './vendor/UpdatingListView'
 
 import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
@@ -412,6 +413,7 @@ class MyMapView extends React.Component {
             markers: [],
             event: {title: ''},
         };
+        this.childSizes = [];
         this.getMeetupData();
         // automatically updated every n minutes
         setInterval(()=>{this.getMeetupData();}, 1000 * 60 * 10)
@@ -898,7 +900,7 @@ class MyMapView extends React.Component {
                             key={'marker_' + x}
                             onPress={()=>{
                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                    this.listView.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
+                                    this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
                                 });
                             }}
 
@@ -989,11 +991,12 @@ class MyMapView extends React.Component {
                     </ReactNative.View>
                     */}
                 <View style={styles.bottomline}>
-                    <ListView
+                    <UpdatingListView
                     ref={(x) => { this.listView = x; }}
                 dataSource={this.state.dataSource}
                 enableEmptySections={true}
                 horizontal={true}
+                childSizes={this.childSizes}
                 onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
                 renderRow={this.renderRow.bind(this)}
                 renderSeparator={this.renderSeparator.bind(this)}
