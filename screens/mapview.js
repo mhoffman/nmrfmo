@@ -840,16 +840,16 @@ class MyMapView extends React.Component {
                         /*console.log(elem);*/
                         /*console.log("PARENT STATE");*/
                         /*console.log(this.props.parent.state);*/
-                        /*console.log('activeEventId');*/
-                        /*console.log(parseInt(this.listView.state.activeEventId) )*/
+                        console.log('activeEventId');
+                        console.log(parseInt(this.listView.state.activeEventId) )
 
-                        if(this.props.parent.state.category === 'All'){
-                            return true;
-                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
-                            return true;
-                        } else {
-                            return false;
-                        }})
+                            if(this.props.parent.state.category === 'All'){
+                                return true;
+                            }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                                return true;
+                            } else {
+                                return false;
+                            }})
                     .map((result, x) =>
                             <Exponent.Components.MapView.Marker
                             pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
@@ -1137,7 +1137,7 @@ class Navi extends React.Component {
                 <ReactNative.Navigator initialRoute={{name: 'main'}}
                 renderScene={this.renderScene.bind(this)}
                 configureScene={(route, routeStack)=>
-                    ReactNative.Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
+                    ReactNative.Navigator.SceneConfigs.PushFromRight
                 } />
                );
     }
