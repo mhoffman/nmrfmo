@@ -1,8 +1,32 @@
 'use strict';
-import React from 'react';
-import ReactNative from 'react-native'
+import React, { Component } from 'react';
+import {
+    Alert,
+    AlertIOS,
+    Animated,
+    AppRegistry,
+    BackAndroid,
+    Clipboard,
+    Dimensions,
+    Image,
+    InteractionManager,
+    ListView,
+    Navigator,
+    Platform,
+    PropTypes,
+    Share,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    ToastAndroid,
+    TouchableHighlight,
+    TouchableOpacity,
+    View
 
-import UpdatingListView from './vendor/UpdatingListView'
+} from 'react-native';
+import ReactNative from 'react-native';
+import Exponent from 'exponent'
 
 import constants from './constants';
 import Hr from 'react-native-hr';
@@ -11,7 +35,7 @@ import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
-import Exponent from 'exponent';
+import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
 const BOTTOM_HEIGHT = 120;
@@ -115,8 +139,7 @@ function getCategoryHue(result){
         }
     } else {
         console.log("Warning: getCategoryHue received undefined result.");
-        console.log(result);
-        return constants.PRIMARY_HUE;
+            return constants.PRIMARY_HUE
     }
 }
 
@@ -148,6 +171,7 @@ var EventSelection = t.struct({
 })
 
 import moment from 'moment-timezone';
+/*import styles from '../styles/styles';*/
 
 const styles = ReactNative.StyleSheet.create({
     contentContainer:{
@@ -185,7 +209,6 @@ const styles = ReactNative.StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        backgroundColor: 'black',
         position: 'absolute',
         top: 0,
         left: 0,
@@ -199,18 +222,19 @@ const styles = ReactNative.StyleSheet.create({
         flex: 1,
         width: window.width,
         height: window.height,
+        backgroundColor: 'white',
         padding: 20,
     },
     map: {
         position: 'absolute',
-        top: Exponent.Constants.statusBarHeight,
+        top: 0,
         left: 0,
         right: 0,
         bottom: BOTTOM_HEIGHT,
     },
     fullmap: {
         position: 'absolute',
-        top: Exponent.Constants.statusBarHeight,
+        top: 0,
         left: 0,
         right: 0,
         bottom: 0,
@@ -224,7 +248,7 @@ const styles = ReactNative.StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ffffff',
+        zIndex: 15,
     },
     nobottomline: {
         position: 'absolute',
@@ -369,184 +393,12 @@ class ResultIcons extends React.Component{
         /*);*/
     }
 }
-class BottomlineList extends React.Component {
-    constructor(props) {
-        super(props);
-        const ds = new ReactNative.ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows([]),
-            activeEventId: 0,
-            activeEventSeparatorID: 0,
-            activeEventLeftSeparatorID: 0,
-        }
-        this.childSizes = [];
-    }
-    render(){
-        /*console.log("RENDER BOTTOMLINELIST")*/
-        return (
-                <UpdatingListView
-                key='ulv_00'
-                renderRow={this.renderRow.bind(this)}
-                renderSeparator={this.renderSeparator.bind(this)}
-                childSizes={this.childSizes}
-                defaultRowSize={LISTVIEW_BLOCKWIDTH}
-                dataSource={this.state.dataSource}
-                enableEmptySections={true}
-                horizontal={true}
-                onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
-                ref={(x) => { this.listView = x; }}
-                />
-               );
-    }
-    renderSeparator(sectionID, rowID, adjacentRowHighlight){
-        /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
-        return (
-                <ReactNative.View
-                key={'blt_sep_' + rowID}
-                style={{
-                    height: 10,
-                    position: 'relative',
-                    left: - LISTVIEW_BLOCKWIDTH,
-                    width:  LISTVIEW_BLOCKWIDTH,
-                    borderColor: 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)])+ '%)',
-                    borderWidth: 1,
-                    /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
-                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.props.parent.state.meetings[parseInt(rowID)])+ ',100%,' +getCategoryLightness(this.props.parent.state.meetings[parseInt(rowID)])+ '%)' : '#fff',
-                    marginRight: - LISTVIEW_BLOCKWIDTH,
-                }}/>
-               );
-    }
-    onChangeVisibleRows(visibleRows, changedRows){
-        /*console.log("ONCHANGEVISIBLEROWS ");*/
-        /*if (visibleRows.hasOwnProperty('s1')){*/
-        /*console.log(Object.keys(visibleRows.s1));*/
-        /*}*/
-        console.log(changedRows);
-        if (visibleRows!== null && visibleRows !== undefined
-                && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
-            const dx = 2;
-            let activeEventID = parseInt(Object.keys(visibleRows.s1)[dx]);
-            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[dx]);
-            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[dx]) - 1;
-            this.setState({activeEventID:activeEventID});
-            this.setState({activeEventSeparatorID:activeEventSeparatorID});
-            this.setState({activeEventLeftSeparatorID:activeEventLeftSeparatorID});
-            console.log(activeEventID);
-            console.log(activeEventSeparatorID);
-
-            if(this.props.parent.state.markers[activeEventID]!==null && this.props.parent.state.markers[activeEventID] !== undefined){
-                this.props.parent.state.markers[activeEventID-1].showCallout()
-            }
-            const activeEvent = this.props.parent.state.meetings[activeEventID-1];
-            if(activeEvent!==null && activeEvent!==undefined){
-                /*console.log(activeEvent);*/
-                const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
-                /*console.log(coords);*/
-                this.props.parent.map.animateToCoordinate(coords, 4000);
-            }
-        }
-    }
-
-    renderRow(event, sectionID, rowID){
-        /*console.log("RENDER ROW " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
-        return(
-                <ReactNative.View
-                onLayout={(e)=>{this.childSizes[parseInt(rowID)] = e.nativeEvent.layout}}
-                key={'blt_elem_' + rowID}
-                style={[
-                    {
-                        borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
-                        width: LISTVIEW_BLOCKWIDTH,
-                        flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        alignItems: 'stretch',
-                        marginTop: 15,
-                        backgroundColor: 'white',
-
-
-                    }
-                ]}>
-                <ReactNative.View
-                style={{
-                    height: 0,
-                    backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
-                }}/>
-                <ReactNative.View
-                    style={{
-                        flex: .25,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingRight: 20,
-                        paddingLeft: 5,
-                        /*borderWidth: 1,*/
-
-                    }}>
-
-                <ReactNative.TouchableHighlight
-                    onPress={()=>{ReactNative.Share.share({
-                        title: "Event",
-                        message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
-                        url: "http://facebook.github.io/react-native/",
-                        subject: "Share Link" //  for email
-                    }); }}
-                style={{}}>
-                    <ReactNative.Text style={styles.action_link}><Ionicons size={14} name="md-share" color="#000"/></ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-
-                    <ReactNative.TouchableHighlight
-                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                style={{}}>
-                    <ReactNative.Text style={styles.action_link}><Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-
-
-                    <ReactNative.TouchableHighlight
-                    onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + event.latitude + ',' + event.longitude + '/')}
-                style={{}}>
-                    <ReactNative.Text style={{}}><FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-
-                    <ReactNative.TouchableHighlight
-                    onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                style={{}}>
-                    <ReactNative.Text style={{}}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-
-
-                    </ReactNative.View>
-                    <ReactNative.View
-                    style={{
-                        flex: 1,
-                        paddingLeft: 2,
-                        /*borderWidth: 1,*/
-                    }}>
-                <ReactNative.TouchableHighlight
-                    onPress={this.props.parent.navigate.bind(this.props.parent, "event_details",
-                            {event: {event: event}})}
-                >
-                    <ReactNative.Text
-                    numberOfLines={4}
-                ellipsizeMode={'tail'}
-                >
-                    <ReactNative.Text
-                    style={{color:'#cccccc'}}>
-                    {this.props.parent.marker_format_title(event) + ' '}
-                </ReactNative.Text>
-                {event.title}
-                <FontAwesome name='chevron-right' color='#000000'/>
-                    </ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-                    </ReactNative.View>
-                    </ReactNative.View>
-                    )
-    }
-}
 
 class MyMapView extends React.Component {
     constructor(props) {
         super(props);
-        console.log(Object.keys(props));
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {text: '',
             isOpen: false,
             position: '',
@@ -556,6 +408,7 @@ class MyMapView extends React.Component {
             meetings: [],
             private_meetings: [],
             lastUpdatedAt: 0,
+            dataSource: ds.cloneWithRows([]),
             markers: [],
             event: {title: ''},
         };
@@ -599,8 +452,8 @@ class MyMapView extends React.Component {
     }
 
     getMeetupData(){
-        console.log("TRYING UPDATE");
-        console.log(this.state);
+        /*console.log("TRYING UPDATE");*/
+        /*console.log(this.state);*/
 
         if (((Date.now() - this.props.parent.state.lastUpdatedAt)/ 1000) >= 1.){
             /*console.log("Updating ...");*/
@@ -616,10 +469,10 @@ class MyMapView extends React.Component {
                 url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search)
             }
 
-            console.log("MARKER URL");
-            console.log(this.props.parent.state.timeRange);
-            console.log(this.props.parent.state.search);
-            console.log(url);
+            /*console.log("MARKER URL");*/
+            /*console.log(this.props.parent.state.timeRange);*/
+            /*console.log(this.props.parent.state.search)*/
+            /*console.log(url);*/
 
             fetch (url, {
                 headers: {
@@ -630,32 +483,20 @@ class MyMapView extends React.Component {
             })
             .then((response) => response.json())
                 .then((response) => {
-                    if(response.length===0){
-                        ReactNative.Alert.alert("Backend sent no results.")
-                    }
-                    console.log("Received " + response.length + " results.");
-                    console.log("FOO");
-                    console.log(response);
-                    ReactNative.InteractionManager.runAfterInteractions(()=>{
-                        this.setState({
-                            meetings: response,
-                            lastUpdatedAt: Date.now(),
-                        });
-                    })
-                    console.log("HEREIAM")
-                        this.listView.setState({
-                            dataSource: this.listView.state.dataSource.cloneWithRows(response),
-                        });
-
-                    console.log("Updated state.");
+                    console.log("WHAT");
+                    console.log(EventSelection);
+                    this.setState({
+                        meetings: response,
+                        dataSource: this.state.dataSource.cloneWithRows(response),
+                        lastUpdatedAt: Date.now(),
+                    });
 
                 })
-            /*.catch((error) => {*/
-            /*console.log("ERROR while fetching events");*/
-            /*console.log(error);*/
-            /*console.log("ERROR END")*/
-            /*return null;*/
-            /*});*/
+            .catch((error) => {
+                /*console.log("ERROR while fetching events");*/
+                /*console.log(error)*/
+                return null;
+            });
         }else{
             /*console.log("Refusing to update, yet.")*/
         }
@@ -780,6 +621,150 @@ class MyMapView extends React.Component {
             return ''
         }
     }
+    onScroll(event){
+        if(event!==null && event!==undefined){
+            /*event.persist();*/
+            console.log("Scrolling");
+            console.log(event);
+        }
+    }
+    onChangeVisibleRows(visibleRows, changedRows){
+        console.log("ONCHANGEVISIBLEROWS");
+        console.log(visibleRows);
+        console.log(changedRows);
+        if (visibleRows!== null && visibleRows !== undefined
+                && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
+            let activeEventID = parseInt(Object.keys(visibleRows.s1)[1]);
+            let activeEventSeparatorID = parseInt(Object.keys(visibleRows.s1)[1]);
+            let activeEventLeftSeparatorID = parseInt(Object.keys(visibleRows.s1)[1]) - 1;
+            this.setState({activeEventID});
+            this.setState({activeEventSeparatorID});
+            this.setState({activeEventLeftSeparatorID});
+            /*console.log(activeEventID);*/
+            /*console.log(activeEventSeparatorID);*/
+            const activeEvent = this.state.meetings[activeEventID];
+            if(activeEvent!==null && activeEvent!==undefined){
+                /*console.log(activeEvent);*/
+                const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
+                /*console.log(coords);*/
+                this.map.animateToCoordinate(coords);
+            }
+        }
+
+
+    }
+
+    renderSeparator(sectionID, rowID, adjacentRowHighlight){
+        /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
+        return (
+                <View
+                key={rowID}
+                style={{
+                    height: 10,
+                    width:  LISTVIEW_BLOCKWIDTH,
+                    borderBottomColor: '#bbb',
+                    borderBottomWidth: StyleSheet.hairLineWidth,
+                    /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
+                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
+                    marginRight: - LISTVIEW_BLOCKWIDTH,
+                    zIndex:10,
+                }}>
+                </View>
+               );
+    }
+    renderRow(event, sectionID, rowID){
+        /*console.log("RENDERROW");*/
+        /*console.log(this.state.activeEventID);*/
+        /*console.log(rowID);*/
+        return(
+                <View style={[
+                    {
+                        borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
+                        width: LISTVIEW_BLOCKWIDTH,
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        alignItems: 'stretch',
+                        marginTop: 15,
+
+
+                    }
+                ]}>
+                <View
+                style={{
+                    height: 0,
+                    backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
+                }}/>
+                <View
+                style={{
+                    flex: .25,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingRight: 20,
+                    paddingLeft: 5,
+                    /*borderWidth: 1,*/
+
+                }}>
+
+        <TouchableHighlight
+            onPress={()=>{Share.share({
+                title: "Event",
+                message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
+                url: "http://facebook.github.io/react-native/",
+                subject: "Share Link" //  for email
+            }); }}
+        style={{}}>
+            <Text style={styles.action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+            onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+        style={{}}>
+            <Text style={styles.action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
+            </TouchableHighlight>
+
+
+            <TouchableHighlight
+            onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + event.latitude + ',' + event.longitude + '/')}
+        style={{}}>
+            <Text style={{}}><FontAwesome size={18} name="street-view" color="#000"/></Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+            onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+        style={{}}>
+            <Text style={{}}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
+            </TouchableHighlight>
+
+
+            </View>
+            <View
+            style={{
+                flex: 1,
+                paddingLeft: 2,
+                /*borderWidth: 1,*/
+            }}>
+        <TouchableHighlight
+            onPress={this.navigate.bind(this, "event_details",
+                    {event: {event: event}})}
+        >
+            <Text
+            numberOfLines={4}
+        ellipsizeMode={'tail'}
+        >
+            <Text
+            style={{color:'#cccccc'}}>
+            {this.marker_format_title(event) + ' '}
+        </Text>
+        {event.title}
+        </Text>
+            </TouchableHighlight>
+            </View>
+            </View>
+            )
+    }
+
+
     render() {
         const { region } = this.props;
         let longitude = this.state.longitude;
@@ -833,6 +818,51 @@ class MyMapView extends React.Component {
                     showPointsOfInterest={true}
                 >
 
+                {/*
+                  * {this.state.private_meetings*/
+                    /*.map((result, x) =>*/
+                    /*<MapView.Marker*/
+                    /*key={x}*/
+                    /*coordinate={{*/
+                    /*longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),*/
+                    /*latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI),*/
+                    /*}}*/
+                    /*onPress={()=>{*/
+                    /*this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH, y: 0});*/
+                    /*console.log(x);*/
+                    /*console.log(x * );*/
+                    /**//*this.setState({event: {*/
+                    /**//*longitude: result.lon,*/
+                    /**//*latitude: result.lat,*/
+                    /**//*title: result.title,*/
+                    /**//*categories: result.categories,*/
+                    /**//*url: result.url,*/
+                    /**//*address: result.address,*/
+                    /**//*description: result.description,*/
+                    /**//*publisher: result.publisher,*/
+                    /**//*cost: result.cost,*/
+                    /**//*publisher_url: result.publisher_url,*/
+                    /**//*datetime: result.datetime,*/
+                    /**//*},*/
+                    /**//*event_title: result.title});*/
+
+                    /*}*/
+                    /*}*/
+
+                    /*>*/
+                    /*<View*/
+                    /*style={[styles.marker,*/
+                    /*{*/
+                    /*backgroundColor: 'hsl('+constants.SECONDARY_HUE+',' + (100) + '%,'+constants.SECONDARY+'%)',*/
+                    /*}]}*/
+                    /*>*/
+                    /*<Text style={{color: 'white'}}><FontAwesome name='facebook-square' color='#ffffff' size={15}/> {this.marker_format_title(result, 'personal')}</Text>*/
+                    /*<Text style={styles.marker_info}>{this.marker_infotext(result)}</Text>*/
+                    /*</View>*/
+                    /*</MapView.Marker>*/
+
+                    /*)}
+                    */}
 
                 {this.state.meetings
                     .filter((elem) => {
@@ -958,14 +988,18 @@ class MyMapView extends React.Component {
                     </ReactNative.TouchableHighlight>
                     </ReactNative.View>
                     */}
-                <ReactNative.View style={styles.bottomline}>
-                    <BottomlineList
-                    key='blt_00'
+                <View style={styles.bottomline}>
+                    <ListView
                     ref={(x) => { this.listView = x; }}
-                parent={this}
+                dataSource={this.state.dataSource}
+                enableEmptySections={true}
+                horizontal={true}
+                onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
+                renderRow={this.renderRow.bind(this)}
+                renderSeparator={this.renderSeparator.bind(this)}
                 />
                 {/*END OF LISTVIEW*/}
-                </ReactNative.View>
+                </View>
 
 
 
