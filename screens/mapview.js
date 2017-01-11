@@ -140,7 +140,7 @@ function getCategoryHue(result){
         }
     } else {
         console.log("Warning: getCategoryHue received undefined result.");
-            return constants.PRIMARY_HUE
+        return constants.PRIMARY_HUE
     }
 }
 
@@ -425,8 +425,10 @@ class MyMapView extends React.Component {
         if(loc_permission.status === 'granted'){
             try {
                 navigator.geolocation.getCurrentPosition((position) => {
-                    this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
-                    this.map.animateToCoordinate(position.coords);
+                    if(position!==null && position!==undefined && position.coords !== null && position.coord!==undefined){
+                        this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
+                        this.map.animateToCoordinate(position.coords);
+                    }
                 });
             } catch(e){
                 console.log("Could not fetch location.")
@@ -604,11 +606,11 @@ class MyMapView extends React.Component {
         }
     }
     navigate(routeName, passProps) {
-        console.log("NAVIGATE KLASS NAME");
-        console.log(this.constructor.name);
-        console.log("NAVIGATE KLASS END");
-        console.log(Object.keys(this));
-        console.log(Object.keys(this.props));
+        /*console.log("NAVIGATE KLASS NAME");*/
+        /*console.log(this.constructor.name);*/
+        /*console.log("NAVIGATE KLASS END");*/
+        /*console.log(Object.keys(this));*/
+        /*console.log(Object.keys(this.props));*/
         this.props.navigator.push({
             name: routeName,
             passProps: passProps
@@ -631,9 +633,9 @@ class MyMapView extends React.Component {
         }
     }
     onChangeVisibleRows(visibleRows, changedRows){
-        console.log("ONCHANGEVISIBLEROWS");
-        console.log(visibleRows);
-        console.log(changedRows);
+        /*console.log("ONCHANGEVISIBLEROWS");*/
+        /*console.log(visibleRows);*/
+        /*console.log(changedRows);*/
         if (visibleRows!== null && visibleRows !== undefined
                 && visibleRows.s1 !== null && visibleRows.s1 !== undefined){
             let activeEventID = parseInt(Object.keys(visibleRows.s1)[1]);
@@ -679,7 +681,9 @@ class MyMapView extends React.Component {
         /*console.log(this.state.activeEventID);*/
         /*console.log(rowID);*/
         return(
-                <View style={[
+                <View
+                onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.width;}}
+                style={[
                     {
                         borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
                         width: LISTVIEW_BLOCKWIDTH,
@@ -698,72 +702,72 @@ class MyMapView extends React.Component {
                     backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
                 }}/>
                 <View
-                style={{
-                    flex: .25,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingRight: 20,
-                    paddingLeft: 5,
-                    /*borderWidth: 1,*/
+                    style={{
+                        flex: .25,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingRight: 20,
+                        paddingLeft: 5,
+                        /*borderWidth: 1,*/
 
-                }}>
+                    }}>
 
-        <TouchableHighlight
-            onPress={()=>{Share.share({
-                title: "Event",
-                message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
-                url: "http://facebook.github.io/react-native/",
-                subject: "Share Link" //  for email
-            }); }}
-        style={{}}>
-            <Text style={styles.action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
-            </TouchableHighlight>
+                <TouchableHighlight
+                    onPress={()=>{Share.share({
+                        title: "Event",
+                        message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
+                        url: "http://facebook.github.io/react-native/",
+                        subject: "Share Link" //  for email
+                    }); }}
+                style={{}}>
+                    <Text style={styles.action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
+                    </TouchableHighlight>
 
-            <TouchableHighlight
-            onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-        style={{}}>
-            <Text style={styles.action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
-            </TouchableHighlight>
-
-
-            <TouchableHighlight
-            onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + event.latitude + ',' + event.longitude + '/')}
-        style={{}}>
-            <Text style={{}}><FontAwesome size={18} name="street-view" color="#000"/></Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-            onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-        style={{}}>
-            <Text style={{}}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
-            </TouchableHighlight>
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                style={{}}>
+                    <Text style={styles.action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
+                    </TouchableHighlight>
 
 
-            </View>
-            <View
-            style={{
-                flex: 1,
-                paddingLeft: 2,
-                /*borderWidth: 1,*/
-            }}>
-        <TouchableHighlight
-            onPress={this.navigate.bind(this, "event_details",
-                    {event: {event: event}})}
-        >
-            <Text
-            numberOfLines={4}
-        ellipsizeMode={'tail'}
-        >
-            <Text
-            style={{color:'#cccccc'}}>
-            {this.marker_format_title(event) + ' '}
-        </Text>
-        {event.title}
-        </Text>
-            </TouchableHighlight>
-            </View>
-            </View>
-            )
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + event.latitude + ',' + event.longitude + '/')}
+                style={{}}>
+                    <Text style={{}}><FontAwesome size={18} name="street-view" color="#000"/></Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                    onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+                style={{}}>
+                    <Text style={{}}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
+                    </TouchableHighlight>
+
+
+                    </View>
+                    <View
+                    style={{
+                        flex: 1,
+                        paddingLeft: 2,
+                        /*borderWidth: 1,*/
+                    }}>
+                <TouchableHighlight
+                    onPress={this.navigate.bind(this, "event_details",
+                            {event: {event: event}})}
+                >
+                    <Text
+                    numberOfLines={4}
+                ellipsizeMode={'tail'}
+                >
+                    <Text
+                    style={{color:'#cccccc'}}>
+                    {this.marker_format_title(event) + ' '}
+                </Text>
+                {event.title}
+                </Text>
+                    </TouchableHighlight>
+                    </View>
+                    </View>
+                    )
     }
 
 
@@ -872,8 +876,8 @@ class MyMapView extends React.Component {
                         /*console.log(elem);*/
                         /*console.log("PARENT STATE");*/
                         /*console.log(this.props.parent.state);*/
-                        console.log('activeEventId');
-                        console.log(parseInt(this.listView.state.activeEventId) )
+                        /*console.log('activeEventId');*/
+                        /*console.log(parseInt(this.listView.state.activeEventId) )*/
 
                             if(this.props.parent.state.category === 'All'){
                                 return true;
@@ -996,10 +1000,11 @@ class MyMapView extends React.Component {
                 dataSource={this.state.dataSource}
                 enableEmptySections={true}
                 horizontal={true}
-                childSizes={this.childSizes}
                 onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
                 renderRow={this.renderRow.bind(this)}
                 renderSeparator={this.renderSeparator.bind(this)}
+                childSizes={this.childSizes}
+                defaultRowSize={LISTVIEW_BLOCKWIDTH}
                 />
                 {/*END OF LISTVIEW*/}
                 </View>

@@ -596,6 +596,10 @@ var UpdatingListView = React.createClass({
     },
 
     _updateVisibleRows: function(updatedFrames?: Array<Object>) {
+        /*console.log('_UPDATEVISIBLEROWS');*/
+        /*console.log('s1');*/
+        /*console.log(this.props.dataSource._dataBlob.s1);*/
+
         /*if (!this.props.onChangeVisibleRows) {*/
         /*return; // No need to compute visible rows if there is no callback*/
         /*}*/
@@ -605,8 +609,11 @@ var UpdatingListView = React.createClass({
             for (var i = 0; i < this.props.dataSource._dataBlob.s1.length; i++){
                 if (this.props.childSizes[i]){
                     updatedFrames.push({
-                        ...this.props.childSizes[i],
-                        index: i
+                        index: i,
+                        height: horizontal ? 0 : this.props.defaultRowSize,
+                        width: horizontal ? this.props.defaultRowSize: 0,
+                        y: horizontal ? 0 : i * this.props.defaultRowSize,
+                        x: horizontal ? i * this.props.defaultRowSize : 0
                     });
                 } else {
                     updatedFrames.push({
@@ -619,6 +626,8 @@ var UpdatingListView = React.createClass({
                 }
             }
         }
+        /*console.log(updatedFrames);*/
+        /*console.log(this.props.defaultRowSize );*/
         if (updatedFrames) {
             updatedFrames.forEach((newFrame) => {
                 this._childFrames[newFrame.index] = merge(newFrame);
