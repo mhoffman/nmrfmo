@@ -651,7 +651,7 @@ class MyMapView extends React.Component {
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                 /*console.log(coords);*/
-                this.map.animateToCoordinate(coords);
+                this.map.animateToCoordinate(coords, 2000);
             }
         }
 
@@ -677,12 +677,11 @@ class MyMapView extends React.Component {
                );
     }
     renderRow(event, sectionID, rowID){
-        /*console.log("RENDERROW");*/
-        /*console.log(this.state.activeEventID);*/
-        /*console.log(rowID);*/
+        console.log("RENDERROW " + this.state.activeEventID);
+        console.log(rowID);
         return(
                 <View
-                onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.width;}}
+                onLayout={(e) => {console.log('ONLAYOUT'); console.log(e); this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
                 style={[
                     {
                         borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
@@ -762,7 +761,7 @@ class MyMapView extends React.Component {
                     style={{color:'#cccccc'}}>
                     {this.marker_format_title(event) + ' '}
                 </Text>
-                {event.title}
+                {'{{' + rowID + '}} ' + event.title}
                 </Text>
                     </TouchableHighlight>
                     </View>
