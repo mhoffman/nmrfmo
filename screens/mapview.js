@@ -681,7 +681,7 @@ class MyMapView extends React.Component {
         console.log(rowID);
         return(
                 <View
-                onLayout={(e) => {console.log('ONLAYOUT'); console.log(e); this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
+                onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
                 style={[
                     {
                         borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
