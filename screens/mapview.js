@@ -878,13 +878,13 @@ class MyMapView extends React.Component {
                         /*console.log('activeEventId');*/
                         /*console.log(parseInt(this.listView.state.activeEventId) )*/
 
-                            if(this.props.parent.state.category === 'All'){
-                                return true;
-                            }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
-                                return true;
-                            } else {
-                                return false;
-                            }})
+                        if(this.props.parent.state.category === 'All'){
+                            return true;
+                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                            return true;
+                        } else {
+                            return false;
+                        }})
                     .map((result, x) =>
                             <Exponent.Components.MapView.Marker
                             pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
@@ -926,48 +926,10 @@ class MyMapView extends React.Component {
                             >{this.marker_format_title(result)}</ReactNative.Text>
                                 <ReactNative.Text style={[
                                     styles.marker_info,
-                                    {
-                                    }
                                 ]}>{this.marker_infotext(result)}</ReactNative.Text>
                                     </ReactNative.View>
-                                    <Exponent.Components.MapView.Callout tooltip
-                                    onPress={this.navigate.bind(this, "event_details",
-                                            {event: {event: result}})}
-                                style={{
-                                    height:ReactNative.Platform.OS === 'ios' ? 40 : 100,
-                                    width:ReactNative.Platform.OS === 'ios' ? 0 : constants.CALLOUT_WIDTH,
-                                }}
-                                >
-                                    <CustomCallout
-                                    color={'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)'}
-                                >
-                                    <ReactNative.View
-                                    style={[styles.marker,
-                                        {
-                                            backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
-                                            borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                            borderWidth: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 3: 1,
-                                        }]}
-                                >
-                                {/*<ResultIcons result={result}/>*/}
-                                <ReactNative.Text style={{
-                                    color: 'white',
-                                    fontSize: 14,
-                                }}
-                                numberOfLines={2}
-                                ellipsizeMode={'tail'}
-                                >{this.marker_format_title(result) + ' ' + result.title}</ReactNative.Text>
-                                    <ReactNative.Text style={[
-                                        styles.marker_info,
-                                        {
-                                        }
-                                    ]}>{this.marker_infotext(result)}</ReactNative.Text>
-                                        </ReactNative.View>
-                                        </CustomCallout>
-                                        </Exponent.Components.MapView.Callout>
-                                        </Exponent.Components.MapView.Marker>
-
-                                        )}
+                                    </Exponent.Components.MapView.Marker>
+                                    )}
 
 
 

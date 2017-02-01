@@ -15,27 +15,26 @@ import {
 import Communications from 'react-native-communications';
 import { FontAwesome } from '@exponent/vector-icons';
 import moment from 'moment-timezone';
-import _ from 'lodash'
 
 
 import constants from './constants'
 
 
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
-const FBSDK = require('react-native-fbsdk');
-const {
-    AccessToken,
-    LoginButton,
-    GraphRequest,
-    GraphRequestManager,
-} = FBSDK;
+/*const FBSDK = require('react-native-fbsdk');*/
+/*const {*/
+/*AccessToken,*/
+/*LoginButton,*/
+/*GraphRequest,*/
+/*GraphRequestManager,*/
+/*} = FBSDK;*/
 
 
 
 
 
 import t from 'tcomb-form-native';
-var form_styles = _.cloneDeep(t.form.Form.stylesheet);
+var form_styles = t.form.Form.stylesheet;
 
 form_styles.select.normal.borderColor = 'black';
 form_styles.select.normal.backgroundColor = 'white';
