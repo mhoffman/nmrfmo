@@ -1,7 +1,7 @@
 {
   "name": "nmrfmo",
   "description": "Discover events around you on a map.",
-  "slug": "nmrfmo4",
+  "slug": "nmrfmo",
   "sdkVersion": "12.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
