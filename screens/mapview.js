@@ -651,7 +651,7 @@ class MyMapView extends React.Component {
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                 /*console.log(coords);*/
-                this.map.animateToCoordinate(coords, 2000);
+                this.map.animateToCoordinate(coords, 200);
             }
         }
 
