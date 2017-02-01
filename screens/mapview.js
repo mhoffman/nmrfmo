@@ -411,6 +411,7 @@ class MyMapView extends React.Component {
             lastUpdatedAt: 0,
             dataSource: ds.cloneWithRows([]),
             markers: [],
+            mapRegion: {},
             event: {title: ''},
         };
         this.childSizes = [];
@@ -625,6 +626,13 @@ class MyMapView extends React.Component {
             return ''
         }
     }
+
+    _onRegionChangeComplete(region){
+        this.setState({
+            mapRegion: region
+        })
+    }
+
     onScroll(event){
         if(event!==null && event!==undefined){
             /*event.persist();*/
@@ -813,6 +821,7 @@ class MyMapView extends React.Component {
                     latitudeDelta: 0.135,
                     longitudeDelta: 0.1321
                 }}
+                onRegionChangeComplete={this._onRegionChangeComplete.bind(this)} // Need to store current location
                 showsUserLocation={true}
                 followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
                 showsCompass={false}
