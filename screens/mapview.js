@@ -39,11 +39,11 @@ import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vect
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
-const BOTTOM_HEIGHT = 120;
+const BOTTOM_HEIGHT = 220;
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 const LOCATION_RADIUS = 5e-5
 const LISTVIEW_BORDER = 5
-const LISTVIEW_BLOCKWIDTH  = window.width/3.
+const LISTVIEW_BLOCKWIDTH  = window.width/2.
 
 import Menu from './Menu'
 import CustomCallout from './CustomCallout'
@@ -762,7 +762,7 @@ class MyMapView extends React.Component {
                             {event: {event: event}})}
                 >
                     <Text
-                    numberOfLines={4}
+                    numberOfLines={2}
                 ellipsizeMode={'tail'}
                 >
                     <Text
