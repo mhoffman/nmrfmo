@@ -1090,7 +1090,7 @@ class EventDetails extends React.Component {
                             <ReactNative.TouchableHighlight
                             onPress={()=>{ReactNative.Share.share({
                                 title: "Event",
-                                message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
+                                message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
                                 url: "http://facebook.github.io/react-native/",
                                 subject: "Share Link" //  for email
                             });
