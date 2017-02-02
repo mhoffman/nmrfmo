@@ -659,7 +659,7 @@ class MyMapView extends React.Component {
                 /*console.log(activeEvent);*/
                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                 /*console.log(coords);*/
-                this.map.animateToCoordinate(coords, 200);
+                /*this.map.animateToCoordinate(coords, 200);*/
             }
         }
 
@@ -722,7 +722,7 @@ class MyMapView extends React.Component {
                 <TouchableHighlight
                     onPress={()=>{Share.share({
                         title: "Event",
-                        message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address, //+ "(Found on nmrfmo - http://exp.host/@mjhoffmann/nmrfmo/)",
+                        message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
                         url: "http://facebook.github.io/react-native/",
                         subject: "Share Link" //  for email
                     }); }}
@@ -769,7 +769,7 @@ class MyMapView extends React.Component {
                     style={{color:'#cccccc'}}>
                     {this.marker_format_title(event) + ' '}
                 </Text>
-                {'{{' + rowID + '}} ' + event.title}
+                {event.title}
                 </Text>
                     </TouchableHighlight>
                     </View>
@@ -906,7 +906,7 @@ class MyMapView extends React.Component {
                             /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
                             style={[
                                 {
-                                    zIndex: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 1 : 0,
+                                    zIndex: parseInt(x) === parseInt(this.state.activeEventID) ? 1 : 0,
                                 }
                             ]}
                             key={'marker_' + x}
@@ -922,13 +922,15 @@ class MyMapView extends React.Component {
                                     {
                                         backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                        borderWidth: parseInt(x) === parseInt(this.listView.state.activeEventId) ? 3: 1,
+                                        borderWidth: parseInt(x) === parseInt(this.state.activeEventID) ? 3: 1,
+                                        zIndex:parseInt(x) === parseInt(this.state.activeEventID) ? 10: 1,
                                     }]}
                             >
                             {/*<ResultIcons result={result}/>*/}
                             <ReactNative.Text style={{
-                                color: 'white',
-                                fontSize: 14,
+                                fontSize: parseInt(x) === parseInt(this.state.activeEventID)? 16 : 14,
+                                fontWeight: parseInt(x) === parseInt(this.state.activeEventID)? 'bold' : 'normal',
+                                color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'grey',
                             }}
                             numberOfLines={2}
                             ellipsizeMode={'tail'}
