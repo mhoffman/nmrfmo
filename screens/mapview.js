@@ -469,38 +469,39 @@ class MyMapView extends React.Component {
             var url = "";
             /*console.log(this)*/
             if(this.props.parent.state.search.length==0){
-                url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange;
+                url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange + '?' + encodeURIComponent(JSON.stringify(this.state.mapRegion));
             }else{
-                url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search)
+                url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search) + '&' + encodeURIComponent(JSON.stringify(this.state.mapRegion));
             }
 
             /*console.log("MARKER URL");*/
             /*console.log(this.props.parent.state.timeRange);*/
-            /*console.log(this.props.parent.state.search)*/
+            /*console.log(this.props.parent.state.search);*/
             /*console.log(url);*/
 
-            fetch (url, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                method: 'GET'
-            })
-            .then((response) => response.json())
-                .then((response) => {
-                    console.log("WHAT");
-                    console.log(EventSelection);
-                    this.setState({
-                        meetings: response,
-                        dataSource: this.state.dataSource.cloneWithRows(response),
-                        lastUpdatedAt: Date.now(),
-                    });
 
-                })
-            .catch((error) => {
-                /*console.log("ERROR while fetching events");*/
-                /*console.log(error)*/
-                return null;
+            fetch('https://nomorefomo.herokuapp.com/query',{
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body : JSON.stringify({
+                        q: this.props.parent.state.search,
+                        timeRange: this.props.parent.state.timeRange,
+                        mapRegion: this.state.mapRegion,
+                    }),
+                    }).then((response) => response.json())
+            .then((response) =>{
+                console.log('POST RESPONSE')
+                console.log(response);
+                this.setState({
+                    meetings: response,
+                    dataSource: this.state.dataSource.cloneWithRows(response),
+                    lastUpdatedAt: Date.now(),
+                });
+            }).catch((error) => {
+                console.log('Error in post ' + error)
             });
         }else{
             /*console.log("Refusing to update, yet.")*/
@@ -631,6 +632,7 @@ class MyMapView extends React.Component {
         this.setState({
             mapRegion: region
         })
+        this.getMeetupData();
     }
 
     onScroll(event){
