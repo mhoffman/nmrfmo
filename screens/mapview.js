@@ -114,9 +114,7 @@ const whatLightness = {
 }
 
 let when = t.enums({
-    now: 'now',
     today: 'today',
-    tonight: 'tonight',
     tomorrow: 'tomorrow',
     days_2: moment(moment.now()).add(2, "days").format("dddd"),
     days_3: moment(moment.now()).add(3, "days").format("dddd"),
@@ -1137,7 +1135,7 @@ class Navi extends React.Component {
         super(props);
         this.state = {
             category: 'All',
-            timeRange: 'tonight',
+            timeRange: parseInt(moment(moment.now()).format('hh')) < 20 ? 'today': 'tomorrow',
             search: '',
             lastUpdatedAt: 0
         };
