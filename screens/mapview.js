@@ -39,11 +39,11 @@ import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vect
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
-const BOTTOM_HEIGHT = 220;
+const BOTTOM_HEIGHT = 120;
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 const LOCATION_RADIUS = 5e-5
 const LISTVIEW_BORDER = 5
-const LISTVIEW_BLOCKWIDTH  = window.width/2.
+const LISTVIEW_BLOCKWIDTH  = window.width/3.
 
 import Menu from './Menu'
 import CustomCallout from './CustomCallout'
@@ -832,52 +832,6 @@ class MyMapView extends React.Component {
                 mapType='standard'
                     showPointsOfInterest={true}
                 >
-
-                {/*
-                  * {this.state.private_meetings*/
-                    /*.map((result, x) =>*/
-                    /*<MapView.Marker*/
-                    /*key={x}*/
-                    /*coordinate={{*/
-                    /*longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),*/
-                    /*latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI),*/
-                    /*}}*/
-                    /*onPress={()=>{*/
-                    /*this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH, y: 0});*/
-                    /*console.log(x);*/
-                    /*console.log(x * );*/
-                    /**//*this.setState({event: {*/
-                    /**//*longitude: result.lon,*/
-                    /**//*latitude: result.lat,*/
-                    /**//*title: result.title,*/
-                    /**//*categories: result.categories,*/
-                    /**//*url: result.url,*/
-                    /**//*address: result.address,*/
-                    /**//*description: result.description,*/
-                    /**//*publisher: result.publisher,*/
-                    /**//*cost: result.cost,*/
-                    /**//*publisher_url: result.publisher_url,*/
-                    /**//*datetime: result.datetime,*/
-                    /**//*},*/
-                    /**//*event_title: result.title});*/
-
-                    /*}*/
-                    /*}*/
-
-                    /*>*/
-                    /*<View*/
-                    /*style={[styles.marker,*/
-                    /*{*/
-                    /*backgroundColor: 'hsl('+constants.SECONDARY_HUE+',' + (100) + '%,'+constants.SECONDARY+'%)',*/
-                    /*}]}*/
-                    /*>*/
-                    /*<Text style={{color: 'white'}}><FontAwesome name='facebook-square' color='#ffffff' size={15}/> {this.marker_format_title(result, 'personal')}</Text>*/
-                    /*<Text style={styles.marker_info}>{this.marker_infotext(result)}</Text>*/
-                    /*</View>*/
-                    /*</MapView.Marker>*/
-
-                    /*)}
-                    */}
 
                 {this.state.meetings
                     .filter((elem) => {
