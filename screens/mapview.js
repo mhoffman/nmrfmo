@@ -209,12 +209,11 @@ const styles = ReactNative.StyleSheet.create({
     },
     container: {
         position: 'absolute',
-        top: 0,
+        top: Exponent.Constants.statusBarHeight,
         left: 0,
         right: 0,
         bottom: 0,
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
     },
     menu: {
@@ -240,7 +239,7 @@ const styles = ReactNative.StyleSheet.create({
     },
     bottomline: {
         position: 'absolute',
-        top: window.height - BOTTOM_HEIGHT,
+        top: window.height - BOTTOM_HEIGHT - Exponent.Constants.statusBarHeight,
         left: 0,
         right: 0,
         bottom: 0,
@@ -410,6 +409,7 @@ class MyMapView extends React.Component {
             dataSource: ds.cloneWithRows([]),
             markers: [],
             mapRegion: {},
+            mapMoved: false,
             event: {title: ''},
         };
         this.childSizes = [];
@@ -492,7 +492,7 @@ class MyMapView extends React.Component {
                     }).then((response) => response.json())
             .then((response) =>{
                 console.log('POST RESPONSE')
-                console.log(response);
+                    console.log(response);
                 this.setState({
                     meetings: response,
                     dataSource: this.state.dataSource.cloneWithRows(response),
@@ -629,8 +629,12 @@ class MyMapView extends React.Component {
     _onRegionChangeComplete(region){
         this.setState({
             mapRegion: region
-        })
-        this.getMeetupData();
+        });
+        this.setState({
+            mapMoved: true,
+        });
+        console.log("Map moved");
+
     }
 
     onScroll(event){
@@ -811,145 +815,185 @@ class MyMapView extends React.Component {
                 onChange={(isOpen) => this.updateMenuState(isOpen)}
                 >
 
-
                 <ReactNative.View style={styles.container}>
-                <Exponent.Components.MapView
-                ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
-                style={this.state.meetings.length == 0 ? styles.fullmap : styles.map}
-                initialRegion={{latitude : latitude,
-                    longitude: longitude,
-                    latitudeDelta: 0.135,
-                    longitudeDelta: 0.1321
+
+                <ReactNative.TouchableOpacity
+                style={{
+                    position: 'absolute',
+                    top: 50,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    zIndex: this.state.mapMoved ? 15 : -15,
                 }}
-                moveOnMarkerPress={false}
-                onRegionChangeComplete={this._onRegionChangeComplete.bind(this)} // Need to store current location
-                showsUserLocation={true}
-                followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
-                showsCompass={false}
-                zoomEnabled={true}
-                rotateEnabled={false}
-                showsBuildings={false}
-                mapType='standard'
-                    showPointsOfInterest={true}
-                >
+        onPress={()=>{
+            console.log('Refresh button clicked');
+            this.getMeetupData();
+            this.setState({
+                mapMoved: false,
+            });
+        }}
 
-                {this.state.meetings
-                    .filter((elem) => {
-                        /*console.log("MEETINGS FILTER");*/
-                        /*console.log(elem);*/
-                        /*console.log("PARENT STATE");*/
-                        /*console.log(this.props.parent.state);*/
-                        /*console.log('activeEventId');*/
-                        /*console.log(parseInt(this.listView.state.activeEventId) )*/
+        >
+            <View
+            style={{
+                marginLeft: 100,
+                padding: 4,
+                cornerRadius: 3,
 
-                        if(this.props.parent.state.category === 'All'){
-                            return true;
-                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
-                            return true;
-                        } else {
-                            return false;
-                        }})
-                    .map((result, x) =>
-                            <Exponent.Components.MapView.Marker
-                            pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
-                            ref={(marker)=>{this.state.markers[x] = marker}}
-                            coordinate={{
-                                longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
-                                latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
-                            }}
-                            calloutOffset={{ x: -15, y: -12  }} // for ios
-                            /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
-                            style={[
-                                {
-                                    zIndex: parseInt(x) === parseInt(this.state.activeEventID) ? 1 : 0,
-                                }
-                            ]}
-                            key={'marker_' + x}
-                            onPress={()=>{
-                                ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                    this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
-                                });
-                            }}
+            }}
+        >
+            <Text
+            style={{
+                fontSize: 16,
+                fontWeight: 'bold',
+                backgroundColor: 'green',
+                height: 25,
+                margin: 4,
+                cornerRadius: 3,
+            }}
+        >Reload in current region</Text>
+            </View>
+            </ReactNative.TouchableOpacity>
 
-                            >
-                                <ReactNative.View
-                                style={[styles.marker,
-                                    {
-                                        backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
-                                        borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                        borderWidth: parseInt(x) === parseInt(this.state.activeEventID) ? 3: 1,
-                                        zIndex:parseInt(x) === parseInt(this.state.activeEventID) ? 10: 1,
-                                    }]}
-                            >
-                            {/*<ResultIcons result={result}/>*/}
-                            <ReactNative.Text style={{
-                                fontSize: parseInt(x) === parseInt(this.state.activeEventID)? 16 : 14,
-                                fontWeight: parseInt(x) === parseInt(this.state.activeEventID)? 'bold' : 'normal',
-                                color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'grey',
-                            }}
-                            numberOfLines={2}
-                            ellipsizeMode={'tail'}
-                            >{this.marker_format_title(result)}</ReactNative.Text>
-                                <ReactNative.Text style={[
-                                    styles.marker_info,
-                                ]}>{this.marker_infotext(result)}</ReactNative.Text>
-                                    </ReactNative.View>
-                                    </Exponent.Components.MapView.Marker>
-                                    )}
+            <Exponent.Components.MapView
+            ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
+        style={this.state.meetings.length == 0 ? styles.fullmap : styles.map}
+        initialRegion={{latitude : latitude,
+            longitude: longitude,
+            latitudeDelta: 0.135,
+            longitudeDelta: 0.1321
+        }}
+        moveOnMarkerPress={false}
+        onRegionChangeComplete={this._onRegionChangeComplete.bind(this)} // Need to store current location
+        showsUserLocation={true}
+        followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
+        showsCompass={false}
+        zoomEnabled={true}
+        rotateEnabled={false}
+        showsBuildings={false}
+        mapType='standard'
+            showPointsOfInterest={true}
+        >
 
+        {this.state.meetings
+            .filter((elem) => {
+                /*console.log("MEETINGS FILTER");*/
+                /*console.log(elem);*/
+                /*console.log("PARENT STATE");*/
+                /*console.log(this.props.parent.state);*/
+                /*console.log('activeEventId');*/
+                /*console.log(parseInt(this.listView.state.activeEventId) )*/
 
+                if(this.props.parent.state.category === 'All'){
+                    return true;
+                }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                    return true;
+                } else {
+                    return false;
+                }})
+            .map((result, x) =>
+                    <Exponent.Components.MapView.Marker
+                    pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
+                    ref={(marker)=>{this.state.markers[x] = marker}}
+                    coordinate={{
+                        longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
+                        latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
+                    }}
+                    calloutOffset={{ x: -15, y: -12  }} // for ios
+                    /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
+                    style={[
+                        {
+                            zIndex: parseInt(x) === parseInt(this.state.activeEventID) ? 1 : 0,
+                        }
+                    ]}
+                    key={'marker_' + x}
+                    onPress={()=>{
+                        ReactNative.InteractionManager.runAfterInteractions(()=>{
+                            this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
+                        });
+                    }}
 
-
-                </Exponent.Components.MapView>
-
-                {/*
-                    <ReactNative.View style={this.state.event.title == "" ? styles.nobottomline : [
-                    styles.bottomline,
-                    styles.clickable,
-                    {
-                    borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+getCategoryLightness(this.state.event)+'%)',
-
-                    }
-                    ]}>
-                    <ReactNative.TouchableHighlight
-                    onPress={this.navigate.bind(this, "event_details",
-                    {event: this.state})}
                     >
-                    <ReactNative.Text style={styles.bottom_message}>
-                    {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/>
-                    </ReactNative.Text>
-                    </ReactNative.TouchableHighlight>
-                    </ReactNative.View>
-                    */}
-                <View style={styles.bottomline}>
-                    <UpdatingListView
-                    ref={(x) => { this.listView = x; }}
-                dataSource={this.state.dataSource}
-                enableEmptySections={true}
-                horizontal={true}
-                onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
-                renderRow={this.renderRow.bind(this)}
-                renderSeparator={this.renderSeparator.bind(this)}
-                childSizes={this.childSizes}
-                defaultRowSize={LISTVIEW_BLOCKWIDTH}
-                />
-                {/*END OF LISTVIEW*/}
-                </View>
+                        <ReactNative.View
+                        style={[styles.marker,
+                            {
+                                backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
+                                borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
+                                borderWidth: parseInt(x) === parseInt(this.state.activeEventID) ? 3: 1,
+                                zIndex:parseInt(x) === parseInt(this.state.activeEventID) ? 10: 1,
+                            }]}
+                    >
+                    {/*<ResultIcons result={result}/>*/}
+                    <ReactNative.Text style={{
+                        fontSize: parseInt(x) === parseInt(this.state.activeEventID)? 16 : 14,
+                        fontWeight: parseInt(x) === parseInt(this.state.activeEventID)? 'bold' : 'normal',
+                        color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'grey',
+                    }}
+                    numberOfLines={2}
+                    ellipsizeMode={'tail'}
+                    >{this.marker_format_title(result)}</ReactNative.Text>
+                        <ReactNative.Text style={[
+                            styles.marker_info,
+                        ]}>{this.marker_infotext(result)}</ReactNative.Text>
+                            </ReactNative.View>
+                            </Exponent.Components.MapView.Marker>
+                            )}
 
 
 
-                    </ReactNative.View>
-                    <MyButton style={[styles.menu_button,{marginTop:0}]} parent={this} onPress={() => this.toggle()}>
-                    <ReactNative.Image
-                    source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
-                    </MyButton>
+
+        </Exponent.Components.MapView>
+
+        {/*
+            <ReactNative.View style={this.state.event.title == "" ? styles.nobottomline : [
+            styles.bottomline,
+            styles.clickable,
+            {
+            borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+getCategoryLightness(this.state.event)+'%)',
+
+            }
+            ]}>
+            <ReactNative.TouchableHighlight
+            onPress={this.navigate.bind(this, "event_details",
+            {event: this.state})}
+            >
+            <ReactNative.Text style={styles.bottom_message}>
+            {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/>
+            </ReactNative.Text>
+            </ReactNative.TouchableHighlight>
+            </ReactNative.View>
+            */}
+        <View style={styles.bottomline}>
+            <UpdatingListView
+            ref={(x) => { this.listView = x; }}
+        dataSource={this.state.dataSource}
+        enableEmptySections={true}
+        horizontal={true}
+        onChangeVisibleRows={this.onChangeVisibleRows.bind(this) }
+        renderRow={this.renderRow.bind(this)}
+        renderSeparator={this.renderSeparator.bind(this)}
+        childSizes={this.childSizes}
+        defaultRowSize={LISTVIEW_BLOCKWIDTH}
+        />
+        {/*END OF LISTVIEW*/}
+        </View>
 
 
-                    </DrawerLayout>
-                    );
+
+            </ReactNative.View>
+            <MyButton style={[styles.menu_button,{marginTop:0}]} parent={this} onPress={() => this.toggle()}>
+            <ReactNative.Image
+            source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
+            </MyButton>
 
 
-                return map
+            </DrawerLayout>
+            );
+
+
+        return map
     }
 
 }
