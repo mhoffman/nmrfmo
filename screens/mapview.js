@@ -931,7 +931,7 @@ class MyMapView extends React.Component {
                     <ReactNative.Text style={{
                         fontSize: parseInt(x) === parseInt(this.state.activeEventID)? 16 : 14,
                         fontWeight: parseInt(x) === parseInt(this.state.activeEventID)? 'bold' : 'normal',
-                        color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'grey',
+                        color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'black',
                     }}
                     numberOfLines={2}
                     ellipsizeMode={'tail'}
