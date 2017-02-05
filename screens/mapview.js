@@ -985,7 +985,7 @@ class MyMapView extends React.Component {
 
 
             </ReactNative.View>
-            <MenuButton style={[styles.menu_button,{marginTop:0}]} parent={this} onPress={() => this.toggle()}>
+            <MenuButton style={[styles.menu_button,{marginTop:0, width: 100, height: 100}]} parent={this} onPress={() => this.toggle()}>
             <ReactNative.Image
             source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
             </MenuButton>
