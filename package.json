@@ -31,6 +31,6 @@
     "xdl": "^0.27.1"
   },
   "scripts": {
-      "flow": "node_modules/.bin/flow"
+    "flow": "node_modules/.bin/flow"
   }
 }
