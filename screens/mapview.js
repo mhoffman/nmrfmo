@@ -1136,7 +1136,7 @@ class Navi extends React.Component {
         super(props);
         this.state = {
             category: 'All',
-            timeRange: parseInt(moment(moment.now()).format('hh')) < 20 ? 'today': 'tomorrow',
+            timeRange: parseInt(moment(moment.now()).format('hh')) < 10 ? 'today': 'tomorrow',
             search: '',
             lastUpdatedAt: 0
         };
