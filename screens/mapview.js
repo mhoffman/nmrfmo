@@ -35,7 +35,7 @@ import UpdatingListView from './vendor/UpdatingListView'
 import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
-import { FontAwesome, Ionicons, MaterialIcons, Foundation } from '@exponent/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@exponent/vector-icons';
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
@@ -634,6 +634,7 @@ class MyMapView extends React.Component {
             mapMoved: true,
         });
         console.log("Map moved");
+        console.log(region)
 
     }
 
@@ -825,7 +826,7 @@ class MyMapView extends React.Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     flex: 1,
-                    zIndex: this.state.mapMoved ? 15 : -15,
+                    zIndex: this.state.mapMoved ? 25 : -15,
                 }}
         onPress={()=>{
             console.log('Refresh button clicked');
@@ -838,22 +839,23 @@ class MyMapView extends React.Component {
         >
             <View
             style={{
-                marginLeft: 100,
-                padding: 4,
-                cornerRadius: 3,
-
+                marginLeft: window.width/2. - 100,
+                zIndex: this.state.mapMoved ? 25 : -15,
             }}
         >
             <Text
             style={{
                 fontSize: 16,
                 fontWeight: 'bold',
-                backgroundColor: 'green',
-                height: 25,
-                margin: 4,
-                cornerRadius: 3,
+                backgroundColor: 'darkseagreen',
+                borderRadius: 3,
+                borderWidth: 1,
+                borderColor:'black',
+                paddingLeft:3,
+                paddingRight:3,
+                zIndex: this.state.mapMoved ? 25 : -15,
             }}
-        >Reload in current region</Text>
+        ><SimpleLineIcons size={16} name='reload'/> Reload in current region</Text>
             </View>
             </ReactNative.TouchableOpacity>
 
