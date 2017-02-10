@@ -51,6 +51,7 @@ import CustomCallout from './CustomCallout'
 var t = require('tcomb-form-native');
 let what = t.enums({
     "All": "All",
+    "Activism": "Activism",
     "Arts": "Arts",
     "Charity": "Charity",
     "Community": "Community",
