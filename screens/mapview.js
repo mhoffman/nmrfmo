@@ -767,7 +767,7 @@ class MyMapView extends React.Component {
                             {event: {event: event}})}
                 >
                     <Text
-                    numberOfLines={2}
+                    numberOfLines={4}
                 ellipsizeMode={'tail'}
                 >
                     <Text
