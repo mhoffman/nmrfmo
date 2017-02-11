@@ -813,7 +813,7 @@ class MyMapView extends React.Component {
                 style={styles.menu}
                 menu={menu}
                 drawerWidth={320}
-                drawerPosition={DrawerLayout.positions.Left}
+                drawerPosition={DrawerLayout.positions.Bottom}
                 renderNavigationView={()=>menu}
                 isOpen={this.state.isOpen}
                 onChange={(isOpen) => this.updateMenuState(isOpen)}

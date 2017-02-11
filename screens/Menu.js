@@ -16,6 +16,9 @@ import Communications from 'react-native-communications';
 import { FontAwesome } from '@exponent/vector-icons';
 import moment from 'moment-timezone';
 
+import DrawerLayout from 'react-native-drawer-layout'
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
 
 import constants from './constants'
 
@@ -217,6 +220,8 @@ export default class Menu extends Component {
         /*console.log(this);*/
         this.state = {
             accessToken: '',
+            startTime: 0,
+            endTime: 24,
             value: {
                 when: this.props.parent.props.parent.state.timeRange,
                 lastUpdatedAt: 0,
@@ -237,6 +242,18 @@ export default class Menu extends Component {
                 this.props.parent.setState({event: {title: ''}})
             });
         }
+    };
+    onTimeRangeSliderChange(values){
+        this.setState({
+            startTime: values[0],
+            endTime: values[1],
+        })
+    };
+    onTimeRangeSliderChangeStart(){
+        this.props.parent._drawerLayout.props.drawerLockMode=DrawerLayout.LOCK_MODE_LOCK_OPEN;
+    };
+
+    onTimeRangeSliderChangeFinish(){
     };
 
     textSearch(event){
@@ -289,6 +306,27 @@ export default class Menu extends Component {
                 options={options}
                 onChange={this.onChange.bind(this)}
                 value={this.state.value} />
+
+                <Text
+                style={{
+                    marginBottom: 30,
+                    fontSize: 20,
+
+                }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                    }}>Time Range: </Text>
+                {moment(this.state.startTime, 'HH').format('h A')} to {moment(this.state.endTime, 'HH').format('h A')}</Text>
+                <MultiSlider
+                values={[0,24]}
+                min={0}
+                max={24}
+                sliderLength={280}
+                onValuesChange={this.onTimeRangeSliderChange.bind(this)}
+                onValuesChangeStart={this.onTimeRangeSliderChangeStart.bind(this)}
+                onValuesChangeFinish={this.onTimeRangeSliderChangeFinish.bind(this)}
+                />
 
                 <TextInput
                 ref='VenueFeedback'
