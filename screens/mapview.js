@@ -495,6 +495,9 @@ class MyMapView extends React.Component {
             .then((response) =>{
                 console.log('POST RESPONSE')
                     console.log(response);
+                response.sort((x, y) => {
+                    return new Date(x.datetime) - new Date(y.datetime)
+                });
                 this.setState({
                     meetings: response,
                     dataSource: this.state.dataSource.cloneWithRows(response),
