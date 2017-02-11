@@ -98,8 +98,8 @@ const whatHues = {
 const whatLightness = {
     "Arts": 50,
     "Charity": 50,
-    "Community": 23,
-    "Concerts": 24,
+    "Community": 50,
+    "Concerts": 50,
     "Dance": 50,
     "Educational": 50,
     "Festivals": 50,
