@@ -516,6 +516,7 @@ class MyMapView extends React.Component {
     }
 
     getSaturation(datetime, time_span=-1, min_time=-1){
+        return 100
         if(min_time<0){
             min_time = new Date().getTime();
         }
