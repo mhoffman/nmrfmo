@@ -785,6 +785,7 @@ class MyMapView extends React.Component {
                     {this.marker_format_title(event) + ' '}
                 </Text>
                 {event.title}
+                <FontAwesome name='chevron-right' color='#000000'/>
                 </Text>
                     </TouchableHighlight>
                     </View>
