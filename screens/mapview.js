@@ -1058,7 +1058,9 @@ class EventDetails extends React.Component {
                         {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                     </ReactNative.Text>
                         <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <ReactNative.Text style={styles.p}>
+                        <ReactNative.Text style={[styles.p,{
+                            textAlign: 'justify'
+                        }]}>
                         {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
                     </ReactNative.Text>
                         <ReactNative.Text style={styles.p}>
