@@ -488,8 +488,11 @@ class MyMapView extends React.Component {
                     body : JSON.stringify({
                         q: this.props.parent.state.search,
                         timeRange: this.props.parent.state.timeRange,
+                        startTime: this.props.parent.state.startTime,
+                        endTime: this.props.parent.state.endTime,
                         mapRegion: this.state.mapRegion,
                         deviceId: Exponent.Constants.deviceId,
+                        isDevice: Exponent.Constants.isDevice,
                     }),
                     }).then((response) => response.json())
             .then((response) =>{
@@ -816,7 +819,8 @@ class MyMapView extends React.Component {
                 style={styles.menu}
                 menu={menu}
                 drawerWidth={320}
-                drawerPosition={DrawerLayout.positions.Bottom}
+                drawerPosition={DrawerLayout.positions.Left}
+                drawerLockMode='locked-open'
                 renderNavigationView={()=>menu}
                 isOpen={this.state.isOpen}
                 onChange={(isOpen) => this.updateMenuState(isOpen)}
@@ -1145,6 +1149,8 @@ class Navi extends React.Component {
         this.state = {
             category: 'All',
             timeRange: parseInt(moment(moment.now()).format('hh')) < 10 ? 'today': 'tomorrow',
+            startTime: 0,
+            endTime: 24,
             search: '',
             lastUpdatedAt: 0
         };

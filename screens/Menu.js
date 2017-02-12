@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Communications from 'react-native-communications';
 import { FontAwesome } from '@exponent/vector-icons';
+import VectorIcons from '@exponent/vector-icons';
 import moment from 'moment-timezone';
 
 import DrawerLayout from 'react-native-drawer-layout'
@@ -64,9 +65,11 @@ const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
 const styles = StyleSheet.create({
     menu: {
         flex: 1,
+        direction: 'column',
         width: window.width,
         height: window.height,
         backgroundColor: 'white',
+        justifyContent: 'space-between',
         padding: 20,
         zIndex: -10,
     },
@@ -244,16 +247,18 @@ export default class Menu extends Component {
         }
     };
     onTimeRangeSliderChange(values){
+        const start = values[0];
+        const end = values[1];
+
         this.setState({
             startTime: values[0],
             endTime: values[1],
-        })
-    };
-    onTimeRangeSliderChangeStart(){
-        this.props.parent._drawerLayout.props.drawerLockMode=DrawerLayout.LOCK_MODE_LOCK_OPEN;
-    };
+        });
 
-    onTimeRangeSliderChangeFinish(){
+        this.props.parent.props.parent.setState({
+            startTime: start,
+            endTime: end,
+        });
     };
 
     textSearch(event){
@@ -289,48 +294,106 @@ export default class Menu extends Component {
 
     render() {
         return (
-                <View style={[styles.menu,
-                    {
-                        paddingTop:50
-                    }
-                ]}>
-                <TextInput
-                style={{marginBottom:20, height:60}}
-                placeholder="Search events"
-                onSubmitEditing={this.textSearch.bind(this)}
-                />
+                <View style={[styles.menu]}>
 
-                <Form ref="form"
-                type={this.props.EventSelection}
-                style={menuStyle.menuList}
+                <View
+                style={{
+                    flex: 1,
+                    direction: 'row',
+                    justifyContent: 'flex-end',
+                    /*borderWidth: 1,*/
+                }}
+                >
+                <TouchableOpacity
+                onPress={()=>{this.props.parent._drawerLayout.closeDrawer();}}
+                style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    direction: 'row',
+                    /*borderWidth: 1,*/
+                }}
+                >
+                <VectorIcons.MaterialIcons name='close' size={30}
+                style={{
+                    /*borderWidth: 1,*/
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    direction: 'column',
+                    alignItems: 'flex-end',
+                }}
+                />
+                    </TouchableOpacity>
+                    </View>
+
+                    <View
+                    style={{
+                        /*borderWidth: 1,*/
+                    }}
+                    >
+
+
+                    <TextInput
+                    style={{
+                        height:60}}
+                placeholder="Search events"
+                    onSubmitEditing={this.textSearch.bind(this)}
+                />
+                    </View>
+
+                    <View
+                    style={{
+                        /*borderWidth: 1*/
+                    }}
+                >
+                    <Form ref="form"
+                    type={this.props.EventSelection}
+                style={[menuStyle.menuList,
+                    {
+                        /*borderWidth: 1,*/
+                    }
+                ]}
                 options={options}
                 onChange={this.onChange.bind(this)}
                 value={this.state.value} />
+                    </View>
 
-                <Text
-                style={{
-                    marginBottom: 30,
-                    fontSize: 20,
+                    <View style={{
+                        /*borderWidth: 1,*/
+                    }}>
+                    <Text
+                    style={{
+                        marginBottom: 30,
+                        fontSize: 20,
+                        /*borderWidth: 1,*/
 
-                }}
+                    }}
                 >
                     <Text style={{
                         fontWeight: 'bold',
                     }}>Time Range: </Text>
                 {moment(this.state.startTime, 'HH').format('h A')} to {moment(this.state.endTime, 'HH').format('h A')}</Text>
-                <MultiSlider
-                values={[0,24]}
+                <View
+                    style={{
+                        /*borderWidth: 1,*/
+                    }}
+                >
+                    </View>
+                    <MultiSlider
+                    values={[this.state.startTime, this.state.endTime]}
                 min={0}
                 max={24}
                 sliderLength={280}
                 onValuesChange={this.onTimeRangeSliderChange.bind(this)}
-                onValuesChangeStart={this.onTimeRangeSliderChangeStart.bind(this)}
-                onValuesChangeFinish={this.onTimeRangeSliderChangeFinish.bind(this)}
                 />
+                    </View>
 
-                <TextInput
-                ref='VenueFeedback'
-                style={{marginBottom:20,height:60}}
+                    <TextInput
+                    ref='VenueFeedback'
+                    style={{
+                        marginBottom:20,
+                        /*borderWidth: 1,*/
+                        height:60
+                    }}
                 placeholder="Suggest a venue."
                     onSubmitEditing={this.venueFeedback.bind(this)}
                 />
