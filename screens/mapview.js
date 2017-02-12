@@ -493,6 +493,7 @@ class MyMapView extends React.Component {
                         mapRegion: this.state.mapRegion,
                         deviceId: Exponent.Constants.deviceId,
                         isDevice: Exponent.Constants.isDevice,
+                        searchString: this.props.parent.state.search,
                     }),
                     }).then((response) => response.json())
             .then((response) =>{
