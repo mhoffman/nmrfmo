@@ -329,8 +329,12 @@ export default class Menu extends Component {
                     /*borderWidth: 1,*/
                 }}
                 >
-                <VectorIcons.MaterialIcons name='close' size={30}
-                />
+                    <VectorIcons.MaterialIcons name='chevron-left' size={30}
+                /><Text
+                    style={{
+                        fontSize: 20
+                    }}
+                    > back</Text>
                     </TouchableOpacity>
                     </View>
 
@@ -377,40 +381,9 @@ export default class Menu extends Component {
                     value={this.state.when}
                     >
                     {this.state.when} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
-                        </Text>
+                    </Text>
                 }
-                </ModalPicker><ModalPicker
-                    data={this.props.parent.state.what}
-                key={"whatPicker"}
-                initValue="What"
-                    onChange={this.onChangeWhat.bind(this)}
-                >
-                    <Text
-                    style={{marginTop: 10,
-                        marginBottom: 10,
-                        borderWidth:1,
-                        borderColor:'#ccc',
-                        padding:10,
-                        height:45,
-                        fontSize: 18,
-                        width: 280}}
-                editable={false}
-                value={this.state.what}
-                    >
-                    {this.state.what} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
-                </Text>
-                    </ModalPicker>
-                    {/*
-                        <Form ref="form"
-                        type={this.props.EventSelection}
-                        style={[menuStyle.menuList,
-                        {
-                        }
-                        ]}
-                        options={options}
-                        onChange={this.onChange.bind(this)}
-                        value={this.state.value} />
-                        */}
+                </ModalPicker>
                 </View>
 
                     <View style={{
@@ -446,6 +419,27 @@ export default class Menu extends Component {
                 sliderLength={280}
                 onValuesChange={this.onTimeRangeSliderChange.bind(this)}
                 />
+                    <ModalPicker
+                    data={this.props.parent.state.what}
+                key={"whatPicker"}
+                initValue="What"
+                    onChange={this.onChangeWhat.bind(this)}
+                >
+                    <Text
+                    style={{marginTop: 10,
+                        marginBottom: 10,
+                        borderWidth:1,
+                        borderColor:'#ccc',
+                        padding:10,
+                        height:45,
+                        fontSize: 18,
+                        width: 280}}
+                editable={false}
+                value={this.state.what}
+                >
+                {this.state.what} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                </Text>
+                    </ModalPicker>
                     </View>
                     {/*}
 
