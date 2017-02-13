@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import {
     Alert,
     Dimensions,
+    Picker,
     StyleSheet,
     ScrollView,
     View,
@@ -13,12 +14,15 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Communications from 'react-native-communications';
+import ModalPicker from 'react-native-modal-picker';
 import { FontAwesome } from '@exponent/vector-icons';
 import VectorIcons from '@exponent/vector-icons';
 import moment from 'moment-timezone';
 
 import DrawerLayout from 'react-native-drawer-layout'
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
+import _ from 'lodash';
 
 
 import constants from './constants'
@@ -65,11 +69,11 @@ const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
 const styles = StyleSheet.create({
     menu: {
         flex: 1,
-        direction: 'column',
+        flexDirection: 'column',
         width: window.width,
         height: window.height,
         backgroundColor: 'white',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         padding: 20,
         zIndex: -10,
     },
@@ -225,14 +229,25 @@ export default class Menu extends Component {
             accessToken: '',
             startTime: 0,
             endTime: 24,
+            when: this.props.parent.props.parent.state.timeRange,
+            what: this.props.parent.props.parent.state.category,
             value: {
-                when: this.props.parent.props.parent.state.timeRange,
                 lastUpdatedAt: 0,
-                what: this.props.parent.props.parent.state.category,
                 search: this.props.parent.props.parent.state.search,
             },
 
         }
+    };
+    onChangeWhat(option){
+        this.setState({
+            what: option.key
+        });
+
+    };
+    onChangeWhen(option){
+        this.setState({
+            when: option.label
+        });
     };
     onChange(value){
         /*if(this.state.value.when !== value.when){*/
@@ -298,8 +313,8 @@ export default class Menu extends Component {
 
                 <View
                 style={{
-                    flex: 1,
-                    direction: 'row',
+                    flex: 0,
+                    flexDirection: 'row',
                     justifyContent: 'flex-end',
                     /*borderWidth: 1,*/
                 }}
@@ -308,19 +323,13 @@ export default class Menu extends Component {
                 onPress={()=>{this.props.parent._drawerLayout.closeDrawer();}}
                 style={{
                     flex: 1,
-                    justifyContent: 'flex-end',
-                    direction: 'row',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'row',
+                    marginTop: 20,
                     /*borderWidth: 1,*/
                 }}
                 >
                 <VectorIcons.MaterialIcons name='close' size={30}
-                style={{
-                    /*borderWidth: 1,*/
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    direction: 'column',
-                    alignItems: 'flex-end',
-                }}
                 />
                     </TouchableOpacity>
                     </View>
@@ -329,12 +338,15 @@ export default class Menu extends Component {
                     style={{
                         /*borderWidth: 1,*/
                     }}
-                    >
+                >
 
 
                     <TextInput
                     style={{
-                        height:60}}
+                        height:60,
+                        width: 280,
+                        fontSize: 18,
+                    }}
                 placeholder="Search events"
                     onSubmitEditing={this.textSearch.bind(this)}
                 />
@@ -345,25 +357,69 @@ export default class Menu extends Component {
                         /*borderWidth: 1*/
                     }}
                 >
-                    <Form ref="form"
-                    type={this.props.EventSelection}
-                style={[menuStyle.menuList,
-                    {
-                        /*borderWidth: 1,*/
-                    }
-                ]}
-                options={options}
-                onChange={this.onChange.bind(this)}
-                value={this.state.value} />
-                    </View>
+                    <ModalPicker
+                    data={this.props.parent.state.when}
+                key={"whenPicker"}
+                initValue="When"
+                    onChange={this.onChangeWhen.bind(this)}
+                >
+                {
+                    <Text
+                        style={{marginTop: 10,
+                            marginBottom: 10,
+                            borderWidth:1,
+                            borderColor:'#ccc',
+                            padding:10,
+                            height:45,
+                            fontSize: 18,
+                            width: 280}}
+                    editable={false}
+                    value={this.state.when}
+                    >
+                    {this.state.when} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                        </Text>
+                }
+                </ModalPicker><ModalPicker
+                    data={this.props.parent.state.what}
+                key={"whatPicker"}
+                initValue="What"
+                    onChange={this.onChangeWhat.bind(this)}
+                >
+                    <Text
+                    style={{marginTop: 10,
+                        marginBottom: 10,
+                        borderWidth:1,
+                        borderColor:'#ccc',
+                        padding:10,
+                        height:45,
+                        fontSize: 18,
+                        width: 280}}
+                editable={false}
+                value={this.state.what}
+                    >
+                    {this.state.what} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                </Text>
+                    </ModalPicker>
+                    {/*
+                        <Form ref="form"
+                        type={this.props.EventSelection}
+                        style={[menuStyle.menuList,
+                        {
+                        }
+                        ]}
+                        options={options}
+                        onChange={this.onChange.bind(this)}
+                        value={this.state.value} />
+                        */}
+                </View>
 
                     <View style={{
                         /*borderWidth: 1,*/
                     }}>
-                    <Text
+                <Text
                     style={{
                         marginBottom: 30,
-                        fontSize: 20,
+                        fontSize: 18,
                         /*borderWidth: 1,*/
 
                     }}
@@ -378,30 +434,34 @@ export default class Menu extends Component {
                     }}
                 >
                     </View>
+
                     <MultiSlider
                     values={[this.state.startTime, this.state.endTime]}
+                markerStyle={{
+                    height: 30,
+                    width: 30,
+                }}
                 min={0}
                 max={24}
                 sliderLength={280}
                 onValuesChange={this.onTimeRangeSliderChange.bind(this)}
                 />
                     </View>
+                    {/*}
 
-                    <TextInput
-                    ref='VenueFeedback'
-                    style={{
-                        marginBottom:20,
-                        /*borderWidth: 1,*/
-                        height:60
-                    }}
-                placeholder="Suggest a venue."
-                    onSubmitEditing={this.venueFeedback.bind(this)}
-                />
+                       <TextInput
+                       ref='VenueFeedback'
+                       style={{
+                       marginBottom:20,
+                       height:60
+                       }}
+                       placeholder="Suggest a venue."
+                       onSubmitEditing={this.venueFeedback.bind(this)}
+                       />
 
-                {/*}
-                   <Text>Private Events</Text>
-                   <FBLogin parent={this}/>
-                   */}
+                       <Text>Private Events</Text>
+                       <FBLogin parent={this}/>
+                       */}
 
 
 
