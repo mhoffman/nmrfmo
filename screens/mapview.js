@@ -124,6 +124,7 @@ let when = [
     {key: 'days_4', label: moment(moment.now()).add(4, "days").format("dddd")},
     {key: 'days_5', label: moment(moment.now()).add(5, "days").format("dddd")},
     {key: 'days_6', label: moment(moment.now()).add(6, "days").format("dddd")},
+    {key: 'any', label: 'any day'},
 ];
 
 

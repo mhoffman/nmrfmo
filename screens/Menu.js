@@ -240,13 +240,23 @@ export default class Menu extends Component {
     };
     onChangeWhat(option){
         this.setState({
-            what: option.key
+            what: option.label
+        });
+        InteractionManager.runAfterInteractions(()=>{
+            this.props.parent.props.parent.setState({
+                category: option.key
+            })
         });
 
     };
     onChangeWhen(option){
         this.setState({
             when: option.label
+        });
+        InteractionManager.runAfterInteractions(()=>{
+            this.props.parent.props.parent.setState({
+                timeRange: option.key
+            });
         });
     };
     onChange(value){
