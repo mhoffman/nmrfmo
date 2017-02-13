@@ -338,23 +338,6 @@ export default class Menu extends Component {
                     </TouchableOpacity>
                     </View>
 
-                    <View
-                    style={{
-                        /*borderWidth: 1,*/
-                    }}
-                >
-
-
-                    <TextInput
-                    style={{
-                        height:60,
-                        width: 280,
-                        fontSize: 18,
-                    }}
-                placeholder="Search events"
-                    onSubmitEditing={this.textSearch.bind(this)}
-                />
-                    </View>
 
                     <View
                     style={{
@@ -419,6 +402,23 @@ export default class Menu extends Component {
                 sliderLength={280}
                 onValuesChange={this.onTimeRangeSliderChange.bind(this)}
                 />
+
+                    <View
+                    style={{
+                        /*borderWidth: 1,*/
+                    }}
+                >
+                    <TextInput
+                    style={{
+                        height:60,
+                        width: 280,
+                        fontSize: 18,
+                    }}
+                placeholder="Search events"
+                    onSubmitEditing={this.textSearch.bind(this)}
+                />
+                    </View>
+
                     <ModalPicker
                     data={this.props.parent.state.what}
                 key={"whatPicker"}
