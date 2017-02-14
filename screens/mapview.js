@@ -830,13 +830,13 @@ class MyMapView extends React.Component {
                                 <TouchableHighlight
                                     onPress={() => {
                                         this.navigate.bind(this, "event_details", {event: {event: event}})();
+                                        this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
                                         ReactNative.InteractionManager.runAfterInteractions(()=>{
                                             let newPos = {longitude: event.lon, latitude: event.lat};
                                             /*console.log("SCROLL TO");*/
                                             /*console.log(newPos);*/
                                             /*console.log(event);*/
                                             this.map.animateToCoordinate(newPos);
-                                            this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
                                         });
                                     } }
                                 >
