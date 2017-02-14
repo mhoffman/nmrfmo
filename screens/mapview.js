@@ -512,8 +512,8 @@ class MyMapView extends React.Component {
                     }),
                     }).then((response) => response.json())
             .then((response) =>{
-                console.log('POST RESPONSE')
-                    console.log(response);
+                /*console.log('POST RESPONSE')*/
+                /*console.log(response);*/
                 response.sort((x, y) => {
                     return new Date(x.datetime) - new Date(y.datetime)
                 });
@@ -552,8 +552,8 @@ class MyMapView extends React.Component {
                         console.log(key);
                         what_keys.push({key: key.unnest, label: key.unnest + ' (' + key.count + ')'})
                                 });
-                        console.log(response[0]);
-                        console.log(what_keys);
+                        /*console.log(response[0]);*/
+                        /*console.log(what_keys);*/
                         if(! _.isEmpty(what_keys)){
                             this.setState({
                                 what: what_keys,
@@ -568,7 +568,7 @@ class MyMapView extends React.Component {
                     componentWillReceiveProps(nextProps){
                         /*console.log("WillReceiveProps");*/
                         ReactNative.InteractionManager.runAfterInteractions(()=>{
-                            this.getMeetupData();
+                            /*this.getMeetupData();*/
                         });
                     }
 
@@ -750,8 +750,8 @@ class MyMapView extends React.Component {
                                );
                     }
                     renderRow(event, sectionID, rowID){
-                        console.log("RENDERROW " + this.state.activeEventID);
-                        console.log(rowID);
+                        /*console.log("RENDERROW " + this.state.activeEventID);*/
+                        /*console.log(rowID);*/
                         return(
                                 <View
                                 onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
@@ -817,7 +817,7 @@ class MyMapView extends React.Component {
 
 
                                         </View>
-                                : <View></View>}
+                                        : <View></View>}
                                 <View
                                     style={{
                                         flex: 1,
@@ -825,24 +825,33 @@ class MyMapView extends React.Component {
                                         /*borderWidth: 1,*/
                                     }}>
                                 <TouchableHighlight
-                                    onPress={this.navigate.bind(this, "event_details",
-                                            {event: {event: event}})}
-                                >
-                                    <Text
-                                    numberOfLines={4}
-                                ellipsizeMode={'tail'}
-                                >
-                                    <Text
-                                    style={{color:'#cccccc'}}>
-                                    {event.title!==undefined ? this.marker_format_title(event) + ' ' : ''}
-                                </Text>
-                                {event.title}
-                                {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
-                                </Text>
-                                    </TouchableHighlight>
-                                    </View>
-                                    </View>
-                                    )
+                                    onPress={() => {
+                                        ReactNative.InteractionManager.runAfterInteractions(()=>{
+                                            let newPos = {longitude: event.lon, latitude: event.lat};
+                                            console.log("SCROLL TO")
+                                            console.log(newPos);
+                                            console.log(event);
+                                            this.map.animateToCoordinate(newPos);
+                                            this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
+                                            this.navigate.bind(this, "event_details", {event: {event: event}})();
+                                            });
+                                    } }
+                                        >
+                                        <Text
+                                        numberOfLines={4}
+                                        ellipsizeMode={'tail'}
+                                        >
+                                        <Text
+                                        style={{color:'#cccccc'}}>
+                                        {event.title!==undefined ? this.marker_format_title(event) + ' ' : ''}
+                                        </Text>
+                                        {event.title}
+                                        {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
+                                        </Text>
+                                        </TouchableHighlight>
+                                        </View>
+                                        </View>
+                                        )
                     }
 
 
