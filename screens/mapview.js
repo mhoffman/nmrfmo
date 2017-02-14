@@ -552,7 +552,7 @@ class MyMapView extends React.Component {
             .then((response) => {
                 let what_keys = []
                     response[0].map(function(key, i){
-                        console.log(key);
+                        /*console.log(key);*/
                         what_keys.push({key: key.unnest, label: key.unnest + ' (' + key.count + ')'})
                                 });
                         /*console.log(response[0]);*/
@@ -704,8 +704,8 @@ class MyMapView extends React.Component {
                     onScroll(event){
                         if(event!==null && event!==undefined){
                             /*event.persist();*/
-                            console.log("Scrolling");
-                            console.log(event);
+                            /*console.log("Scrolling");*/
+                            /*console.log(event);*/
                         }
                     }
                     onChangeVisibleRows(visibleRows, changedRows){
@@ -832,9 +832,9 @@ class MyMapView extends React.Component {
                                         this.navigate.bind(this, "event_details", {event: {event: event}})();
                                         ReactNative.InteractionManager.runAfterInteractions(()=>{
                                             let newPos = {longitude: event.lon, latitude: event.lat};
-                                            console.log("SCROLL TO");
-                                            console.log(newPos);
-                                            console.log(event);
+                                            /*console.log("SCROLL TO");*/
+                                            /*console.log(newPos);*/
+                                            /*console.log(event);*/
                                             this.map.animateToCoordinate(newPos);
                                             this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
                                         });
@@ -932,7 +932,7 @@ class MyMapView extends React.Component {
                                     .map((result, x) =>
                                             <Exponent.Components.MapView.Marker
                                             pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
-                                            ref={(marker)=>{console.log(result);this.state.markers[x] = marker}}
+                                            ref={(marker)=>{this.state.markers[x] = marker}}
                                             coordinate={{
                                                 longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
                                                 latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
