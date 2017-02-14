@@ -517,6 +517,9 @@ class MyMapView extends React.Component {
                 response.sort((x, y) => {
                     return new Date(x.datetime) - new Date(y.datetime)
                 });
+                response = response.filter(function(x){
+                    return !_.isEmpty(x);
+                })
                 response.push({});
                 response.push({});
                 response.unshift({});
@@ -826,6 +829,7 @@ class MyMapView extends React.Component {
                                     }}>
                                 <TouchableHighlight
                                     onPress={() => {
+                                        this.navigate.bind(this, "event_details", {event: {event: event}})();
                                         ReactNative.InteractionManager.runAfterInteractions(()=>{
                                             let newPos = {longitude: event.lon, latitude: event.lat};
                                             console.log("SCROLL TO");
@@ -833,7 +837,6 @@ class MyMapView extends React.Component {
                                             console.log(event);
                                             this.map.animateToCoordinate(newPos);
                                             this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
-                                            this.navigate.bind(this, "event_details", {event: {event: event}})();
                                         });
                                     } }
                                 >
@@ -1112,123 +1115,130 @@ class EventDetails extends React.Component {
                         marginTop:30,
                         marginBottom:20,
                         borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flex: 1,
+                        height: 45,
                     }]}
-                    onPress={()=>this.props.navigator.pop()}>
-                    <ReactNative.Text>
-                    <FontAwesome name='chevron-left' color='#000000'/>
-                    Back to Map</ReactNative.Text>
+        onPress={()=>this.props.navigator.pop()}>
+            <ReactNative.Text>
+            <FontAwesome name='chevron-left' color='#000000'/>
+            Back to Map</ReactNative.Text>
 
-                    </ReactNative.TouchableHighlight>
-                    <ReactNative.Text style={[styles.welcome]}>
-                    {this.props.event.event.title}
-                    </ReactNative.Text>
-                        <ReactNative.Text style={styles.p}>
-                        {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
-                    </ReactNative.Text>
-                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <ReactNative.Text style={[styles.p,{
-                            textAlign: 'justify'
-                        }]}>
-                    {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
-                    </ReactNative.Text>
-                        <ReactNative.Text style={styles.p}>
-                        {this.props.event.event.cost}
-                    </ReactNative.Text>
-                        <Hr lineColor='#b3b3b3' text='Actions' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+            </ReactNative.TouchableHighlight>
+            <ReactNative.Text style={[styles.welcome]}>
+            {this.props.event.event.title}
+        </ReactNative.Text>
+            <ReactNative.Text style={styles.p}>
+            {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
+        </ReactNative.Text>
+            <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+            <ReactNative.Text style={[styles.p,{
+                textAlign: 'justify'
+            }]}>
+        {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
+        </ReactNative.Text>
+            <ReactNative.Text style={styles.p}>
+            {this.props.event.event.cost}
+        </ReactNative.Text>
+            <Hr lineColor='#b3b3b3' text='Actions' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
 
-                        <View style={{
-                            flex: 1,
-                            flexDirection: 'row'
-                        }}>
+            <View style={{
+                flex: 1,
+                flexDirection: 'row'
+            }}>
 
-                    <ReactNative.TouchableHighlight style={[styles.clickable,
-                        {
-                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        }
+        <ReactNative.TouchableHighlight style={[styles.clickable,
+            {
+                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
+            }
 
-                    ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                        <ReactNative.Text style={[styles.action_link]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
+        ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
+            <ReactNative.Text style={[styles.action_link]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
 
-                        <ReactNative.TouchableHighlight style={[styles.clickable,{
-                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
-                    <ReactNative.Text style={styles.action_link}>Event Website <FontAwesome name='external-link' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
-
-
-                        <View style={{
-                            flex: 1,
-                            flexDirection: 'row'
-                        }}>
-                    <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Street View <FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Directions <Ionicons size={18} name="md-map" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
+            <ReactNative.TouchableHighlight style={[styles.clickable,{
+                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
+            }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
+        <ReactNative.Text style={styles.action_link}>Event Website <FontAwesome name='external-link' size={18}/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
+            </View>
 
 
+            <View style={{
+                flex: 1,
+                flexDirection: 'row'
+            }}>
+        <ReactNative.TouchableHighlight
+            onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
+        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+            <ReactNative.Text style={styles.action_link}>Street View <FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
 
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Order Uber <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
-                        onPress={()=>{ReactNative.Share.share({
-                            title: "Event",
-                            message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
-                            url: "http://facebook.github.io/react-native/",
-                            subject: "Share Link" //  for email
-                        });
-                        }}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
+            <ReactNative.TouchableHighlight
+            onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
+        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+            <ReactNative.Text style={styles.action_link}>Directions <Ionicons size={18} name="md-map" color="#000"/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
+            </View>
 
 
 
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link,
-                            {width: window.width}
-                        ]}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></ReactNative.Text>
-                            </ReactNative.TouchableHighlight>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+            <ReactNative.TouchableHighlight
+            onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+            <ReactNative.Text style={styles.action_link}>Order Uber <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
 
-                            <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
-                            <ReactNative.Text style={styles.p}>{this.props.event.event.address}</ReactNative.Text>
+            <ReactNative.TouchableHighlight
+            onPress={()=>{ReactNative.Share.share({
+                title: "Event",
+                message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
+                url: "http://facebook.github.io/react-native/",
+                subject: "Share Link" //  for email
+            });
+            }}
+        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+            <ReactNative.Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></ReactNative.Text>
+            </ReactNative.TouchableHighlight>
+            </View>
 
-                            <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
-                            <ReactNative.Text style={styles.p}>
-                            { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
-                        </ReactNative.Text>
-                            <ReactNative.Text style={styles.p}></ReactNative.Text>
-                            <ReactNative.TouchableHighlight
-                            style={[styles.clickable,
-                                {
-                                    marginBottom:20,
-                                    borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
-                                }]}
-                        onPress={()=>this.props.navigator.pop()}>
-                            <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
 
-                            </ReactNative.TouchableHighlight>
 
-                            </ReactNative.View>
-                            </ReactNative.ScrollView>
-                            )
+            <ReactNative.TouchableHighlight
+            onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+        style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+            <ReactNative.Text style={[styles.action_link,
+                {width: window.width}
+            ]}>Copy to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></ReactNative.Text>
+                </ReactNative.TouchableHighlight>
+
+                <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
+                <ReactNative.Text style={styles.p}>{this.props.event.event.address}</ReactNative.Text>
+
+                <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
+                <ReactNative.Text style={styles.p}>
+                { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
+            </ReactNative.Text>
+                <ReactNative.Text style={styles.p}></ReactNative.Text>
+                <ReactNative.TouchableHighlight
+                style={[styles.clickable,
+                    {
+                        marginBottom:20,
+                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
+                        justifyContent: 'center',
+                        flex: 1,
+                        height: 45,
+                    }]}
+            onPress={()=>this.props.navigator.pop()}>
+                <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
+
+                </ReactNative.TouchableHighlight>
+
+                </ReactNative.View>
+                </ReactNative.ScrollView>
+                )
     }
 }
 
