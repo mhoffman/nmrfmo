@@ -289,7 +289,7 @@ export default class Menu extends Component {
     textSearch(event){
         let search = event.nativeEvent.text;
         if(search.length > 0){
-            this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: search, timeRange: 'personal'});
+            this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: search});
         }else{
             this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: ''});
         }
