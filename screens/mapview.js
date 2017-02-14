@@ -941,13 +941,13 @@ class MyMapView extends React.Component {
                                             /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
                                             style={[
                                                 {
-                                                    zIndex: parseInt(x) === parseInt(this.state.activeEventID) ? 1 : 0,
+                                                    zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 1 : 0,
                                                 }
                                             ]}
                                             key={'marker_' + x}
                                             onPress={()=>{
                                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                                    this.listView.scrollTo({x: x * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
+                                                    this.listView.scrollTo({x: (x+1) * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
                                                 });
                                             }}
 
@@ -957,15 +957,15 @@ class MyMapView extends React.Component {
                                                     {
                                                         backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
                                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                                        borderWidth: parseInt(x) === parseInt(this.state.activeEventID) ? 3: 1,
-                                                        zIndex:parseInt(x) === parseInt(this.state.activeEventID) ? 10: 1,
+                                                        borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 3: 1,
+                                                        zIndex:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
                                                     }]}
                                             >
                                             {/*<ResultIcons result={result}/>*/}
                                             <ReactNative.Text style={{
-                                                fontSize: parseInt(x) === parseInt(this.state.activeEventID)? 16 : 14,
-                                                fontWeight: parseInt(x) === parseInt(this.state.activeEventID)? 'bold' : 'normal',
-                                                color: parseInt(x) === parseInt(this.state.activeEventID)? 'white' : 'black',
+                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 16 : 14,
+                                                fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
+                                                color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
                                             }}
                                             numberOfLines={2}
                                             ellipsizeMode={'tail'}
