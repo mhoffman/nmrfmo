@@ -888,49 +888,6 @@ class MyMapView extends React.Component {
 
                                 <ReactNative.View style={styles.container}>
 
-                                <ReactNative.TouchableOpacity
-                                style={{
-                                    position: 'absolute',
-                                    top: 50,
-                                    height: 40,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    flex: 1,
-                                    zIndex: this.state.mapMoved ? 25 : -15,
-                                }}
-                        onPress={()=>{
-                            console.log('Refresh button clicked');
-                            ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                this.getMeetupData();
-                            });
-                            this.setState({
-                                mapMoved: false,
-                            });
-                        }}
-
-                        >
-                            <View
-                            style={{
-                                marginLeft: window.width/2. - 100,
-                                zIndex: this.state.mapMoved ? 25 : -15,
-                            }}
-                        >
-                            <Text
-                            style={{
-                                fontSize: 16,
-                                fontWeight: 'bold',
-                                backgroundColor: 'darkseagreen',
-                                borderRadius: 3,
-                                borderWidth: 1,
-                                borderColor:'black',
-                                paddingLeft:3,
-                                paddingRight:3,
-                                zIndex: this.state.mapMoved ? 25 : -15,
-                            }}
-                        ><SimpleLineIcons size={16} name='reload'/> Reload in current region</Text>
-                            </View>
-                            </ReactNative.TouchableOpacity>
-
                             <Exponent.Components.MapView
                             ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
                         style={this.state.meetings.length == 0 ? styles.fullmap : styles.map}
@@ -1057,6 +1014,53 @@ class MyMapView extends React.Component {
 
 
                             </ReactNative.View>
+
+
+                                <ReactNative.TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    top: 50,
+                                    height: 40,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    zIndex: this.state.mapMoved ? 25 : 15,
+                                }}
+                        onPress={()=>{
+                            console.log('Refresh button clicked');
+                            ReactNative.InteractionManager.runAfterInteractions(()=>{
+                                this.getMeetupData();
+                            });
+                            this.setState({
+                                mapMoved: false,
+                            });
+                        }}
+
+                        >
+                            <View
+                            style={{
+                                marginLeft: window.width/2. - 100,
+                                zIndex: this.state.mapMoved ? 25 : -15,
+                            }}
+                        >
+                            <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                backgroundColor: 'darkseagreen',
+                                borderRadius: 3,
+                                borderWidth: 1,
+                                borderColor:'black',
+                                paddingLeft:3,
+                                paddingRight:3,
+                                paddingTop: 3,
+                                zIndex: this.state.mapMoved ? 25 : -15,
+                            }}
+                        ><SimpleLineIcons size={16} name='reload'/> Reload in current region</Text>
+                            </View>
+                            </ReactNative.TouchableOpacity>
+
+
                             <MenuButton style={[styles.menu_button,{marginTop:0, width: 100, height: 100}]} parent={this} onPress={() => this.toggle()}>
                             <ReactNative.Image
                             source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
