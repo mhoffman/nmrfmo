@@ -885,6 +885,7 @@ class MyMapView extends React.Component {
                                 drawerPosition={DrawerLayout.positions.Left}
                                 drawerLockMode='locked-open'
                                 renderNavigationView={()=>menu}
+                                onDrawerClose={()=>{this.getMeetupData()}}
                                 isOpen={this.state.isOpen}
                                 onChange={(isOpen) => this.updateMenuState(isOpen)}
                                 >
@@ -1024,7 +1025,7 @@ class MyMapView extends React.Component {
                                     <ReactNative.TouchableOpacity
                                     style={{
                                         position: 'absolute',
-                                        top: 50,
+                                        top: 80,
                                         height: 40,
                                         justifyContent: 'center',
                                         alignItems: 'center',
