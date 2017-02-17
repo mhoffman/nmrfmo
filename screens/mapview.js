@@ -957,7 +957,6 @@ class MyMapView extends React.Component {
                                                 style={[styles.marker,
                                                     {
                                                         backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
-                                                        borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
                                                         borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
                                                         zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
                                                         borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
@@ -1026,8 +1025,8 @@ class MyMapView extends React.Component {
                                     <ReactNative.TouchableOpacity
                                     style={{
                                         position: 'absolute',
-                                        top: 80,
-                                        height: 40,
+                                        top: this.state.mapMoved ? 80 : 0,
+                                        height: this.state.mapMoved ? 40 : 0,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         flex: 1,
@@ -1047,21 +1046,18 @@ class MyMapView extends React.Component {
                                     <View
                                     style={{
                                         marginLeft: window.width/2. - 100,
-                                        zIndex: this.state.mapMoved ? 25 : -15,
                                     }}
                                 >
                                     <Text
                                     style={{
                                         fontSize: 16,
                                         fontWeight: 'bold',
-                                        backgroundColor: 'darkseagreen',
-                                        borderRadius: 3,
-                                        borderWidth: 1,
-                                        borderColor:'black',
+                                        backgroundColor: this.state.mapMoved ? 'darkseagreen' : 'white',
+                                        borderRadius: this.state.mapMoved ? 3 : 0,
+                                        borderWidth: this.state.mapMoved ? 1 : 0,
                                         paddingLeft:3,
                                         paddingRight:3,
                                         paddingTop: 3,
-                                        zIndex: this.state.mapMoved ? 25 : -15,
                                     }}
                                 ><SimpleLineIcons size={16} name='reload'/> Reload in current region</Text>
                                     </View>
