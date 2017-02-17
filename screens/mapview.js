@@ -38,6 +38,7 @@ import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@exponent/vector-icons';
+import VectorIcons from '@exponent/vector-icons'
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
@@ -697,8 +698,7 @@ class MyMapView extends React.Component {
                             mapMoved: true,
                         });
                         console.log("Map moved");
-                        console.log(region)
-
+                        console.log(region);
                     }
 
                     onScroll(event){
@@ -1021,8 +1021,36 @@ class MyMapView extends React.Component {
 
                                     </ReactNative.View>
 
+                                    {Exponent.Constants.platform === null ? null :
+                                        <ReactNative.TouchableOpacity
+                                            style={{
+                                                position: 'absolute',
+                                                right: 10,
+                                                top: 20,
+                                                height: 40,
+                                                width: 100,
+                                                justifyContent: 'center',
+                                                alignItems: 'flex-end',
+                                                flex: 1,
+                                                zIndex: this.state.mapMoved ? 25 : 15,
+                                            }}
+                                        onPress={()=>{
+                                            navigator.geolocation.getCurrentPosition((position) => {
+                                                console.log("NAVIGATOR POSITION")
+                                                    console.log(position);
+                                                if(position!==null && position!==undefined && position.coords !== null && position.coords!==undefined){
+                                                    this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
+                                                    this.map.animateToCoordinate(position.coords);
+                                                }
+                                            });
+                                        }}
+                                        >
+                                            <VectorIcons.Ionicons name='ios-home' size={30}/>
+                                            </ReactNative.TouchableOpacity>
+                                    }
 
-                                    <ReactNative.TouchableOpacity
+
+                                <ReactNative.TouchableOpacity
                                     style={{
                                         position: 'absolute',
                                         top: this.state.mapMoved ? 80 : 0,
