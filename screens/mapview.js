@@ -1021,7 +1021,7 @@ class MyMapView extends React.Component {
 
                                     </ReactNative.View>
 
-                                    {Exponent.Constants.platform === null ? null :
+                                    {(Exponent.Constants.platform === null || Exponent.Constants.platform === undefined ) ? null :
                                         <ReactNative.TouchableOpacity
                                             style={{
                                                 position: 'absolute',
