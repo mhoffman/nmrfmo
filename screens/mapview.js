@@ -958,8 +958,9 @@ class MyMapView extends React.Component {
                                                     {
                                                         backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
                                                         borderColor: 'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)',
-                                                        borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 3: 1,
-                                                        zIndex:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
+                                                        borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
+                                                        zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
+                                                        borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
                                                     }]}
                                             >
                                             {/*<ResultIcons result={result}/>*/}
