@@ -427,6 +427,7 @@ class MyMapView extends React.Component {
             mapMoved: false,
             what: what,
             when: when,
+            category: 'All',
             event: {title: ''},
             loadingEvents: false,
         };
@@ -488,6 +489,7 @@ class MyMapView extends React.Component {
                     deviceId: Exponent.Constants.deviceId,
                     isDevice: Exponent.Constants.isDevice,
                     searchString: this.props.parent.state.search,
+                    category: this.props.parent.state.what,
                 }),
                 }).then((response) => response.json())
         .then((response) => {
@@ -516,26 +518,11 @@ class MyMapView extends React.Component {
                         loadingEvents: true,
                     })
 
-
                     if (((Date.now() - this.props.parent.state.lastUpdatedAt)/ 1000) >= 1.){
                         /*console.log("Updating ...");*/
                         /*console.log(this.state);*/
                         let lon = this.state.longitude;
                         let lat = this.state.latitude;
-
-                        var url = "";
-                        /*console.log(this)*/
-                        if(this.props.parent.state.search.length==0){
-                            url = 'https://nomorefomo.herokuapp.com/events/' + this.props.parent.state.timeRange + '?' + encodeURIComponent(JSON.stringify(this.state.mapRegion));
-                        }else{
-                            url = 'https://nomorefomo.herokuapp.com/search?q=' + encodeURI(this.props.parent.state.search) + '&' + encodeURIComponent(JSON.stringify(this.state.mapRegion));
-                        }
-
-                        /*console.log("MARKER URL");*/
-                        /*console.log(this.props.parent.state.timeRange);*/
-                        /*console.log(this.props.parent.state.search);*/
-                        /*console.log(url);*/
-
 
                         fetch('https://nomorefomo.herokuapp.com/query',{
                                 method: 'POST',
@@ -552,6 +539,7 @@ class MyMapView extends React.Component {
                                     deviceId: Exponent.Constants.deviceId,
                                     isDevice: Exponent.Constants.isDevice,
                                     searchString: this.props.parent.state.search,
+                                    category: this.props.parent.state.category,
                                 }),
                                 }).then((response) => response.json())
                         .then((response) =>{
