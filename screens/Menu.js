@@ -257,6 +257,7 @@ export default class Menu extends Component {
             this.props.parent.props.parent.setState({
                 timeRange: option.key
             });
+            this.props.parent.getCategoryCount();
         });
     };
     onChange(value){
@@ -284,6 +285,7 @@ export default class Menu extends Component {
             startTime: start,
             endTime: end,
         });
+        this.props.parent.getCategoryCount();
     };
 
     textSearch(event){
@@ -344,7 +346,7 @@ export default class Menu extends Component {
                     style={{
                         fontSize: 20
                     }}
-                    > back</Text>
+                > back</Text>
                     </TouchableOpacity>
                     </View>
 
@@ -377,7 +379,7 @@ export default class Menu extends Component {
                     </Text>
                 }
                 </ModalPicker>
-                </View>
+                    </View>
 
                     <View style={{
                         /*borderWidth: 1,*/
