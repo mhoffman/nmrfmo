@@ -1072,7 +1072,7 @@ class MyMapView extends React.Component {
                             <ReactNative.TouchableOpacity
                                 style={{
                                     position: 'absolute',
-                                    top: this.state.mapMoved ? 80 : 0,
+                                    top: this.state.mapMoved ? 20 : 0,
                                     height: this.state.mapMoved ? 40 : 0,
                                     justifyContent: 'center',
                                     alignItems: 'center',
@@ -1099,7 +1099,7 @@ class MyMapView extends React.Component {
                                 style={{
                                     fontSize: 16,
                                     fontWeight: 'bold',
-                                    backgroundColor: this.state.mapMoved ? 'darkseagreen' : 'white',
+                                    backgroundColor: this.state.mapMoved ? 'teal' : 'white',
                                     borderRadius: this.state.mapMoved ? 3 : 0,
                                     borderWidth: this.state.mapMoved ? 1 : 0,
                                     paddingLeft:3,
@@ -1114,13 +1114,13 @@ class MyMapView extends React.Component {
                                 <MenuButton style={[styles.menu_button,{marginTop:0, width: 60, height: 60}]} parent={this} onPress={() => this.toggle()}>
                                 {this.state.loadingEvents ? <ReactNative.ActivityIndicator
                                     style={{
-                                        height: 40,
+                                        height: 20,
                                         width: 40,
                                     }}
                                     color='black'
                                         /> :
                                         <ReactNative.Image
-                                        source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
+                                        source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
                                 }
                             </MenuButton>
 
