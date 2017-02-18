@@ -1020,7 +1020,7 @@ class MyMapView extends React.Component {
                                         height: 40,
                                         width: 40
                                     }}
-                                    />
+                                />
                                     :
                                     <UpdatingListView
                                     ref={(x) => { this.listView = x; }}
