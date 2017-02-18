@@ -386,6 +386,7 @@ export default class Menu extends Component {
                     style={{
                         marginBottom: 30,
                         fontSize: 18,
+                        marginTop: 15,
                         /*borderWidth: 1,*/
 
                     }}
@@ -420,7 +421,7 @@ export default class Menu extends Component {
                 >
                     <TextInput
                     style={{
-                        height:60,
+                        height:30,
                         width: 280,
                         fontSize: 18,
                     }}
