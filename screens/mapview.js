@@ -470,7 +470,7 @@ class MyMapView extends React.Component {
             isOpen: false,
             selectedItem: item,
         });
-    }
+    };
 
     getCategoryCount(){
         fetch('https://nomorefomo.herokuapp.com/category_count',{
@@ -491,11 +491,14 @@ class MyMapView extends React.Component {
                 }),
                 }).then((response) => response.json())
         .then((response) => {
-            let what_keys = []
-                response[0].map(function(key, i){
-                    /*console.log(key);*/
-                    what_keys.push({key: key.unnest, label: key.unnest + ' (' + key.count + ')'})
-                            });
+            let what_keys = [];
+            var sum = 0;
+            response[0].map(function(key, i){
+                /*console.log(key);*/
+                what_keys.push({key: key.unnest, label: key.unnest + ' (' + key.count + ')'});
+                        sum = sum + parseInt(key.count);
+                        });
+                what_keys.unshift({key: 'All', label: 'All' + ' (' + sum + ')'});
                     /*console.log(response[0]);*/
                     /*console.log(what_keys);*/
                     if(! _.isEmpty(what_keys)){
@@ -504,7 +507,7 @@ class MyMapView extends React.Component {
                         });
                     }
                     });
-                }
+                };
 
                 getMeetupData(){
                     /*console.log("TRYING UPDATE");*/
@@ -897,6 +900,7 @@ class MyMapView extends React.Component {
                             drawerLockMode='locked-open'
                             renderNavigationView={()=>menu}
                             onDrawerClose={()=>{this.getMeetupData()}}
+                            onDrawerOpen={()=>{this.getCategoryCount()}}
                             isOpen={this.state.isOpen}
                             onChange={(isOpen) => this.updateMenuState(isOpen)}
                             >
@@ -1073,6 +1077,7 @@ class MyMapView extends React.Component {
                                 style={{
                                     position: 'absolute',
                                     top: this.state.mapMoved ? 20 : 0,
+                                    left: 50,
                                     height: this.state.mapMoved ? 40 : 0,
                                     justifyContent: 'center',
                                     alignItems: 'center',
@@ -1090,11 +1095,7 @@ class MyMapView extends React.Component {
                             }}
 
                             >
-                                <View
-                                style={{
-                                    marginLeft: window.width/2. - 100,
-                                }}
-                            >
+                                <View>
                                 <Text
                                 style={{
                                     fontSize: 16,
