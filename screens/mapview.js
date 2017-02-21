@@ -142,7 +142,7 @@ function getCategoryHue(result){
             return constants.PRIMARY_HUE;
         }
     } else {
-        console.log("Warning: getCategoryHue received undefined result.");
+        /*console.log("Warning: getCategoryHue received undefined result.");*/
         return constants.PRIMARY_HUE
     }
 }
@@ -161,7 +161,7 @@ function getCategoryLightness(result){
             return constants.PRIMARY_LIGHTNESS
         }
     } else {
-        console.log("Warning: getCategoryHue received undefined result.");
+        /*console.log("Warning: getCategoryHue received undefined result.");*/
         return constants.PRIMARY_HUE
     }
 }
@@ -546,8 +546,8 @@ class MyMapView extends React.Component {
                             this.setState({
                                 loadingEvents: false,
                             })
-                            console.log('POST RESPONSE');
-                            console.log(response);
+                            /*console.log('POST RESPONSE');*/
+                            /*console.log(response);*/
                             response.sort((x, y) => {
                                 return new Date(x.datetime) - new Date(y.datetime)
                             });
@@ -699,8 +699,8 @@ class MyMapView extends React.Component {
                     this.setState({
                         mapMoved: true,
                     });
-                    console.log("Map moved");
-                    console.log(region);
+                    /*console.log("Map moved");*/
+                    /*console.log(region);*/
                 }
 
                 onScroll(event){
@@ -1047,8 +1047,8 @@ class MyMapView extends React.Component {
                                         }}
                                     onPress={()=>{
                                         navigator.geolocation.getCurrentPosition((position) => {
-                                            console.log("NAVIGATOR POSITION")
-                                                console.log(position);
+                                            /*console.log("NAVIGATOR POSITION");*/
+                                            /*console.log(position);*/
                                             if(position!==null && position!==undefined && position.coords !== null && position.coords!==undefined){
                                                 this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
                                                 this.map.animateToCoordinate(position.coords);
@@ -1073,7 +1073,7 @@ class MyMapView extends React.Component {
                                     zIndex: this.state.mapMoved ? 25 : 15,
                                 }}
                             onPress={()=>{
-                                console.log('Refresh button clicked');
+                                /*console.log('Refresh button clicked');*/
                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
                                     this.getMeetupData();
                                 });
