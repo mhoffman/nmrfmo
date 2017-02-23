@@ -295,7 +295,7 @@ export default class Menu extends Component {
         }else{
             this.props.parent.props.parent.setState({lastUpdatedAt: 0, search: ''});
         }
-        this.props.parent._drawerLayout.closeDrawer();
+        this.props.parent.getCategoryCount();
     };
 
     venueFeedback(event){
@@ -454,21 +454,37 @@ export default class Menu extends Component {
                 </Text>
                     </ModalPicker>
                     </View>
-                    {/*}
+                    {/*
 
-                       <TextInput
-                       ref='VenueFeedback'
-                       style={{
-                       marginBottom:20,
-                       height:60
-                       }}
-                       placeholder="Suggest a venue."
-                       onSubmitEditing={this.venueFeedback.bind(this)}
-                       />
+                        <View>
 
-                       <Text>Private Events</Text>
-                       <FBLogin parent={this}/>
-                       */}
+                        <Text>
+                        {this.state.what}
+                        </Text>
+                        {this.state.what.match(/[0-9]+/)!=null ?
+                        <Text>
+                        Found {this.state.what.match(/[0-9]+/)[0]} events
+                        </Text>
+                        :
+                        null
+                        }
+                        </View>
+                        */}
+                {/*}
+
+                   <TextInput
+                   ref='VenueFeedback'
+                   style={{
+                   marginBottom:20,
+                   height:60
+                   }}
+                   placeholder="Suggest a venue."
+                   onSubmitEditing={this.venueFeedback.bind(this)}
+                   />
+
+                   <Text>Private Events</Text>
+                   <FBLogin parent={this}/>
+                   */}
 
 
 
