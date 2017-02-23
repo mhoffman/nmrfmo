@@ -1298,27 +1298,32 @@ class EventDetails extends React.Component {
 
                 <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
                 <ReactNative.Text style={styles.p}>
-                { this.props.event.event.categories==null ?  "" : this.props.event.event.categories.join(" | ") }
-            </ReactNative.Text>
-                <ReactNative.Text style={styles.p}></ReactNative.Text>
-                <ReactNative.TouchableHighlight
-                style={[styles.clickable,
-                    {
-                        marginBottom:20,
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
-                        justifyContent: 'center',
-                        flex: 1,
-                        height: 45,
-                    }]}
-            onPress={()=>this.props.navigator.pop()}>
-                <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
+                { this.props.event.event.categories==null ?  "" :
+                    /*this.props.event.event.categories.join(" | ")*/
+                    this.props.event.event.categories.map((category, cx)=>{
+                        return <Text key={'mkld_' + this.props.event.event.id + '_' + cx} ><CategoryIcon key={'mkl_' + this.props.event.event.id + '_' + cx} size={14} category={category}/> {category} </Text>
+                    })
+                }
+    </ReactNative.Text>
+        <ReactNative.Text style={styles.p}></ReactNative.Text>
+        <ReactNative.TouchableHighlight
+        style={[styles.clickable,
+            {
+                marginBottom:20,
+                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
+                justifyContent: 'center',
+                flex: 1,
+                height: 45,
+            }]}
+    onPress={()=>this.props.navigator.pop()}>
+        <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
 
-                </ReactNative.TouchableHighlight>
+        </ReactNative.TouchableHighlight>
 
-                </ReactNative.View>
-                </ReactNative.ScrollView>
-                )
-    }
+        </ReactNative.View>
+        </ReactNative.ScrollView>
+        )
+}
 }
 
 class Navi extends React.Component {
