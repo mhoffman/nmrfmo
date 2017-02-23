@@ -63,6 +63,7 @@ var what = [
 {key: "Educational", label:"Educational"},
 {key: "Festivals", label:"Festivals"},
 {key: "Film", label:"Film"},
+{key: "Meetup", label:"Meetup"},
 {key: "Health & Fitness", label:"Health & Fitness"},
 {key: "Kids & Family", label:"Kids & Family"},
 {key: "Museums & Attractions", label:"Museums & Attractions"},
@@ -83,6 +84,7 @@ var what = [
         "Arts": 315,
         "Charity": 0,
         "Community": 80,
+        "Meetup": 80,
         "Concerts": 238,
         "Dance": 120,
         "Educational": 206,
@@ -102,6 +104,7 @@ const whatLightness = {
     "Arts": 50,
     "Charity": 50,
     "Community": 50,
+    "Meetup": 50,
     "Concerts": 50,
     "Dance": 50,
     "Educational": 50,
@@ -131,6 +134,7 @@ class CategoryIcon extends React.Component {
         } else if (this.props.category== 'Educational'){ return  <VectorIcons.Entypo name='open-book' size={size}/>
         } else if (this.props.category == 'Kids & Family'){ return <VectorIcons.MaterialIcons name='child-friendly' size={size}/>
         } else if (this.props.category== 'Movies'){ return <VectorIcons.MaterialIcons name='local-movies' size={size}/>
+        } else if (this.props.category== 'Meetup'){ return <VectorIcons.FontAwesome name='meetup' size={size}/>
         } else if (this.props.category == 'Music'){ return  <VectorIcons.MaterialIcons name='music-note' size={size}/>
         } else if (this.props.category == 'Outdoors'){ return  <VectorIcons.MaterialIcons name='nature-people' size={size}/>
         } else if (this.props.category == 'Health & Fitness'){ return <VectorIcons.MaterialIcons name='fitness-center' size={size}/>
