@@ -531,13 +531,38 @@ class MyMapView extends React.Component {
                 }),
                 }).then((response) => response.json())
         .then((response) => {
+            console.log("DAY COUNT");
+            console.log(response[0]);
+            let dow = parseInt(moment.tz().format('d'));
+            let sum = 0;
+            let when_keys = [];
+            for (var elem in response[0]){
+                let idow = parseInt(elem.data_part);
+                let icount = parseInt(elem.count);
+                sum = sum + icount;
+                let rel_dow = (idow - dow + 7) % 7;
+                console.log("ELEM " + JSON.stringify(elem));
+                console.log("IDOW " + idow) ;
+                console.log("DOW " + dow) ;
+                console.log("REL_DOW " + rel_dow) ;
+                if(rel_dow == 0){
+                    when_keys.push({key: 'today', label: 'today (' + icount + ')' , index: rel_dow})
+                } else if(rel_dow == 1) {
+                    when_keys.push({key: 'tomorrow', label: 'tomorrow (' + icount + ')', index: rel_dow})
+                } else {
+                    when_keys.push({key: 'days_' + rel_dow, label: moment(moment.now()).add(icount, "days").format("dddd") + ' (' + icount + ')', index: rel_dow})
+                }
+            }
+            when_keys.push({key: 'any', label: 'any day', index: 7});
+            when_keys = when_keys.sort(function(x, y){ return x.index - y.index });
             this.setState({
-                day_count: response[0]
+                day_count: response[0],
+                /*when: when_keys,*/
             });
         });
     };
 
-    getHoursCount(){
+    getHourCount(){
         fetch('https://nomorefomo.herokuapp.com/hour_count',{
                 method: 'POST',
                 headers: {
@@ -557,7 +582,8 @@ class MyMapView extends React.Component {
                 }),
                 }).then((response) => response.json())
         .then((response) => {
-            let hour_count = [];
+            console.log("HOUR COUNT")
+            console.log(response[0]);
             this.setState({
                 hour_count: response[0]
             });
@@ -605,7 +631,7 @@ class MyMapView extends React.Component {
     getCounts(){
         this.getCategoryCount();
         this.getHourCount();
-        /*this.getDayCount();*/
+        this.getDayCount();
     }
 
     getMeetupData(){
@@ -989,7 +1015,7 @@ class MyMapView extends React.Component {
                 drawerLockMode='locked-open'
                 renderNavigationView={()=>menu}
                 onDrawerClose={()=>{this.getMeetupData()}}
-                onDrawerOpen={()=>{this.getCategoryCount()}}
+                onDrawerOpen={()=>{this.getCounts()}}
                 isOpen={this.state.isOpen}
                 onChange={(isOpen) => this.updateMenuState(isOpen)}
                 >
