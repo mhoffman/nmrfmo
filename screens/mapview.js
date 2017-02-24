@@ -536,8 +536,9 @@ class MyMapView extends React.Component {
             let dow = parseInt(moment.tz().format('d'));
             let sum = 0;
             let when_keys = [];
-            for (var elem in response[0]){
-                let idow = parseInt(elem.data_part);
+            for (var ielem in response[0]){
+                var elem = response[0][ielem];
+                let idow = parseInt(elem.date_part);
                 let icount = parseInt(elem.count);
                 sum = sum + icount;
                 let rel_dow = (idow - dow + 7) % 7;
@@ -557,7 +558,7 @@ class MyMapView extends React.Component {
             when_keys = when_keys.sort(function(x, y){ return x.index - y.index });
             this.setState({
                 day_count: response[0],
-                /*when: when_keys,*/
+                when: when_keys,
             });
         });
     };
@@ -619,7 +620,8 @@ class MyMapView extends React.Component {
             });
             what_keys.unshift({key: 'All', label: <Text>All ({sum}) </Text> });
             /*console.log(response[0]);*/
-            /*console.log(what_keys);*/
+            console.log("CATEGORY COUNT");
+            console.log(what_keys);
             if(! _.isEmpty(what_keys)){
                 this.setState({
                     what: what_keys,
