@@ -457,6 +457,8 @@ class MyMapView extends React.Component {
             mapMoved: false,
             what: what,
             when: when,
+            hour_count: null,
+            day_count: null,
             category: 'All',
             event: {title: ''},
             loadingEvents: false,
@@ -503,6 +505,59 @@ class MyMapView extends React.Component {
         });
     };
 
+    getDayCount(){
+        fetch('https://nomorefomo.herokuapp.com/day_count',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify({
+                    q: this.props.parent.state.search,
+                    timeRange: this.props.parent.state.timeRange,
+                    startTime: this.props.parent.state.startTime,
+                    endTime: this.props.parent.state.endTime,
+                    mapRegion: this.state.mapRegion,
+                    deviceId: Exponent.Constants.deviceId,
+                    isDevice: Exponent.Constants.isDevice,
+                    searchString: this.props.parent.state.search,
+                    category: this.props.parent.state.what,
+                }),
+                }).then((response) => response.json())
+        .then((response) => {
+            this.setState({
+                day_count: response[0]
+            });
+        });
+    };
+
+    getHoursCount(){
+        fetch('https://nomorefomo.herokuapp.com/hour_count',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify({
+                    q: this.props.parent.state.search,
+                    timeRange: this.props.parent.state.timeRange,
+                    startTime: this.props.parent.state.startTime,
+                    endTime: this.props.parent.state.endTime,
+                    mapRegion: this.state.mapRegion,
+                    deviceId: Exponent.Constants.deviceId,
+                    isDevice: Exponent.Constants.isDevice,
+                    searchString: this.props.parent.state.search,
+                    category: this.props.parent.state.what,
+                }),
+                }).then((response) => response.json())
+        .then((response) => {
+            let hour_count = [];
+            this.setState({
+                hour_count: response[0]
+            });
+        });
+    };
+
     getCategoryCount(){
         fetch('https://nomorefomo.herokuapp.com/category_count',{
                 method: 'POST',
@@ -540,6 +595,12 @@ class MyMapView extends React.Component {
             }
         });
     };
+
+    getCounts(){
+        this.getCategoryCount();
+        this.getHourCount();
+        /*this.getDayCount();*/
+    }
 
     getMeetupData(){
         /*console.log("TRYING UPDATE");*/
