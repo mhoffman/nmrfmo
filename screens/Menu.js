@@ -257,7 +257,7 @@ export default class Menu extends Component {
             this.props.parent.props.parent.setState({
                 timeRange: option.key
             });
-            this.props.parent.getCategoryCount();
+            this.props.parent.getCounts();
         });
     };
     onChange(value){
