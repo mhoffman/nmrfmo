@@ -356,6 +356,25 @@ export default class Menu extends Component {
                         /*borderWidth: 1*/
                     }}
                 >
+                    <View
+                    style={{
+                        /*borderWidth: 1,*/
+                    }}
+                >
+                    <TextInput
+                    autCorrect={true}
+                    style={{
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        height:40,
+                        width: 280,
+                        paddingLeft: 10,
+                        fontSize: 18,
+                    }}
+                placeholder="Keywords ..."
+                    onSubmitEditing={this.textSearch.bind(this)}
+                />
+                    </View>
                     <ModalPicker
                     data={this.props.parent.state.when}
                 key={"whenPicker"}
@@ -416,21 +435,6 @@ export default class Menu extends Component {
                 onValuesChange={this.onTimeRangeSliderChange.bind(this)}
                 />
 
-                    <View
-                    style={{
-                        /*borderWidth: 1,*/
-                    }}
-                >
-                    <TextInput
-                    style={{
-                        height:30,
-                        width: 280,
-                        fontSize: 18,
-                    }}
-                placeholder="Search events"
-                    onSubmitEditing={this.textSearch.bind(this)}
-                />
-                    </View>
 
                     <ModalPicker
                     data={this.props.parent.state.what}
