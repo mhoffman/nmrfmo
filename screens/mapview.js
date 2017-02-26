@@ -934,9 +934,9 @@ class MyMapView extends React.Component {
 
 
                         <TouchableHighlight
-                        onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + event.latitude + ',' + event.longitude + '/')}
+                        onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(event.address.replace(/\s+/gi, '+')) +  '/')}
                     style={{}}>
-                        <Text style={styles.mini_action_link}><FontAwesome size={18} name="street-view" color="#000"/></Text>
+                        <Text style={styles.mini_action_link}><VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></Text>
                         </TouchableHighlight>
 
                         <TouchableHighlight
