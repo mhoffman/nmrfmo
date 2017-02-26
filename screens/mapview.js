@@ -547,14 +547,14 @@ class MyMapView extends React.Component {
                 console.log("DOW " + dow) ;
                 console.log("REL_DOW " + rel_dow) ;
                 if(rel_dow == 0){
-                    when_keys.push({key: 'today', label: 'today (' + icount + ')' , index: rel_dow})
+                    when_keys.push({key: 'today', label: 'today (' + icount  + ')' , index: rel_dow})
                 } else if(rel_dow == 1) {
-                    when_keys.push({key: 'tomorrow', label: 'tomorrow (' + icount + ')', index: rel_dow})
+                    when_keys.push({key: 'tomorrow', label: 'tomorrow (' + icount  + ')', index: rel_dow})
                 } else {
-                    when_keys.push({key: 'days_' + rel_dow, label: moment(moment.now()).add(icount, "days").format("dddd") + ' (' + icount + ')', index: rel_dow})
+                    when_keys.push({key: 'days_' + rel_dow, label: moment(moment.now()).add(rel_dow, "days").format("dddd") + ' (' + icount + ')', index: rel_dow})
                 }
             }
-            when_keys.push({key: 'any', label: 'any day', index: 7});
+            when_keys.push({key: 'any', label: 'any day (' + sum + ')', index: 7});
             when_keys = when_keys.sort(function(x, y){ return x.index - y.index });
             this.setState({
                 day_count: response[0],
@@ -1356,7 +1356,7 @@ class EventDetails extends React.Component {
             <ReactNative.TouchableHighlight
             onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
         style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-            <ReactNative.Text style={styles.action_link}>Directions <Ionicons size={18} name="md-map" color="#000"/></ReactNative.Text>
+            <ReactNative.Text style={styles.action_link}>Directions <VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
             </ReactNative.TouchableHighlight>
             </View>
 
