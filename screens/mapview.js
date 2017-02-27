@@ -547,11 +547,11 @@ class MyMapView extends React.Component {
                 console.log("DOW " + dow) ;
                 console.log("REL_DOW " + rel_dow) ;
                 if(rel_dow == 0){
-                    when_keys.push({key: 'today', label: 'today (' + icount  + ')' , index: rel_dow})
+                    when_keys.push({key: 'today', label: moment(moment.now()).add(rel_dow, "days").format('[Today], MMMM Do [(]') + icount  + ')' , index: rel_dow})
                 } else if(rel_dow == 1) {
-                    when_keys.push({key: 'tomorrow', label: 'tomorrow (' + icount  + ')', index: rel_dow})
+                    when_keys.push({key: 'tomorrow', label: moment(moment.now()).add(rel_dow, "days").format('[Tomorrow], MMMM Do [(]') + icount  + ')', index: rel_dow})
                 } else {
-                    when_keys.push({key: 'days_' + rel_dow, label: moment(moment.now()).add(rel_dow, "days").format("dddd") + ' (' + icount + ')', index: rel_dow})
+                    when_keys.push({key: 'days_' + rel_dow, label: moment(moment.now()).add(rel_dow, "days").format("dddd, MMMM Do") + ' (' + icount + ')', index: rel_dow})
                 }
             }
             when_keys.push({key: 'any', label: 'any day (' + sum + ')', index: 7});
