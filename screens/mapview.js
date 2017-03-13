@@ -42,11 +42,11 @@ import VectorIcons from '@exponent/vector-icons'
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
-const BOTTOM_HEIGHT = 120;
+const BOTTOM_HEIGHT = 220;
+const LISTVIEW_BORDER = 15
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 const LOCATION_RADIUS = 5e-5
-const LISTVIEW_BORDER = 5
-const LISTVIEW_BLOCKWIDTH  = window.width/3.
+const LISTVIEW_BLOCKWIDTH  = window.width/1.5
 
 import Menu from './Menu'
 import CustomCallout from './CustomCallout'
@@ -500,6 +500,7 @@ class MyMapView extends React.Component {
 
     async componentDidMount(){
         this.getMeetupData();
+        this.listView.scrollTo({x: 2. * LISTVIEW_BLOCKWIDTH - 5, y: 0});
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
 
         if(loc_permission.status === 'granted'){
@@ -911,8 +912,10 @@ class MyMapView extends React.Component {
                                                                 onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
                                                                 style={[
                                                                     {
-                                                                        borderColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
+                                                                        borderColor: '#cccccc',
                                                                         width: LISTVIEW_BLOCKWIDTH,
+                                                                        padding: 0,
+                                                                        marginRight: 10,
                                                                         flex: 1,
                                                                         flexDirection: 'column',
                                                                         justifyContent: 'space-between',
