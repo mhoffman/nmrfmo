@@ -500,7 +500,6 @@ class MyMapView extends React.Component {
 
     async componentDidMount(){
         this.getMeetupData();
-        this.listView.scrollTo({x: 2. * LISTVIEW_BLOCKWIDTH - 5, y: 0});
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
 
         if(loc_permission.status === 'granted'){
@@ -712,6 +711,21 @@ class MyMapView extends React.Component {
                                                                     dataSource: this.state.dataSource.cloneWithRows(response),
                                                                     lastUpdatedAt: Date.now(),
                                                                 });
+                                                                var offset = (new Date()).getTimezoneOffset() * 60;
+                                                                var currentTime = moment.now() - offset;
+                                                                var j = 1;
+                                                                for(var i=0 ; i < response.length; i++){
+                                                                    /*console.log('EVENT DATETETIME ' + parseInt(moment(response[i].datetime).format('x')));*/
+                                                                    /*console.log('CURRENT TIME ' +  currentTime);*/
+                                                                    /*console.log(currentTime > parseInt(moment(response[i.datetime]).format('x')));*/
+
+                                                                    if(currentTime> parseInt(moment(response[i].datetime).format('x'))){
+                                                                        j++;
+                                                                    }
+                                                                }
+                                                                this.listView.scrollTo({x: j * LISTVIEW_BLOCKWIDTH + 90, y: 0});
+                                                                this.setState({activeEventID: j});
+                                                                this.setState({activeEventLeftSeparatorID: j});
                                                             }).catch((error) => {
                                                                 console.log('Error in post ' + error)
                                                             });
@@ -873,7 +887,6 @@ class MyMapView extends React.Component {
                                                             this.setState({activeEventSeparatorID});
                                                             this.setState({activeEventLeftSeparatorID});
                                                             /*console.log(activeEventID);*/
-                                                            /*console.log(activeEventSeparatorID);*/
                                                             const activeEvent = this.state.meetings[activeEventID];
                                                             if(activeEvent!==null && activeEvent!==undefined){
                                                                 /*console.log(activeEvent);*/
@@ -984,7 +997,7 @@ class MyMapView extends React.Component {
                                                                 <TouchableHighlight
                                                                     onPress={() => {
                                                                         this.navigate.bind(this, "event_details", {event: {event: event}})();
-                                                                        this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH - 5, y: 0});
+                                                                        this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH + 90, y: 0});
                                                                         ReactNative.InteractionManager.runAfterInteractions(()=>{
                                                                             let newPos = {longitude: event.lon, latitude: event.lat};
                                                                             /*console.log("SCROLL TO");*/
@@ -1107,7 +1120,7 @@ class MyMapView extends React.Component {
                                                                             key={'marker_' + x}
                                                                             onPress={()=>{
                                                                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                                                                    this.listView.scrollTo({x: (x+1) * LISTVIEW_BLOCKWIDTH  - 5, y: 0});
+                                                                                    this.listView.scrollTo({x: (x+1) * LISTVIEW_BLOCKWIDTH  + 90, y: 0});
                                                                                 });
                                                                                 if(parseInt(x) + 1 === parseInt(this.state.activeEventID)){
                                                                                     this.navigate.bind(this, "event_details", {event: {event: result}})();
