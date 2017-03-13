@@ -635,8 +635,8 @@ var UpdatingListView = React.createClass({
         }
         var isVertical = !this.props.horizontal;
         var dataSource = this.props.dataSource;
-        var visibleMin = this.scrollProperties.offset;
-        var visibleMax = visibleMin + 2 *  this.scrollProperties.visibleLength ;
+        var visibleMin = this.scrollProperties.offset - .3 * this.scrollProperties.visibleLength ;
+        var visibleMax = visibleMin + 2 * this.scrollProperties.visibleLength ;
         /*console.log("OFFSET " + parseInt(this.scrollProperties.offset)  + "; VLENGTH " + parseInt(this.scrollProperties.visibleLength) + "; VISIBLEMIN " + parseInt(visibleMin) + '; VISIBLEMAX ' + parseInt(visibleMax));*/
         /*console.log("CHILDFRAMES");*/
         /*console.log(this._childFrames);*/
