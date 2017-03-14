@@ -1137,8 +1137,9 @@ class MyMapView extends React.Component {
                                                                                     }]}
                                                                             >
                                                                             {/*<ResultIcons result={result}/>*/}
-                                                                            <ReactNative.Text style={{
-                                                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 16 : 14,
+                                                                            <ReactNative.Text style={[
+                                                                            ], {
+                                                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 18,
                                                                                 fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
                                                                                 color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
                                                                             }}
