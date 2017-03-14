@@ -45,7 +45,7 @@ const window = ReactNative.Dimensions.get('window');
 const BOTTOM_HEIGHT = 220;
 const LISTVIEW_BORDER = 15
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
-const LOCATION_RADIUS = 5e-5
+const LOCATION_RADIUS = 5e-4
 const LISTVIEW_BLOCKWIDTH  = window.width/1.5
 
 import Menu from './Menu'
