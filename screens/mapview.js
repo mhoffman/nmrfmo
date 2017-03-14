@@ -70,6 +70,7 @@ var what = [
 {key: "Nightlife", label:"Nightlife"},
 {key: "Outdoors", label:"Outdoors"},
 {key: "Sports", label:"Sports"},
+{key: "Religious", label:"Religious"},
 {key: "Theater", label:"Theater"},
     /*"Comedy": "Comedy",*/
     /*"Business": "Business",*/
@@ -78,27 +79,31 @@ var what = [
     /*"Other": "Other",*/
     /*"Religious": "Religious",*/
     /*"Shopping": "Shopping",*/
-    ]
+    ];
 
-    const whatHues = {
-        "Arts": 315,
-        "Charity": 0,
-        "Community": 80,
-        "Meetup": 80,
-        "Concerts": 238,
-        "Dance": 120,
-        "Educational": 206,
-        "Festivals": 160,
-        "Film": 205,
-        "Health & Fitness": 120,
-        "Fitness": 120,
-        "Kids & Family": 330,
-        "Museums & Attractions": 280,
-        "Nightlife": 279,
-        "Sports": 59,
-        "Theater": 320,
-        "Outdoors": 340,
-    }
+    const whatSaturation = {
+    };
+const whatHues = {
+    "Arts": 315,
+    "Charity": 0,
+    "Community": 80,
+    "Meetup": 80,
+    "Concerts": 238,
+    "Dance": 120,
+    "Educational": 206,
+    "Festivals": 160,
+    "Movies": 205,
+    "Food & Drink": 360,
+    "Health & Fitness": 80,
+    "Fitness": 80,
+    "Kids & Family": 156,
+    "Museums & Attractions": 280,
+    "Nightlife": 279,
+    "Religious": 84,
+    "Sports": 59,
+    "Theater": 320,
+    "Outdoors": 340,
+}
 
 const whatLightness = {
     "Arts": 50,
@@ -109,12 +114,14 @@ const whatLightness = {
     "Dance": 50,
     "Educational": 50,
     "Festivals": 50,
-    "Film": 50,
+    "Movies": 50,
     "Health & Fitness": 60,
     "Fitness": 60,
+    "Food & Drink": 26,
     "Kids & Family": 45,
     "Museums & Attractions": 50,
     "Nightlife": 50,
+    "Religious": 50,
     "Sports": 35,
     "Theater": 50,
     "Outdoors": 50,
