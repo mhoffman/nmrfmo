@@ -31,6 +31,7 @@ import Exponent from 'exponent'
 import constants from './constants';
 import Hr from 'react-native-hr';
 import UpdatingListView from './vendor/UpdatingListView'
+import CryptoJS from 'crypto-js'
 
 import _ from 'lodash'
 
@@ -42,7 +43,7 @@ import VectorIcons from '@exponent/vector-icons'
 import { Components, Location, Permissions } from 'exponent';
 
 const window = ReactNative.Dimensions.get('window');
-const BOTTOM_HEIGHT = 220;
+const BOTTOM_HEIGHT = 270;
 const LISTVIEW_BORDER = 15
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 const LOCATION_RADIUS = 5e-4
@@ -99,6 +100,7 @@ const whatHues = {
     "Kids & Family": 156,
     "Museums & Attractions": 280,
     "Nightlife": 279,
+    "Comedy": 279,
     "Religious": 84,
     "Sports": 59,
     "Theater": 320,
@@ -111,6 +113,7 @@ const whatLightness = {
     "Community": 50,
     "Meetup": 50,
     "Concerts": 50,
+    "Comedy": 50,
     "Dance": 50,
     "Educational": 50,
     "Festivals": 50,
@@ -964,8 +967,6 @@ class MyMapView extends React.Component {
                                                                             justifyContent: 'space-between',
                                                                             paddingRight: 20,
                                                                             paddingLeft: 5,
-                                                                            /*borderWidth: 1,*/
-
                                                                         }}>
 
                                                                     <TouchableHighlight
@@ -1020,6 +1021,7 @@ class MyMapView extends React.Component {
                                                                         });
                                                                     } }
                                                                 >
+                                                                    <View>
                                                                     <Text
                                                                     numberOfLines={4}
                                                                 ellipsizeMode={'tail'}
@@ -1035,6 +1037,18 @@ class MyMapView extends React.Component {
                                                                         {event.title}
                                                                         {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
                                                                         </Text>
+                                                                        {event.image_url===undefined ? null :
+                                                                            <Image
+                                                                                source={{
+                                                                                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
+                                                                                }}
+                                                                            style={{
+                                                                                height: 300,
+                                                                                width: LISTVIEW_BLOCKWIDTH
+                                                                            }}
+                                                                            />
+                                                                        }
+                                                                        </View>
                                                                             </TouchableHighlight>
                                                                             </View>
                                                                             </View>
@@ -1363,8 +1377,19 @@ class EventDetails extends React.Component {
             <ReactNative.Text style={[styles.welcome]}>
             {this.props.event.event.title}
         </ReactNative.Text>
-            <ReactNative.Text style={styles.p}>
-            {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
+        {this.props.event.event.image_url===undefined ? null :
+            <Image
+                source={{
+                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(this.props.event.event.image_url).toString() + '.png'
+                }}
+            style={{
+                width: window.width,
+                height: 300,
+            }}
+            />
+        }
+        <ReactNative.Text style={styles.p}>
+        {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
         </ReactNative.Text>
             <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
             <ReactNative.Text style={[styles.p,{
