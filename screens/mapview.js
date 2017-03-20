@@ -930,8 +930,22 @@ class MyMapView extends React.Component {
                                                                     marginRight: - LISTVIEW_BLOCKWIDTH,
                                                                     zIndex:10,
                                                                 }}>
+                                                                {(this.state.meetings[parseInt(rowID)+1] != undefined && this.state.meetings[parseInt(rowID)+1].categories != undefined) ?
+                                                                    <Text
+                                                                        style={{
+                                                                            color:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ?'white' : 'black',
+                                                                            fontWeight:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'bold' : 'normal',
+                                                                            fontSize: 12,
+                                                                            marginLeft: 5,
+                                                                        }}
+                                                                    numberOfLines={1}
+                                                                    >
+                                                                    {this.state.meetings[parseInt(rowID)+1].categories.join(' | ')}
+                                                                    </Text>
+                                                                        : null
+                                                                }
                                                                 </View>
-                                                               );
+                                                                    );
                                                     }
                                                     renderRow(event, sectionID, rowID){
                                                         /*console.log("RENDERROW " + this.state.activeEventID);*/
