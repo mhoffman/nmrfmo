@@ -940,7 +940,7 @@ class MyMapView extends React.Component {
                                                                         }}
                                                                     numberOfLines={1}
                                                                     >
-                                                                    {this.state.meetings[parseInt(rowID)+1].categories.join(' | ')}
+                                                                    {this.state.meetings[parseInt(rowID)+1].categories.join(" | ")}
                                                                     </Text>
                                                                         : null
                                                                 }
@@ -976,7 +976,7 @@ class MyMapView extends React.Component {
                                                                 {event.title!==undefined?
                                                                     <View
                                                                         style={{
-                                                                            flex: .25,
+                                                                            flex: .1,
                                                                             flexDirection: 'row',
                                                                             justifyContent: 'space-between',
                                                                             paddingRight: 20,
