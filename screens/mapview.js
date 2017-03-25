@@ -47,7 +47,8 @@ const BOTTOM_HEIGHT = 270;
 const LISTVIEW_BORDER = 15
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 const LOCATION_RADIUS = 5e-4
-const LISTVIEW_BLOCKWIDTH  = window.width/1.5
+/*const LISTVIEW_BLOCKWIDTH  = window.width/1.5*/
+const LISTVIEW_BLOCKWIDTH  = 240 // keep fixed for better optimizing pictures
 
 import Menu from './Menu'
 import CustomCallout from './CustomCallout'
@@ -60,6 +61,7 @@ var what = [
 {key: "Charity", label:"Charity"},
 {key: "Community", label:"Community"},
 {key: "Concerts", label:"Concerts"},
+{key: "Music", label:"Music"},
 {key: "Dance", label:"Dance"},
 {key: "Educational", label:"Educational"},
 {key: "Festivals", label:"Festivals"},
@@ -90,6 +92,7 @@ const whatHues = {
     "Community": 80,
     "Meetup": 80,
     "Concerts": 238,
+    "Music": 238,
     "Dance": 120,
     "Educational": 206,
     "Festivals": 160,
@@ -113,6 +116,7 @@ const whatLightness = {
     "Community": 50,
     "Meetup": 50,
     "Concerts": 50,
+    "Music": 50,
     "Comedy": 50,
     "Dance": 50,
     "Educational": 50,
@@ -909,10 +913,36 @@ class MyMapView extends React.Component {
                                                                 const coords = {longitude: activeEvent.lon, latitude: activeEvent.lat};
                                                                 /*console.log(coords);*/
                                                                 /*this.map.animateToCoordinate(coords, 200);*/
+                                                                var coordinates = [];
+                                                                coordinates.push({latitude: this.state.latitude, longitude: this.state.longitude});
+                                                                coordinates.push({latitude:activeEvent.lat, longitude:activeEvent.lon});
+                                                                if(! _.isEmpty(this.state.mapRegion)){
+                                                                    let mr = this.state.mapRegion;
+                                                                    let _d = 2.375;
+                                                                    coordinates.push({latitude:mr.latitude + mr.latitudeDelta/_d, longitude:mr.longitude + mr.longitudeDelta/_d });
+                                                                    coordinates.push({latitude:mr.latitude + mr.latitudeDelta/_d, longitude:mr.longitude - mr.longitudeDelta/_d });
+                                                                    coordinates.push({latitude:mr.latitude - mr.latitudeDelta/_d, longitude:mr.longitude + mr.longitudeDelta/_d });
+                                                                    coordinates.push({latitude:mr.latitude - mr.latitudeDelta/_d, longitude:mr.longitude - mr.longitudeDelta/_d });
+                                                                }
+                                                                /*console.log("SCREEN SIZE");*/
+                                                                /*console.log(ReactNative.Dimensions.get('window'));*/
+                                                                /*console.log("COORDINATES");*/
+                                                                /*console.log(coordinates);*/
+                                                                /*console.log("MAP REGION");*/
+                                                                /*console.log(this.state.mapRegion);*/
+                                                                /*console.log("ACTIVE EVENT");*/
+                                                                /*console.log(activeEvent);*/
+
+                                                                this.map.fitToCoordinates(coordinates,{
+                                                                    edgePadding: {
+                                                                        top: 40,
+                                                                        right: 40,
+                                                                        bottom: 40,
+                                                                        left: 40,
+                                                                    }
+                                                                });
                                                             }
                                                         }
-
-
                                                     }
 
                                                     renderSeparator(sectionID, rowID, adjacentRowHighlight){
@@ -923,7 +953,8 @@ class MyMapView extends React.Component {
                                                                 style={{
                                                                     height: 15,
                                                                     width:  LISTVIEW_BLOCKWIDTH,
-                                                                    borderBottomColor: '#bbb',
+                                                                    borderColor: '#cccccc',
+                                                                    borderWidth: StyleSheet.hairLineWidth,
                                                                     borderBottomWidth: StyleSheet.hairLineWidth,
                                                                     /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
                                                                     backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
@@ -936,6 +967,8 @@ class MyMapView extends React.Component {
                                                                             color:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ?'white' : 'black',
                                                                             fontWeight:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'bold' : 'normal',
                                                                             fontSize: 12,
+                                                                            borderColor: '#cccccc',
+                                                                            borderWidth: StyleSheet.hairLineWidth,
                                                                             marginLeft: 5,
                                                                         }}
                                                                     numberOfLines={1}
@@ -956,6 +989,7 @@ class MyMapView extends React.Component {
                                                                 style={[
                                                                     {
                                                                         borderColor: '#cccccc',
+                                                                        borderWidth: event.tile!==undefined ? 1 : 0,
                                                                         width: LISTVIEW_BLOCKWIDTH,
                                                                         padding: 0,
                                                                         marginRight: 10,
@@ -980,7 +1014,7 @@ class MyMapView extends React.Component {
                                                                             flexDirection: 'row',
                                                                             justifyContent: 'space-between',
                                                                             paddingRight: 20,
-                                                                            paddingLeft: 5,
+                                                                            paddingLeft: 0,
                                                                         }}>
 
                                                                     <TouchableHighlight
@@ -1019,7 +1053,7 @@ class MyMapView extends React.Component {
                                                                 <View
                                                                     style={{
                                                                         flex: 1,
-                                                                        paddingLeft: 2,
+                                                                        paddingLeft: 0,
                                                                         /*borderWidth: 1,*/
                                                                     }}>
                                                                 <TouchableHighlight
@@ -1036,8 +1070,19 @@ class MyMapView extends React.Component {
                                                                     } }
                                                                 >
                                                                     <View>
+                                                                        {event.image_url===undefined ? null :
+                                                                            <Image
+                                                                                source={{
+                                                                                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
+                                                                                }}
+                                                                            style={{
+                                                                                height: BOTTOM_HEIGHT-90,
+                                                                                width: LISTVIEW_BLOCKWIDTH -2,
+                                                                            }}
+                                                                            />
+                                                                        }
                                                                     <Text
-                                                                    numberOfLines={4}
+                                                                    numberOfLines={3}
                                                                 ellipsizeMode={'tail'}
                                                                 >
                                                                     <Text
@@ -1051,17 +1096,6 @@ class MyMapView extends React.Component {
                                                                         {event.title}
                                                                         {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
                                                                         </Text>
-                                                                        {event.image_url===undefined ? null :
-                                                                            <Image
-                                                                                source={{
-                                                                                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
-                                                                                }}
-                                                                            style={{
-                                                                                height: 300,
-                                                                                width: LISTVIEW_BLOCKWIDTH
-                                                                            }}
-                                                                            />
-                                                                        }
                                                                         </View>
                                                                             </TouchableHighlight>
                                                                             </View>
