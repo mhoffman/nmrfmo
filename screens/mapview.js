@@ -1214,7 +1214,7 @@ class MyMapView extends React.Component {
                                                                             {/*<ResultIcons result={result}/>*/}
                                                                             <ReactNative.Text style={[
                                                                             ], {
-                                                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 18,
+                                                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 12,
                                                                                 fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
                                                                                 color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
                                                                             }}
@@ -1223,7 +1223,7 @@ class MyMapView extends React.Component {
                                                                             >
                                                                             {result.categories == null ? null :
                                                                                 result.categories.map((category, cx)=>{
-                                                                                    return <CategoryIcon key={'mk_' + x + '_' + cx} size={14} category={category} color='#ffffff'/>
+                                                                                    return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>
                                                                                 })}
                                                                                 {this.marker_format_title(result)}</ReactNative.Text>
                                                                                 <ReactNative.Text style={[
