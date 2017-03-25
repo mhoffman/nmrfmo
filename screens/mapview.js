@@ -989,7 +989,7 @@ class MyMapView extends React.Component {
                                                                 style={[
                                                                     {
                                                                         borderColor: '#cccccc',
-                                                                        borderWidth: event.tile!==undefined ? 1 : 0,
+                                                                        borderWidth: event.title!==undefined ? 1 : 0,
                                                                         width: LISTVIEW_BLOCKWIDTH,
                                                                         padding: 0,
                                                                         marginRight: 10,
