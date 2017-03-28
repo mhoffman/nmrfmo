@@ -915,10 +915,17 @@ class MyMapView extends React.Component {
                                                                 /*this.map.animateToCoordinate(coords, 200);*/
                                                                 var coordinates = [];
                                                                 coordinates.push({latitude: this.state.latitude, longitude: this.state.longitude});
-                                                                coordinates.push({latitude:activeEvent.lat, longitude:activeEvent.lon});
+                                                                if (! _.isEmpty(activeEvent) && activeEvent.lat!==0 && activeEvent.lon!==0){
+                                                                    coordinates.push({latitude:activeEvent.lat, longitude:activeEvent.lon});
+                                                                }
                                                                 if(! _.isEmpty(this.state.mapRegion)){
                                                                     let mr = this.state.mapRegion;
-                                                                    let _d = 2.375;
+                                                                    var _d = 0.
+                                                                        if(Exponent.Constants.platform === null || Exponent.Constants.platform === undefined ){
+                                                                            _d = 2.375;
+                                                                        }else{
+                                                                            _d = 2.5;
+                                                                        }
                                                                     coordinates.push({latitude:mr.latitude + mr.latitudeDelta/_d, longitude:mr.longitude + mr.longitudeDelta/_d });
                                                                     coordinates.push({latitude:mr.latitude + mr.latitudeDelta/_d, longitude:mr.longitude - mr.longitudeDelta/_d });
                                                                     coordinates.push({latitude:mr.latitude - mr.latitudeDelta/_d, longitude:mr.longitude + mr.longitudeDelta/_d });
@@ -926,8 +933,8 @@ class MyMapView extends React.Component {
                                                                 }
                                                                 /*console.log("SCREEN SIZE");*/
                                                                 /*console.log(ReactNative.Dimensions.get('window'));*/
-                                                                /*console.log("COORDINATES");*/
-                                                                /*console.log(coordinates);*/
+                                                                console.log("COORDINATES");
+                                                                console.log(coordinates);
                                                                 /*console.log("MAP REGION");*/
                                                                 /*console.log(this.state.mapRegion);*/
                                                                 /*console.log("ACTIVE EVENT");*/
@@ -1070,18 +1077,18 @@ class MyMapView extends React.Component {
                                                                     } }
                                                                 >
                                                                     <View>
-                                                                        {event.image_url===undefined ? null :
-                                                                            <Image
-                                                                                source={{
-                                                                                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
-                                                                                }}
-                                                                            style={{
-                                                                                height: BOTTOM_HEIGHT-90,
-                                                                                width: LISTVIEW_BLOCKWIDTH -2,
+                                                                    {event.image_url===undefined ? null :
+                                                                        <Image
+                                                                            source={{
+                                                                                uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
                                                                             }}
-                                                                            />
-                                                                        }
-                                                                    <Text
+                                                                        style={{
+                                                                            height: BOTTOM_HEIGHT-90,
+                                                                            width: LISTVIEW_BLOCKWIDTH -2,
+                                                                        }}
+                                                                        />
+                                                                    }
+                                                                <Text
                                                                     numberOfLines={3}
                                                                 ellipsizeMode={'tail'}
                                                                 >
@@ -1096,7 +1103,7 @@ class MyMapView extends React.Component {
                                                                         {event.title}
                                                                         {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
                                                                         </Text>
-                                                                        </View>
+                                                                            </View>
                                                                             </TouchableHighlight>
                                                                             </View>
                                                                             </View>
@@ -1354,7 +1361,7 @@ class MyMapView extends React.Component {
                                                                     </ReactNative.TouchableOpacity>
 
 
-                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 60, height: 60}]} parent={this} onPress={() => this.toggle()}>
+                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 0, height: 60}]} parent={this} onPress={() => this.toggle()}>
                                                                     {this.state.loadingEvents ? <ReactNative.ActivityIndicator
                                                                         style={{
                                                                             height: 20,
