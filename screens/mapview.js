@@ -724,7 +724,7 @@ class MyMapView extends React.Component {
                                                                     return !_.isEmpty(x);
                                                                 })
                                                                 response.push({});
-                                                                response.push({});
+                                                                /*response.push({});*/
                                                                 response.unshift({});
                                                                 this.setState({
                                                                     meetings: response,
@@ -933,8 +933,8 @@ class MyMapView extends React.Component {
                                                                 }
                                                                 /*console.log("SCREEN SIZE");*/
                                                                 /*console.log(ReactNative.Dimensions.get('window'));*/
-                                                                console.log("COORDINATES");
-                                                                console.log(coordinates);
+                                                                /*console.log("COORDINATES");*/
+                                                                /*console.log(coordinates);*/
                                                                 /*console.log("MAP REGION");*/
                                                                 /*console.log(this.state.mapRegion);*/
                                                                 /*console.log("ACTIVE EVENT");*/
@@ -1134,7 +1134,7 @@ class MyMapView extends React.Component {
                                                                 ref={(view) => { this._drawerLayout = view; }}
                                                                 style={styles.menu}
                                                                 menu={menu}
-                                                                drawerWidth={320}
+                                                                drawerWidth={window.width}
                                                                 drawerPosition={DrawerLayout.positions.Left}
                                                                 drawerLockMode='locked-open'
                                                                 renderNavigationView={()=>menu}
@@ -1361,7 +1361,7 @@ class MyMapView extends React.Component {
                                                                     </ReactNative.TouchableOpacity>
 
 
-                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 0, height: 60}]} parent={this} onPress={() => this.toggle()}>
+                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 60, height: 60}]} parent={this} onPress={() => this.toggle()}>
                                                                     {this.state.loadingEvents ? <ReactNative.ActivityIndicator
                                                                         style={{
                                                                             height: 20,
