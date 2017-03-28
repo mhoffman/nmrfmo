@@ -15,8 +15,8 @@ import {
 } from 'react-native';
 import Communications from 'react-native-communications';
 import ModalPicker from 'react-native-modal-picker';
-import { FontAwesome } from '@exponent/vector-icons';
-import VectorIcons from '@exponent/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import VectorIcons from '@expo/vector-icons';
 import moment from 'moment-timezone';
 
 import DrawerLayout from 'react-native-drawer-layout'

@@ -1,5 +1,6 @@
 'use strict';
-import Exponent from 'exponent';
+import Exponent from 'expo';
+import 'expo';
 import MapView from './screens/mapview';
 import React, { Component } from 'react';
 import {

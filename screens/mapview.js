@@ -26,7 +26,7 @@ import {
 
 } from 'react-native';
 import ReactNative from 'react-native';
-import Exponent from 'exponent'
+import Exponent from 'expo'
 
 import constants from './constants';
 import Hr from 'react-native-hr';
@@ -38,9 +38,9 @@ import _ from 'lodash'
 import DrawerLayout from 'react-native-drawer-layout'
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
-import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@exponent/vector-icons';
-import VectorIcons from '@exponent/vector-icons'
-import { Components, Location, Permissions } from 'exponent';
+import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@expo/vector-icons';
+import VectorIcons from '@expo/vector-icons'
+import { Components, Location, Permissions } from 'expo';
 
 const window = ReactNative.Dimensions.get('window');
 const BOTTOM_HEIGHT = 270;
@@ -1146,7 +1146,7 @@ class MyMapView extends React.Component {
 
                                                                 <ReactNative.View style={styles.container}>
 
-                                                                <Exponent.Components.MapView
+                                                                <Exponent.MapView
                                                                 ref={(map) => {this.map = map ;}} // Make MapView component available to other methods in this component under this.map
                                                                 style={this.state.meetings.length == 0 ? styles.fullmap : styles.map}
                                                                 initialRegion={{latitude : latitude,
@@ -1185,7 +1185,7 @@ class MyMapView extends React.Component {
                                                                             return false;
                                                                         }})
                                                                     .map((result, x) =>
-                                                                            <Exponent.Components.MapView.Marker
+                                                                            <Exponent.MapView.Marker
                                                                             pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
                                                                             ref={(marker)=>{this.state.markers[x] = marker}}
                                                                             coordinate={{
@@ -1239,13 +1239,13 @@ class MyMapView extends React.Component {
 
                                                                                 {this.marker_infotext(result)}</ReactNative.Text>
                                                                                 </ReactNative.View>
-                                                                                    </Exponent.Components.MapView.Marker>
+                                                                                    </Exponent.MapView.Marker>
                                                                                     )}
 
 
 
 
-                                                                </Exponent.Components.MapView>
+                                                                </Exponent.MapView>
 
                                                                 {/*
                                                                     <ReactNative.View style={this.state.event.title == "" ? styles.nobottomline : [
