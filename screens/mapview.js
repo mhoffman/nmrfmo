@@ -1155,6 +1155,7 @@ class MyMapView extends React.Component {
                                                                     longitudeDelta: 0.1321
                                                                 }}
                                                                 moveOnMarkerPress={false}
+                                                                provider='google'
                                                                 onRegionChangeComplete={this._onRegionChangeComplete.bind(this)} // Need to store current location
                                                                 showsUserLocation={true}
                                                                 followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
