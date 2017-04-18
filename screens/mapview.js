@@ -520,31 +520,39 @@ class MyMapView extends React.Component {
     }
 
     async componentWillMount(){
-        const venue_lists = await ReactNative.AsyncStore.getItem('venue_lists');
+        const venue_lists = await ReactNative.AsyncStorage.getItem('venue_lists');
         if(venue_lists!==null){
             this.setState({
                 venue_lists: JSON.parse(venue_lists)
             });
+            console.log("RELOADED VENUE_LISTS");
+            console.log(JSON.stringify(this.state.venue_lists))
         }
 
     }
-    async componentDidMount(){
+    async componentWillMount(){
         this.getMeetupData();
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
+        console.log(loc_permission);
 
         if(loc_permission.status === 'granted'){
             try {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    if(position!==null && position!==undefined && position.coords !== null && position.coord!==undefined){
-                        this.setState({longitude: position.coords.longitude, latitude: position.coords.latitude});
-                        this.map.animateToCoordinate(position.coords);
-                    }
-                });
+                /*console.log("Trying to fetch location.")*/
+                let position = await Location.getCurrentPositionAsync({});
+                /*console.log(position);*/
+                this.setState(
+                        {longitude: position.coords.longitude, latitude: position.coords.latitude}
+                        );
+                /*console.log("Fetched location.");*/
+                this.map.animateToCoordinate(position.coords);
+                this.getMeetupData();
             } catch(e){
-                console.log("Could not fetch location.")
+                console.log("Could not fetch location.");
+                console.log(e);
             }
         } else {
             /*ReactNative.Alert.alert("Too bad. nmrfmo doesn't permanently store your location.");*/
+            console.log("Permission was not granted.")
         }
     }
 
@@ -634,6 +642,7 @@ class MyMapView extends React.Component {
                                                                     isDevice: Exponent.Constants.isDevice,
                                                                     searchString: this.props.parent.state.search,
                                                                     category: this.props.parent.state.what,
+                                                                    venue_lists: this.state.venue_lists,
                                                                 }),
                                                                 }).then((response) => response.json())
                                                         .then((response) => {
@@ -662,6 +671,7 @@ class MyMapView extends React.Component {
                                                                     isDevice: Exponent.Constants.isDevice,
                                                                     searchString: this.props.parent.state.search,
                                                                     category: this.props.parent.state.what,
+                                                                    venue_lists: this.state.venue_lists,
                                                                 }),
                                                                 }).then((response) => response.json())
                                                         .then((response) => {
@@ -719,6 +729,7 @@ class MyMapView extends React.Component {
                                                                         isDevice: Exponent.Constants.isDevice,
                                                                         searchString: this.props.parent.state.search,
                                                                         category: this.props.parent.state.category,
+                                                                        venue_lists: this.state.venue_lists,
                                                                     }),
                                                                     }).then((response) => response.json())
                                                             .then((response) =>{
@@ -1485,23 +1496,6 @@ class EventDetails extends React.Component {
                         </ReactNative.TouchableHighlight>
 
                         <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Order Uber <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-
-                        </View>
-
-
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Directions <VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
                         onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+') + '\n\n' + this.props.event.event.url) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
                     style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                         <ReactNative.Text style={[styles.action_link,
@@ -1510,12 +1504,87 @@ class EventDetails extends React.Component {
 
                             </View>
 
-                            <Hr lineColor='#b3b3b3' text='Further Info' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
 
-                            <View style={{
-                                flex: 1,
-                                flexDirection: 'row'
-                            }}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                            <ReactNative.TouchableHighlight
+                            onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
+                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Directions <VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
+                        </ReactNative.TouchableHighlight>
+
+                        <ReactNative.TouchableHighlight
+                        onPress={(index)=>{
+                            Communications.web('lyft://ridetype?id=lyft_line&partner=hF0YCfyHmBhZ&destination[longitude]=' + this.props.event.event.lon + '&destination[latitude]=' + this.props.event.event.lat + '&pickup[latitude]=' + this.props.parent.mapView.state.latitude + '&pickup[longitude]=' + this.props.parent.mapView.state.longitude );
+                        }}
+                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Lyft <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
+
+                        </ReactNative.TouchableHighlight>
+
+                        <ReactNative.TouchableHighlight
+                        onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
+                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Uber <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
+                        </ReactNative.TouchableHighlight>
+
+
+                        </View>
+
+
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        </View>
+
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row'
+                        }}>
+
+                    <ReactNative.TouchableHighlight style={[styles.clickable,
+                        {
+                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
+                        }
+
+                    ]} onPress={(index)=>{
+                        let vl = this.props.parent.mapView.state.venue_lists;
+                        console.log(vl);
+                        (vl.blocked || (vl.blocked = {}))[this.props.event.event.publisher] = true;
+                        this.props.parent.mapView.setState({
+                            venue_lists: vl
+                        });
+                        ReactNative.AsyncStorage.setItem('venue_lists', JSON.stringify(vl));
+
+                    }}>
+                    <ReactNative.Text style={[styles.action_link]}>Block Venue <MaterialIcons name='block' size={18}/></ReactNative.Text>
+                        </ReactNative.TouchableHighlight>
+
+
+                        <ReactNative.TouchableHighlight style={[styles.clickable,
+                            {
+                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
+                            }
+
+                        ]} onPress={(index)=>{
+                            let vl = this.props.parent.mapView.state.venue_lists;
+                            console.log(vl);
+                            (vl.favorites || (vl.favorites = {}))[this.props.event.event.publisher] = true;
+                            this.props.parent.mapView.setState({
+                                venue_lists: vl
+                            });
+                            ReactNative.AsyncStorage.setItem('venue_lists', JSON.stringify(vl));
+                        }}>
+                    <ReactNative.Text style={[styles.action_link]}>Add to Favorites <SimpleLineIcons name='heart' size={18}/></ReactNative.Text>
+                        </ReactNative.TouchableHighlight>
+
+
+
+                        </View>
+                        <Hr lineColor='#b3b3b3' text='Further Info' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row'
+                        }}>
 
                     <ReactNative.TouchableHighlight style={[styles.clickable,
                         {
@@ -1603,10 +1672,16 @@ class Navi extends React.Component {
 
     renderScene(route, navigator) {
         if(route.name == 'main') {
-            return <MyMapView navigator={navigator} parent={this}/>
+            return <MyMapView
+                navigator={navigator}
+            ref={(x) => {this.mapView = x;}} // Make MapView component available to other methods in this component under this.map
+            parent={this}/>
         }
         if(route.name == 'event_details') {
-            return <EventDetails navigator={navigator} parent={this} {...route.passProps}/>
+            return <EventDetails
+                navigator={navigator}
+            parent={this}
+            {...route.passProps}/>
         }
     }
 }
