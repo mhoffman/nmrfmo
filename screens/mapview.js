@@ -935,7 +935,7 @@ class MyMapView extends React.Component {
                                                                 /*console.log(coords);*/
                                                                 /*this.map.animateToCoordinate(coords, 200);*/
                                                                 var coordinates = [];
-                                                                coordinates.push({latitude: this.state.latitude, longitude: this.state.longitude});
+                                                                /*coordinates.push({latitude: this.state.latitude, longitude: this.state.longitude});*/
                                                                 if (! _.isEmpty(activeEvent) && activeEvent.lat!==0 && activeEvent.lon!==0){
                                                                     coordinates.push({latitude:activeEvent.lat, longitude:activeEvent.lon});
                                                                 }
