@@ -522,15 +522,15 @@ class MyMapView extends React.Component {
     async componentWillMount(){
         const venue_lists = await ReactNative.AsyncStorage.getItem('venue_lists');
         if(venue_lists!==null){
-            this.setState({
-                venue_lists: JSON.parse(venue_lists)
-            });
+            /*this.setState({*/
+            /*venue_lists: JSON.parse(venue_lists)*/
+            /*});*/
             console.log("RELOADED VENUE_LISTS");
             console.log(JSON.stringify(this.state.venue_lists))
         }
 
     }
-    async componentWillMount(){
+    async componentDidMount(){
         this.getMeetupData();
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
         console.log(loc_permission);
@@ -1592,18 +1592,18 @@ class EventDetails extends React.Component {
                         }
 
                     ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                        <ReactNative.Text style={[styles.action_link]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></ReactNative.Text>
+                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></ReactNative.Text>
                         </ReactNative.TouchableHighlight>
                         <ReactNative.TouchableHighlight
                         onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
                     style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Street View <FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
+                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Street View <FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
                         </ReactNative.TouchableHighlight>
 
                         <ReactNative.TouchableHighlight style={[styles.clickable,{
                             borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
                         }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
-                    <ReactNative.Text style={styles.action_link}>Event Website <FontAwesome name='external-link' size={18}/></ReactNative.Text>
+                    <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Event Website <FontAwesome name='external-link' size={18}/></ReactNative.Text>
                         </ReactNative.TouchableHighlight>
 
 
