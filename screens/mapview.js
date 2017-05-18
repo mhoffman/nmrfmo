@@ -1655,6 +1655,21 @@ class Navi extends React.Component {
             search: '',
             lastUpdatedAt: 0
         };
+        this.handleBack = (() => {
+            if (this.navigator && this.navigator.getCurrentRoutes().length > 1){
+                this.navigator.pop();
+                return true; //avoid closing the app
+            }
+
+            return false; //close the app
+        }).bind(this) ;
+    }
+    componentDidMount() {
+        ReactNative.BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    componentWillUnmount() {
+        ReactNative.BackAndroid.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
     /*Main navigator class, defines routes and everything */
@@ -1663,6 +1678,7 @@ class Navi extends React.Component {
 
         return (
                 <ReactNative.Navigator initialRoute={{name: 'main'}}
+                ref={(nav)=>{this.navigator = nav;} }
                 renderScene={this.renderScene.bind(this)}
                 configureScene={(route, routeStack)=>
                     ReactNative.Navigator.SceneConfigs.PushFromRight

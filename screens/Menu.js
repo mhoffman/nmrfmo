@@ -13,6 +13,7 @@ import {
     TextInput,
     TouchableOpacity,
 } from 'react-native';
+import ReactNative from 'react-native';
 import Communications from 'react-native-communications';
 import ModalPicker from 'react-native-modal-picker';
 import { FontAwesome } from '@expo/vector-icons';
@@ -237,7 +238,18 @@ export default class Menu extends Component {
             },
 
         }
+        this.handleBack = (() => {
+            this.props.parent._drawerLayout.closeDrawer();
+            return true;
+        }).bind(this) ;
     };
+    componentDidMount() {
+        ReactNative.BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    componentWillUnmount() {
+        ReactNative.BackAndroid.removeEventListener('hardwareBackPress', this.handleBack);
+    }
     onChangeWhat(option){
         this.setState({
             what: option.label
@@ -363,14 +375,14 @@ export default class Menu extends Component {
                 >
                     <TextInput
                     autCorrect={true}
-                    style={{
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        height:40,
-                        width: 280,
-                        paddingLeft: 10,
-                        fontSize: 18,
-                    }}
+                style={{
+                    borderWidth: 1,
+                    borderColor: '#ccc',
+                    height:40,
+                    width: 280,
+                    paddingLeft: 10,
+                    fontSize: 18,
+                }}
                 placeholder="Keywords ..."
                     onSubmitEditing={this.textSearch.bind(this)}
                 />
