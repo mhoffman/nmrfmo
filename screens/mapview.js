@@ -428,7 +428,11 @@ class MenuButton extends React.Component {
         return (
                 <ReactNative.TouchableOpacity
                 /*onPress={this.handlePress.bind(this)}*/
-                onPress={() => this.props.parent._drawerLayout.openDrawer()}
+                onPress={() =>{
+                    this.props.parent._drawerLayout.openDrawer();
+                    this.props.parent.toggle();
+                }
+                }
                 style={this.props.style}>
                 {this.props.children}
                 </ReactNative.TouchableOpacity>
@@ -1382,7 +1386,7 @@ class MyMapView extends React.Component {
                                                                     </ReactNative.TouchableOpacity>
 
 
-                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 60, height: 60}]} parent={this} onPress={() => this.toggle()}>
+                                                                    <MenuButton style={[styles.menu_button,{marginTop:0, width: 60, height: 60}]} parent={this} >
                                                                     {this.state.loadingEvents ? <ReactNative.ActivityIndicator
                                                                         style={{
                                                                             height: 20,

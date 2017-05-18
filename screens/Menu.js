@@ -239,8 +239,13 @@ export default class Menu extends Component {
 
         }
         this.handleBack = (() => {
-            this.props.parent._drawerLayout.closeDrawer();
-            return true;
+            if(this.props.parent.state.isOpen){
+                this.props.parent._drawerLayout.closeDrawer();
+                this.props.parent.toggle();
+                return true;
+            } else {
+                return false;
+            }
         }).bind(this) ;
     };
     componentDidMount() {
@@ -344,7 +349,10 @@ export default class Menu extends Component {
                 }}
                 >
                 <TouchableOpacity
-                onPress={()=>{this.props.parent._drawerLayout.closeDrawer();}}
+                onPress={()=>{
+                    this.props.parent._drawerLayout.closeDrawer();
+                    this.props.parent.toggle();
+                }}
                 style={{
                     flex: 1,
                     justifyContent: 'flex-start',
