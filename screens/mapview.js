@@ -51,7 +51,7 @@ const LOCATION_RADIUS = 5e-4
 const LISTVIEW_BLOCKWIDTH  = 240 // keep fixed for better optimizing pictures
 
 import Menu from './Menu'
-import CustomCallout from './CustomCallout'
+/*import CustomCallout from './CustomCallout'*/
 
 var t = require('tcomb-form-native');
 var what = [
