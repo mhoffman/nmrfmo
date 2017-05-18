@@ -8,7 +8,7 @@
   "dependencies": {
     "@expo/react-native-read-more-text": "^1.1.0",
     "@expo/vector-icons": "^4.0.0",
-    "@ptomasroos/react-native-multi-slider": "git+https://github.com/ptomasroos/react-native-multi-slider.git",
+    "@ptomasroos/react-native-multi-slider": "git+https://github.com/ptomasroos/react-native-multi-slider.git#237f78917a5b29f",
     "crypto-js": "^3.1.9-1",
     "expo": "^15.0.2",
     "haversine": "^1.0.2",
