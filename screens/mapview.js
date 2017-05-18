@@ -1511,8 +1511,7 @@ class EventDetails extends React.Component {
 
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <ReactNative.TouchableHighlight
-                            onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) +  '/')}
+                            <ReactNative.TouchableHighlight onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI( '' + this.props.event.event.lat + ',' + this.props.event.event.lon )  +  '/')}
                     style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
                         <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Directions <VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
                         </ReactNative.TouchableHighlight>
