@@ -511,8 +511,17 @@ export default class Menu extends Component {
                    */}
 
 
+                    <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>
+                        Communications.web('https://goo.gl/forms/tusQJD96Z40jF9A72')
+                    }>
+                    <Text>
+                        <VectorIcons.MaterialIcons name='add-circle-outline' color='#000000' size={20}/> Add a Venue
+                        </Text>
+                        </TouchableOpacity>
 
-                {/*<TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
+
+                {/*
+                    <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
                     /*Communications.email(*/
                     /*['feedback@nmrfmo.33mail.com'],*/
                     /*null,*/

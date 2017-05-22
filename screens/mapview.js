@@ -41,6 +41,7 @@ import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@expo/vector-icons';
 import VectorIcons from '@expo/vector-icons'
 import { Components, Location, Permissions } from 'expo';
+import ReadMore from '@expo/react-native-read-more-text';
 
 const window = ReactNative.Dimensions.get('window');
 const BOTTOM_HEIGHT = 270;
@@ -1350,13 +1351,21 @@ class MyMapView extends React.Component {
                                                                 <ReactNative.TouchableOpacity
                                                                     style={{
                                                                         position: 'absolute',
-                                                                        top: this.state.mapMoved ? 20 : 0,
-                                                                        left: 50,
+                                                                        bottom: 50,
+                                                                        right: 50,
                                                                         height: this.state.mapMoved ? 40 : 0,
                                                                         justifyContent: 'center',
                                                                         alignItems: 'center',
                                                                         flex: 1,
                                                                         zIndex: this.state.mapMoved ? 25 : 15,
+                                                                        shadowColor:'#000000',
+                                                                        shadowRadius: 5,
+                                                                        shadowOpacity: 1.0,
+                                                                        shadowOffset: {
+                                                                            width: 3,
+                                                                            height: 3
+                                                                        }
+
                                                                     }}
                                                                 onPress={()=>{
                                                                     /*console.log('Refresh button clicked');*/
@@ -1374,14 +1383,14 @@ class MyMapView extends React.Component {
                                                                     style={{
                                                                         fontSize: 16,
                                                                         fontWeight: 'bold',
-                                                                        backgroundColor: this.state.mapMoved ? 'teal' : 'white',
+                                                                        backgroundColor: this.state.mapMoved ? 'maroon' : 'white',
                                                                         borderRadius: this.state.mapMoved ? 3 : 0,
                                                                         borderWidth: this.state.mapMoved ? 1 : 0,
                                                                         paddingLeft:3,
                                                                         paddingRight:3,
                                                                         paddingTop: 3,
                                                                     }}
-                                                                ><SimpleLineIcons size={16} name='reload'/> Reload in current region</Text>
+                                                                ><SimpleLineIcons size={40} name='reload'/></Text>
                                                                     </View>
                                                                     </ReactNative.TouchableOpacity>
 
@@ -1470,7 +1479,7 @@ class EventDetails extends React.Component {
                     <ReactNative.Text style={styles.p}>
                     {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                     </ReactNative.Text>
-                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+                        <Hr lineColor='#b3b3b3' text='Descroption' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
                         <ReactNative.Text
                         ellipsizeMode="tail"
                         numberOfLines={8}
