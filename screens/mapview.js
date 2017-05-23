@@ -7,6 +7,7 @@ import {
     AppRegistry,
     BackAndroid,
     Clipboard,
+    Colors,
     Dimensions,
     Image,
     InteractionManager,
@@ -1364,8 +1365,8 @@ class MyMapView extends React.Component {
                                                                 <ReactNative.TouchableOpacity
                                                                     style={{
                                                                         position: 'absolute',
-                                                                        bottom: 50,
-                                                                        right: 50,
+                                                                        bottom: 30,
+                                                                        right: 30,
                                                                         height: this.state.mapMoved ? 40 : 0,
                                                                         justifyContent: 'center',
                                                                         alignItems: 'center',
@@ -1439,6 +1440,21 @@ class EventDetails extends React.Component {
             sharing_visible: true,
         };
     }
+    _renderTruncatedFooter = (handlePress) => {
+        return (
+                <ReactNative.Text style={{fontWeight: 'bold', marginTop: 5}} onPress={handlePress}>
+                Read more
+                </ReactNative.Text>
+               );
+    }
+
+    _renderRevealedFooter = (handlePress) => {
+        return (
+                <ReactNative.Text style={{fontWeight: 'bold', marginTop: 5}} onPress={handlePress}>
+                Show less
+                </ReactNative.Text>
+               );
+    }
     render () {
         /*console.log("DETAIL PROPS");*/
         /*console.log(this.props);*/
@@ -1493,16 +1509,22 @@ class EventDetails extends React.Component {
                     <ReactNative.Text style={styles.p}>
                     {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
                     </ReactNative.Text>
-                        <Hr lineColor='#b3b3b3' text='Descroption' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+                        <ReadMore
+                        numberOfLines={3}
+                    renderTruncatedFooter={this._renderTruncatedFooter}
+                    renderRevealedFooter={this._renderRevealedFooter}
+                    onReady={this._handleTextReady}
+                    >
                         <ReactNative.Text
-                        ellipsizeMode="tail"
-                        numberOfLines={8}
-                    style={[styles.p,{
-                        textAlign: 'justify'
-
-                    }]}>
-                    {this.props.event.event.description == null ? "" :  this.props.event.event.description.slice(0, 400) + ' ...'}
+                        style={[styles.p,{
+                            textAlign: 'justify',
+                        }]}
+                    >
+                    {this.props.event.event.description == null ? "" :  this.props.event.event.description}
                     </ReactNative.Text>
+
+                        </ReadMore>
                         <ReactNative.Text style={styles.p}>
                         {this.props.event.event.cost}
                     </ReactNative.Text>
