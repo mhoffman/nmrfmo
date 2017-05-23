@@ -993,6 +993,13 @@ class MyMapView extends React.Component {
                                                                     backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
                                                                     marginRight: - LISTVIEW_BLOCKWIDTH,
                                                                     zIndex:10,
+                                                                    shadowColor:(this.state.meetings[parseInt(rowID)+1] != undefined && this.state.meetings[parseInt(rowID)+1].categories != undefined) ?'#000000' :'#ffffff',
+                                                                    shadowRadius: 1,
+                                                                    shadowOpacity: 1.0,
+                                                                    shadowOffset: {
+                                                                        width: 1,
+                                                                        height: 1
+                                                                    }
                                                                 }}>
                                                                 {(this.state.meetings[parseInt(rowID)+1] != undefined && this.state.meetings[parseInt(rowID)+1].categories != undefined) ?
                                                                     <Text
@@ -1022,6 +1029,7 @@ class MyMapView extends React.Component {
                                                                 style={[
                                                                     {
                                                                         borderColor: '#cccccc',
+                                                                        backgroundColor: '#ffffff',
                                                                         borderWidth: event.title!==undefined ? 1 : 0,
                                                                         width: LISTVIEW_BLOCKWIDTH,
                                                                         padding: 0,
@@ -1031,109 +1039,114 @@ class MyMapView extends React.Component {
                                                                         justifyContent: 'space-between',
                                                                         alignItems: 'stretch',
                                                                         marginTop: 15,
-
-
+                                                                        shadowColor: event.title!==undefined ? '#000000': '#ffffff',
+                                                                        shadowRadius: 1,
+                                                                        shadowOpacity: 1.0,
+                                                                        shadowOffset: {
+                                                                            width: 1,
+                                                                            height: 1
+                                                                        }
                                                                     }
-                                                                ]}>
-                                                                <View
-                                                                style={{
-                                                                    height: 0,
-                                                                    backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
-                                                                }}/>
-                                                                {event.title!==undefined?
+                                                                    ]}>
+                                                                        <View
+                                                                        style={{
+                                                                            height: 0,
+                                                                            backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
+                                                                        }}/>
+                                                                    {event.title!==undefined?
+                                                                        <View
+                                                                            style={{
+                                                                                flex: .1,
+                                                                                flexDirection: 'row',
+                                                                                justifyContent: 'space-between',
+                                                                                paddingRight: 20,
+                                                                                paddingLeft: 0,
+                                                                            }}>
+
+                                                                        <TouchableHighlight
+                                                                            onPress={()=>{Share.share({
+                                                                                title: "Event",
+                                                                                message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
+                                                                                url: "http://facebook.github.io/react-native/",
+                                                                                subject: "Share Link" //  for email
+                                                                            }); }}
+                                                                        style={{}}>
+                                                                            <Text style={styles.mini_action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
+                                                                            </TouchableHighlight>
+
+                                                                            <TouchableHighlight
+                                                                            onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
+                                                                        style={{}}>
+                                                                            <Text style={styles.mini_action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
+                                                                            </TouchableHighlight>
+
+
+                                                                            <TouchableHighlight
+                                                                            onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(event.address.replace(/\s+/gi, '+')) +  '/')}
+                                                                        style={{}}>
+                                                                            <Text style={styles.mini_action_link}><VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></Text>
+                                                                            </TouchableHighlight>
+
+                                                                            <TouchableHighlight
+                                                                            onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+') + '\n\n' + event.url) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
+                                                                        style={{}}>
+                                                                            <Text style={styles.mini_action_link}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
+                                                                            </TouchableHighlight>
+
+
+                                                                            </View>
+                                                                            : <View></View>}
                                                                     <View
                                                                         style={{
-                                                                            flex: .1,
-                                                                            flexDirection: 'row',
-                                                                            justifyContent: 'space-between',
-                                                                            paddingRight: 20,
+                                                                            flex: 1,
                                                                             paddingLeft: 0,
+                                                                            /*borderWidth: 1,*/
                                                                         }}>
-
                                                                     <TouchableHighlight
-                                                                        onPress={()=>{Share.share({
-                                                                            title: "Event",
-                                                                            message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
-                                                                            url: "http://facebook.github.io/react-native/",
-                                                                            subject: "Share Link" //  for email
-                                                                        }); }}
-                                                                    style={{}}>
-                                                                        <Text style={styles.mini_action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
-                                                                        </TouchableHighlight>
-
-                                                                        <TouchableHighlight
-                                                                        onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                                                                    style={{}}>
-                                                                        <Text style={styles.mini_action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
-                                                                        </TouchableHighlight>
-
-
-                                                                        <TouchableHighlight
-                                                                        onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(event.address.replace(/\s+/gi, '+')) +  '/')}
-                                                                    style={{}}>
-                                                                        <Text style={styles.mini_action_link}><VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></Text>
-                                                                        </TouchableHighlight>
-
-                                                                        <TouchableHighlight
-                                                                        onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+') + '\n\n' + event.url) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                                                                    style={{}}>
-                                                                        <Text style={styles.mini_action_link}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
-                                                                        </TouchableHighlight>
-
-
-                                                                        </View>
-                                                                        : <View></View>}
-                                                                <View
-                                                                    style={{
-                                                                        flex: 1,
-                                                                        paddingLeft: 0,
-                                                                        /*borderWidth: 1,*/
-                                                                    }}>
-                                                                <TouchableHighlight
-                                                                    onPress={() => {
-                                                                        this.navigate.bind(this, "event_details", {event: {event: event}})();
-                                                                        this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH + 90, y: 0});
-                                                                        ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                                                            let newPos = {longitude: event.lon, latitude: event.lat};
-                                                                            /*console.log("SCROLL TO");*/
-                                                                            /*console.log(newPos);*/
-                                                                            /*console.log(event);*/
-                                                                            this.map.animateToCoordinate(newPos);
-                                                                        });
-                                                                    } }
-                                                                >
-                                                                    <View>
-                                                                    {event.image_url===undefined ? null :
-                                                                        <Image
-                                                                            source={{
-                                                                                uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
+                                                                        onPress={() => {
+                                                                            this.navigate.bind(this, "event_details", {event: {event: event}})();
+                                                                            this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH + 90, y: 0});
+                                                                            ReactNative.InteractionManager.runAfterInteractions(()=>{
+                                                                                let newPos = {longitude: event.lon, latitude: event.lat};
+                                                                                /*console.log("SCROLL TO");*/
+                                                                                /*console.log(newPos);*/
+                                                                                /*console.log(event);*/
+                                                                                this.map.animateToCoordinate(newPos);
+                                                                            });
+                                                                        } }
+                                                                    >
+                                                                        <View>
+                                                                        {event.image_url===undefined ? null :
+                                                                            <Image
+                                                                                source={{
+                                                                                    uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
+                                                                                }}
+                                                                            style={{
+                                                                                height: BOTTOM_HEIGHT-90,
+                                                                                width: LISTVIEW_BLOCKWIDTH -2,
                                                                             }}
-                                                                        style={{
-                                                                            height: BOTTOM_HEIGHT-90,
-                                                                            width: LISTVIEW_BLOCKWIDTH -2,
-                                                                        }}
-                                                                        />
-                                                                    }
-                                                                <Text
-                                                                    numberOfLines={3}
-                                                                ellipsizeMode={'tail'}
-                                                                >
+                                                                            />
+                                                                        }
                                                                     <Text
-                                                                    style={{color:'#999999'}}>
-                                                                    {event.categories == null ? null :
-                                                                        event.categories.map((category, cx)=>{
-                                                                            return <Text key={'mklt_' + rowID + '_' + cx} ><CategoryIcon key={'mkl_' + rowID + '_' + cx} size={14} category={category}/></Text>
-                                                                        })}
-                                                                        {event.title!==undefined ? this.marker_format_title(event) + ' ' : ''}
-                                                                        </Text>
-                                                                        {event.title}
-                                                                        {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
-                                                                        </Text>
-                                                                            </View>
-                                                                            </TouchableHighlight>
-                                                                            </View>
-                                                                            </View>
-                                                                            )
+                                                                        numberOfLines={3}
+                                                                    ellipsizeMode={'tail'}
+                                                                    >
+                                                                        <Text
+                                                                        style={{color:'#999999'}}>
+                                                                        {event.categories == null ? null :
+                                                                            event.categories.map((category, cx)=>{
+                                                                                return <Text key={'mklt_' + rowID + '_' + cx} ><CategoryIcon key={'mkl_' + rowID + '_' + cx} size={14} category={category}/></Text>
+                                                                            })}
+                                                                            {event.title!==undefined ? this.marker_format_title(event) + ' ' : ''}
+                                                                            </Text>
+                                                                            {event.title}
+                                                                            {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
+                                                                            </Text>
+                                                                                </View>
+                                                                                </TouchableHighlight>
+                                                                                </View>
+                                                                                </View>
+                                                                                )
                                                     }
 
 
@@ -1365,7 +1378,6 @@ class MyMapView extends React.Component {
                                                                             width: 3,
                                                                             height: 3
                                                                         }
-
                                                                     }}
                                                                 onPress={()=>{
                                                                     /*console.log('Refresh button clicked');*/
@@ -1404,7 +1416,9 @@ class MyMapView extends React.Component {
                                                                         color='black'
                                                                             /> :
                                                                             <ReactNative.Image
-                                                                            source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
+                                                                            style={{
+                                                                            }}
+                                                                        source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
                                                                     }
                                                                 </MenuButton>
 
