@@ -1416,10 +1416,7 @@ class MyMapView extends React.Component {
                                                                         }}
                                                                         color='black'
                                                                             /> :
-                                                                            <ReactNative.Image
-                                                                            style={{
-                                                                            }}
-                                                                        source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
+                                                                            <ReactNative.Image source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
                                                                     }
                                                                 </MenuButton>
 
