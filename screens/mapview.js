@@ -1279,6 +1279,10 @@ class MyMapView extends React.Component {
 
                                                                                 {this.marker_infotext(result)}</ReactNative.Text>
                                                                                 </ReactNative.View>
+                                                                                    <Text numberOfLines={1} style={{
+                                                                                        fontSize:8,
+                                                                                        width: 60,
+                                                                                    }}>{result.title == undefined ? '' : result.title}</Text>
                                                                                     </Exponent.MapView.Marker>
                                                                                     )}
 
