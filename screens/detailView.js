@@ -11,6 +11,7 @@ import ReactNative from 'react-native';
 import VectorIcons from '@expo/vector-icons'
 import Hr from 'react-native-hr';
 import ReadMore from '@expo/react-native-read-more-text';
+import Communications from 'react-native-communications';
 
 
 // Local imports

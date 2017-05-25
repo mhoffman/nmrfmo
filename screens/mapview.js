@@ -1,30 +1,5 @@
 'use strict';
 import React, { Component } from 'react';
-import {
-    Alert,
-    AlertIOS,
-    Animated,
-    AppRegistry,
-    BackHandler,
-    Clipboard,
-    Colors,
-    Dimensions,
-    Image,
-    InteractionManager,
-    ListView,
-    Platform,
-    PropTypes,
-    Share,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    ToastAndroid,
-    TouchableHighlight,
-    TouchableOpacity,
-    View
-
-} from 'react-native';
 import ReactNative from 'react-native';
 import Exponent from 'expo'
 
@@ -60,18 +35,15 @@ class ReportEventError extends React.Component {
 
     render(){
         return (
-                <View
+                <ReactNative.View
                 style={{marginTop: 30}}
                 >
                 <Modal
                 animationType={"slide"}
                 transparent={false}
-                /*onRequestClose={()=>this.send_feedback.bind(this);}*/
-
                 >
-
                 </Modal>
-                </View>
+                </ReactNative.View>
                );
     }
 }
@@ -161,7 +133,7 @@ class ResultIcons extends React.Component{
 class MyMapView extends React.Component {
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const ds = new ReactNative.ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         this.state = {text: '',
             isOpen: false,
@@ -350,10 +322,10 @@ class MyMapView extends React.Component {
                                                             var sum = 0;
                                                             response[0].map(function(key, i){
                                                                 /*console.log(key);*/
-                                                                what_keys.push({key: key.unnest, label: <Text>{<CategoryIcon key={'c_' + key.unnest} category={key.unnest} />} {key.unnest} ({key.count})</Text>});
+                                                                what_keys.push({key: key.unnest, label: <ReactNative.Text>{<CategoryIcon key={'c_' + key.unnest} category={key.unnest} />} {key.unnest} ({key.count})</ReactNative.Text>});
                                                                 sum = sum + parseInt(key.count);
                                                             });
-                                                            what_keys.unshift({key: 'All', label: <Text>All ({sum}) </Text> });
+                                                            what_keys.unshift({key: 'All', label: <ReactNative.Text>All ({sum}) </ReactNative.Text> });
                                                             /*console.log(response[0]);*/
                                                             /*console.log("CATEGORY COUNT");*/
                                                             /*console.log(what_keys);*/
@@ -647,14 +619,14 @@ class MyMapView extends React.Component {
                                                     renderSeparator(sectionID, rowID, adjacentRowHighlight){
                                                         /*console.log("RENDER SEPARATOR " + rowID + '/' + this.state.activeEventLeftSeparatorID);*/
                                                         return (
-                                                                <View
+                                                                <ReactNative.View
                                                                 key={rowID}
                                                                 style={{
                                                                     height: 15,
                                                                     width:  constants.LISTVIEW_BLOCKWIDTH,
                                                                     borderColor: '#cccccc',
-                                                                    borderWidth: StyleSheet.hairLineWidth,
-                                                                    borderBottomWidth: StyleSheet.hairLineWidth,
+                                                                    borderWidth: ReactNative.StyleSheet.hairLineWidth,
+                                                                    borderBottomWidth: ReactNative.StyleSheet.hairLineWidth,
                                                                     backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + services.getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +services.getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
                                                                     marginRight: - constants.LISTVIEW_BLOCKWIDTH,
                                                                     zIndex:10,
@@ -667,29 +639,29 @@ class MyMapView extends React.Component {
                                                                     }
                                                                 }}>
                                                                 {(this.state.meetings[parseInt(rowID)+1] != undefined && this.state.meetings[parseInt(rowID)+1].categories != undefined) ?
-                                                                    <Text
+                                                                    <ReactNative.Text
                                                                         style={{
                                                                             color:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ?'white' : 'black',
                                                                             fontWeight:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'bold' : 'normal',
                                                                             fontSize: 12,
                                                                             borderColor: '#cccccc',
-                                                                            borderWidth: StyleSheet.hairLineWidth,
+                                                                            borderWidth: ReactNative.StyleSheet.hairLineWidth,
                                                                             marginLeft: 5,
                                                                         }}
                                                                     numberOfLines={1}
                                                                     >
                                                                     {this.state.meetings[parseInt(rowID)+1].categories.join(" | ")}
-                                                                    </Text>
+                                                                    </ReactNative.Text>
                                                                         : null
                                                                 }
-                                                                </View>
+                                                                </ReactNative.View>
                                                                     );
                                                     }
                                                     renderRow(event, sectionID, rowID){
                                                         /*console.log("RENDERROW " + this.state.activeEventID);*/
                                                         /*console.log(rowID);*/
                                                         return(
-                                                                <View
+                                                                <ReactNative.View
                                                                 onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
                                                                 style={[
                                                                     {
@@ -713,13 +685,13 @@ class MyMapView extends React.Component {
                                                                         }
                                                                     }
                                                                     ]}>
-                                                                        <View
+                                                                        <ReactNative.View
                                                                         style={{
                                                                             height: 0,
                                                                             backgroundColor: 'hsl('+services.getCategoryHue(event)+',' + '100%,'+services.getCategoryLightness(event)+'%)',
                                                                         }}/>
                                                                     {event.title!==undefined?
-                                                                        <View
+                                                                        <ReactNative.View
                                                                             style={{
                                                                                 flex: .1,
                                                                                 flexDirection: 'row',
@@ -728,7 +700,7 @@ class MyMapView extends React.Component {
                                                                                 paddingLeft: 0,
                                                                             }}>
 
-                                                                        <TouchableHighlight
+                                                                        <ReactNative.TouchableHighlight
                                                                             onPress={()=>{Share.share({
                                                                                 title: "Event",
                                                                                 message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
@@ -736,38 +708,38 @@ class MyMapView extends React.Component {
                                                                                 subject: "Share Link" //  for email
                                                                             }); }}
                                                                         style={{}}>
-                                                                            <Text style={styles.mini_action_link}><Ionicons size={14} name="md-share" color="#000"/></Text>
-                                                                            </TouchableHighlight>
+                                                                            <ReactNative.Text style={styles.mini_action_link}><Ionicons size={14} name="md-share" color="#000"/></ReactNative.Text>
+                                                                            </ReactNative.TouchableHighlight>
 
-                                                                            <TouchableHighlight
+                                                                            <ReactNative.TouchableHighlight
                                                                             onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + event.longitude + '&dropoff[latitude]=' + event.latitude +  '&dropoff[formatted_address]=' + event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
                                                                         style={{}}>
-                                                                            <Text style={styles.mini_action_link}><Ionicons size={18} name="ios-car" color="#000"/></Text>
-                                                                            </TouchableHighlight>
+                                                                            <ReactNative.Text style={styles.mini_action_link}><Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
+                                                                            </ReactNative.TouchableHighlight>
 
 
-                                                                            <TouchableHighlight
+                                                                            <ReactNative.TouchableHighlight
                                                                             onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI(event.address.replace(/\s+/gi, '+')) +  '/')}
                                                                         style={{}}>
-                                                                            <Text style={styles.mini_action_link}><VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></Text>
-                                                                            </TouchableHighlight>
+                                                                            <ReactNative.Text style={styles.mini_action_link}><VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
+                                                                            </ReactNative.TouchableHighlight>
 
-                                                                            <TouchableHighlight
+                                                                            <ReactNative.TouchableHighlight
                                                                             onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(event.description.replace(/\s+/gi, '+') + '\n\n' + event.url) + '&location=' + encodeURI(event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
                                                                         style={{}}>
-                                                                            <Text style={styles.mini_action_link}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></Text>
-                                                                            </TouchableHighlight>
+                                                                            <ReactNative.Text style={styles.mini_action_link}><FontAwesome size={18} name="calendar-plus-o" color="#000"/></ReactNative.Text>
+                                                                            </ReactNative.TouchableHighlight>
 
 
-                                                                            </View>
-                                                                            : <View></View>}
-                                                                    <View
+                                                                            </ReactNative.View>
+                                                                            : <ReactNative.View></ReactNative.View>}
+                                                                    <ReactNative.View
                                                                         style={{
                                                                             flex: 1,
                                                                             paddingLeft: 0,
                                                                             /*borderWidth: 1,*/
                                                                         }}>
-                                                                    <TouchableHighlight
+                                                                    <ReactNative.TouchableHighlight
                                                                         onPress={() => {
                                                                             this.navigate.bind(this, "event_details", {event: {event: event}})();
                                                                             this.listView.scrollTo({x: rowID * constants.LISTVIEW_BLOCKWIDTH + 90, y: 0});
@@ -780,9 +752,9 @@ class MyMapView extends React.Component {
                                                                             });
                                                                         } }
                                                                     >
-                                                                        <View>
+                                                                        <ReactNative.View>
                                                                         {event.image_url===undefined ? null :
-                                                                            <Image
+                                                                            <ReactNative.Image
                                                                                 source={{
                                                                                     uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
                                                                                 }}
@@ -792,25 +764,25 @@ class MyMapView extends React.Component {
                                                                             }}
                                                                             />
                                                                         }
-                                                                    <Text
+                                                                    <ReactNative.Text
                                                                         numberOfLines={3}
                                                                     ellipsizeMode={'tail'}
                                                                     >
-                                                                        <Text
+                                                                        <ReactNative.Text
                                                                         style={{color:'#999999'}}>
                                                                         {event.categories == null ? null :
                                                                             event.categories.map((category, cx)=>{
-                                                                                return <Text key={'mklt_' + rowID + '_' + cx} ><CategoryIcon key={'mkl_' + rowID + '_' + cx} size={14} category={category}/></Text>
+                                                                                return <ReactNative.Text key={'mklt_' + rowID + '_' + cx} ><CategoryIcon key={'mkl_' + rowID + '_' + cx} size={14} category={category}/></ReactNative.Text>
                                                                             })}
                                                                             {event.title!==undefined ? this.marker_format_title(event) + ' ' : ''}
-                                                                            </Text>
+                                                                            </ReactNative.Text>
                                                                             {event.title}
                                                                             {event.title!==undefined ? <FontAwesome name='chevron-right' color='#000000'/> : ''}
-                                                                            </Text>
-                                                                                </View>
-                                                                                </TouchableHighlight>
-                                                                                </View>
-                                                                                </View>
+                                                                            </ReactNative.Text>
+                                                                                </ReactNative.View>
+                                                                                </ReactNative.TouchableHighlight>
+                                                                                </ReactNative.View>
+                                                                                </ReactNative.View>
                                                                                 )
                                                     }
 
@@ -945,10 +917,10 @@ class MyMapView extends React.Component {
 
                                                                                 {this.marker_infotext(result)}</ReactNative.Text>
                                                                                 </ReactNative.View>
-                                                                                    <Text numberOfLines={1} style={{
+                                                                                    <ReactNative.Text numberOfLines={1} style={{
                                                                                         fontSize:8,
                                                                                         width: 60,
-                                                                                    }}>{result.title == undefined ? '' : result.title}</Text>
+                                                                                    }}>{result.title == undefined ? '' : result.title}</ReactNative.Text>
                                                                                 </Exponent.MapView.Marker>
                                                                                     )}
 
@@ -976,7 +948,7 @@ class MyMapView extends React.Component {
                                                                     </ReactNative.TouchableHighlight>
                                                                     </ReactNative.View>
                                                                     */}
-                                                                <View style={styles.bottomline}>
+                                                                <ReactNative.View style={styles.bottomline}>
                                                                 { this.state.loadingEvents ?
                                                                     <ReactNative.ActivityIndicator
                                                                         style={{
@@ -997,7 +969,7 @@ class MyMapView extends React.Component {
                                                                     defaultRowSize={constants.LISTVIEW_BLOCKWIDTH}
                                                                     />
                                                                 }
-                                                                </View>
+                                                                </ReactNative.View>
 
 
 
@@ -1060,7 +1032,7 @@ class MyMapView extends React.Component {
                                                                 }}
 
                                                                 >
-                                                                    <View
+                                                                    <ReactNative.View
                                                                     style={{
                                                                         backgroundColor: 'limegreen',
                                                                         height: 50,
@@ -1071,7 +1043,7 @@ class MyMapView extends React.Component {
                                                                     >
                                                                     <SimpleLineIcons size={40} name='reload'
                                                                     />
-                                                                    </View>
+                                                                    </ReactNative.View>
                                                                     </ReactNative.TouchableOpacity>
 
 

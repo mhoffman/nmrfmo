@@ -358,6 +358,7 @@ export default class Menu extends Component {
                     justifyContent: 'flex-start',
                     flexDirection: 'row',
                     marginTop: 20,
+                    marginBottom: 20,
                     /*borderWidth: 1,*/
                 }}
                 >
