@@ -1283,7 +1283,7 @@ class MyMapView extends React.Component {
                                                                                         fontSize:8,
                                                                                         width: 60,
                                                                                     }}>{result.title == undefined ? '' : result.title}</Text>
-                                                                                    </Exponent.MapView.Marker>
+                                                                                </Exponent.MapView.Marker>
                                                                                     )}
 
 
@@ -1369,9 +1369,8 @@ class MyMapView extends React.Component {
                                                                 <ReactNative.TouchableOpacity
                                                                     style={{
                                                                         position: 'absolute',
-                                                                        bottom: 30,
-                                                                        right: 30,
-                                                                        height: this.state.mapMoved ? 40 : 0,
+                                                                        bottom: 20,
+                                                                        right: 20,
                                                                         justifyContent: 'center',
                                                                         alignItems: 'center',
                                                                         flex: 1,
@@ -1395,19 +1394,17 @@ class MyMapView extends React.Component {
                                                                 }}
 
                                                                 >
-                                                                    <View>
-                                                                    <Text
+                                                                    <View
                                                                     style={{
-                                                                        fontSize: 16,
-                                                                        fontWeight: 'bold',
-                                                                        backgroundColor: this.state.mapMoved ? 'maroon' : 'white',
-                                                                        borderRadius: this.state.mapMoved ? 3 : 0,
-                                                                        borderWidth: this.state.mapMoved ? 1 : 0,
-                                                                        paddingLeft:3,
-                                                                        paddingRight:3,
-                                                                        paddingTop: 3,
+                                                                        backgroundColor: 'limegreen',
+                                                                        height: 50,
+                                                                        width: 50,
+                                                                        padding: 5,
+                                                                        borderRadius: 25,
                                                                     }}
-                                                                ><SimpleLineIcons size={40} name='reload'/></Text>
+                                                                    >
+                                                                    <SimpleLineIcons size={40} name='reload'
+                                                                    />
                                                                     </View>
                                                                     </ReactNative.TouchableOpacity>
 
@@ -1420,7 +1417,11 @@ class MyMapView extends React.Component {
                                                                         }}
                                                                         color='black'
                                                                             /> :
-                                                                            <ReactNative.Image source={require('./assets/menu.png')} style={{width: 32, height: 20}} />
+                                                                            <ReactNative.Image source={require('./assets/menu.png')}
+                                                                        style={{
+                                                                            width: 32,
+                                                                            height: 32,
+                                                                        }} />
                                                                     }
                                                                 </MenuButton>
 
@@ -1560,7 +1561,7 @@ class EventDetails extends React.Component {
 
 
 
-                        <Hr lineColor='#b3b3b3' text='Getting There' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
+                            <Hr lineColor='#b3b3b3' text='Getting There' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
 
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
@@ -1586,7 +1587,7 @@ class EventDetails extends React.Component {
                         </View>
 
 
-                        
+
 
 
 
