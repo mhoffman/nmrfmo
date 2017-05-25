@@ -224,7 +224,6 @@ class EventDetails extends React.Component {
 
                     ]} onPress={(index)=>{
                         let vl = this.props.parent.mapView.state.venue_lists;
-                        console.log(vl);
                         (vl.blocked || (vl.blocked = {}))[this.props.event.event.publisher] = true;
                         this.props.parent.mapView.setState({
                             venue_lists: vl

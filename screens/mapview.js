@@ -197,15 +197,15 @@ class MyMapView extends React.Component {
             /*this.setState({*/
             /*venue_lists: JSON.parse(venue_lists)*/
             /*});*/
-            console.log("RELOADED VENUE_LISTS");
-            console.log(JSON.stringify(this.state.venue_lists))
+            /*console.log("RELOADED VENUE_LISTS");*/
+            /*console.log(JSON.stringify(this.state.venue_lists))*/
         }
 
     }
     async componentDidMount(){
         this.getMeetupData();
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
-        console.log(loc_permission);
+        /*console.log(loc_permission);*/
 
         if(loc_permission.status === 'granted'){
             try {
@@ -265,8 +265,8 @@ class MyMapView extends React.Component {
                 }),
                 }).then((response) => response.json())
         .then((response) => {
-            console.log("DAY COUNT");
-            console.log(response[0]);
+            /*console.log("DAY COUNT");*/
+            /*console.log(response[0]);*/
             let dow = parseInt(moment.tz().format('d'));
             let sum = 0;
             let when_keys = [];
@@ -276,10 +276,10 @@ class MyMapView extends React.Component {
                 let icount = parseInt(elem.count);
                 sum = sum + icount;
                 let rel_dow = (idow - dow + 7) % 7;
-                console.log("ELEM " + JSON.stringify(elem));
-                console.log("IDOW " + idow) ;
-                console.log("DOW " + dow) ;
-                console.log("REL_DOW " + rel_dow) ;
+                /*console.log("ELEM " + JSON.stringify(elem));*/
+                /*console.log("IDOW " + idow) ;*/
+                /*console.log("DOW " + dow) ;*/
+                /*console.log("REL_DOW " + rel_dow) ;*/
                 if(rel_dow == 0){
                     when_keys.push({key: 'today', label: moment(moment.now()).add(rel_dow, "days").format('[Today], MMMM Do [(]') + icount  + ')' , index: rel_dow})
                             } else if(rel_dow == 1) {
@@ -318,8 +318,8 @@ class MyMapView extends React.Component {
                                                                 }),
                                                                 }).then((response) => response.json())
                                                         .then((response) => {
-                                                            console.log("HOUR COUNT")
-                                                                console.log(response[0]);
+                                                            /*console.log("HOUR COUNT")*/
+                                                            /*console.log(response[0]);*/
                                                             this.setState({
                                                                 hour_count: response[0]
                                                             });
@@ -356,8 +356,8 @@ class MyMapView extends React.Component {
                                                             });
                                                             what_keys.unshift({key: 'All', label: <Text>All ({sum}) </Text> });
                                                             /*console.log(response[0]);*/
-                                                            console.log("CATEGORY COUNT");
-                                                            console.log(what_keys);
+                                                            /*console.log("CATEGORY COUNT");*/
+                                                            /*console.log(what_keys);*/
                                                             if(! _.isEmpty(what_keys)){
                                                                 this.setState({
                                                                     what: what_keys,
