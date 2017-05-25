@@ -5,14 +5,13 @@ import {
     AlertIOS,
     Animated,
     AppRegistry,
-    BackAndroid,
+    BackHandler,
     Clipboard,
     Colors,
     Dimensions,
     Image,
     InteractionManager,
     ListView,
-    Navigator,
     Platform,
     PropTypes,
     Share,
@@ -36,7 +35,8 @@ import CryptoJS from 'crypto-js'
 
 import _ from 'lodash'
 
-import DrawerLayout from 'react-native-drawer-layout'
+import DeprecatedComponents from 'react-native-deprecated-custom-components';
+import DrawerLayout from 'react-native-drawer-layout';
 import Communications from 'react-native-communications';
 import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@expo/vector-icons';
@@ -1731,11 +1731,11 @@ class Navi extends React.Component {
         }).bind(this) ;
     }
     componentDidMount() {
-        ReactNative.BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        ReactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     componentWillUnmount() {
-        ReactNative.BackAndroid.removeEventListener('hardwareBackPress', this.handleBack);
+        ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
     /*Main navigator class, defines routes and everything */
@@ -1743,11 +1743,11 @@ class Navi extends React.Component {
     render () {
 
         return (
-                <ReactNative.Navigator initialRoute={{name: 'main'}}
+                <DeprecatedComponents.Navigator initialRoute={{name: 'main'}}
                 ref={(nav)=>{this.navigator = nav;} }
                 renderScene={this.renderScene.bind(this)}
                 configureScene={(route, routeStack)=>
-                    ReactNative.Navigator.SceneConfigs.PushFromRight
+                    DeprecatedComponents.Navigator.SceneConfigs.PushFromRight
                 } />
                );
     }

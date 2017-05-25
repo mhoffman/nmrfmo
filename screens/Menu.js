@@ -249,11 +249,11 @@ export default class Menu extends Component {
         }).bind(this) ;
     };
     componentDidMount() {
-        ReactNative.BackAndroid.addEventListener('hardwareBackPress', this.handleBack);
+        ReactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBack);
     }
 
     componentWillUnmount() {
-        ReactNative.BackAndroid.removeEventListener('hardwareBackPress', this.handleBack);
+        ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
     onChangeWhat(option){
         this.setState({
