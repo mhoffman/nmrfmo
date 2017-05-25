@@ -1197,6 +1197,7 @@ class MyMapView extends React.Component {
                                                                 moveOnMarkerPress={false}
                                                                 onRegionChangeComplete={this._onRegionChangeComplete.bind(this)} // Need to store current location
                                                                 showsUserLocation={true}
+                                                                showsMyLocationButton={true}
                                                                 pitchEnabled={false}
                                                                 followsUserLocation={false} // Very Important to keep it off. Really annoying showstopper otherwise under iOS.
                                                                 showsCompass={false}
