@@ -28,8 +28,6 @@ import {
 import ReactNative from 'react-native';
 import Exponent from 'expo'
 
-import constants from './constants';
-import Hr from 'react-native-hr';
 import UpdatingListView from './vendor/UpdatingListView'
 import CryptoJS from 'crypto-js'
 
@@ -42,100 +40,18 @@ import SideMenu from 'react-native-side-menu'
 import { FontAwesome, Ionicons, MaterialIcons, Foundation, SimpleLineIcons } from '@expo/vector-icons';
 import VectorIcons from '@expo/vector-icons'
 import { Components, Location, Permissions } from 'expo';
-import ReadMore from '@expo/react-native-read-more-text';
 
 const window = ReactNative.Dimensions.get('window');
-const BOTTOM_HEIGHT = 270;
-const LISTVIEW_BORDER = 15
-const PRIMARY_COLOR = constants.PRIMARY_COLOR;
-const LOCATION_RADIUS = 5e-4
-/*const LISTVIEW_BLOCKWIDTH  = window.width/1.5*/
-const LISTVIEW_BLOCKWIDTH  = 240 // keep fixed for better optimizing pictures
 
-import Menu from './Menu'
+import Menu from './Menu';
+import EventDetails from './detailView';
 /*import CustomCallout from './CustomCallout'*/
+import constants from './constants';
+import services from './services';
+import styles from './styles';
+import CategoryIcon from './categoryIcon';
 
 var t = require('tcomb-form-native');
-var what = [
-{key: "All", label:"All"},
-{key: "Activism", label:"Activism"},
-{key: "Arts", label:"Arts"},
-{key: "Charity", label:"Charity"},
-{key: "Community", label:"Community"},
-{key: "Concerts", label:"Concerts"},
-{key: "Music", label:"Music"},
-{key: "Dance", label:"Dance"},
-{key: "Educational", label:"Educational"},
-{key: "Festivals", label:"Festivals"},
-{key: "Film", label:"Film"},
-{key: "Meetup", label:"Meetup"},
-{key: "Health & Fitness", label:"Health & Fitness"},
-{key: "Kids & Family", label:"Kids & Family"},
-{key: "Museums & Attractions", label:"Museums & Attractions"},
-{key: "Nightlife", label:"Nightlife"},
-{key: "Outdoors", label:"Outdoors"},
-{key: "Sports", label:"Sports"},
-{key: "Religious", label:"Religious"},
-{key: "Theater", label:"Theater"},
-    /*"Comedy": "Comedy",*/
-    /*"Business": "Business",*/
-    /*"Food & Drink": "Food & Drink",*/
-    /*"Holiday": "Holiday",*/
-    /*"Other": "Other",*/
-    /*"Religious": "Religious",*/
-    /*"Shopping": "Shopping",*/
-    ];
-
-    const whatSaturation = {
-    };
-const whatHues = {
-    "Arts": 315,
-    "Charity": 0,
-    "Community": 80,
-    "Meetup": 80,
-    "Concerts": 238,
-    "Music": 238,
-    "Dance": 120,
-    "Educational": 206,
-    "Festivals": 160,
-    "Movies": 205,
-    "Food & Drink": 360,
-    "Health & Fitness": 80,
-    "Fitness": 80,
-    "Kids & Family": 156,
-    "Museums & Attractions": 280,
-    "Nightlife": 279,
-    "Comedy": 279,
-    "Religious": 84,
-    "Sports": 59,
-    "Theater": 320,
-    "Outdoors": 340,
-}
-
-const whatLightness = {
-    "Arts": 50,
-    "Charity": 50,
-    "Community": 50,
-    "Meetup": 50,
-    "Concerts": 50,
-    "Music": 50,
-    "Comedy": 50,
-    "Dance": 50,
-    "Educational": 50,
-    "Festivals": 50,
-    "Movies": 50,
-    "Health & Fitness": 60,
-    "Fitness": 60,
-    "Food & Drink": 26,
-    "Kids & Family": 45,
-    "Museums & Attractions": 50,
-    "Nightlife": 50,
-    "Religious": 50,
-    "Sports": 35,
-    "Theater": 50,
-    "Outdoors": 50,
-}
-
 class ReportEventError extends React.Component {
     constructor(props){
         super(props);
@@ -160,261 +76,11 @@ class ReportEventError extends React.Component {
                );
     }
 }
-class CategoryIcon extends React.Component {
-    constructor(props){
-        super(props);
-    }
-    render(){
-        if(this.props.color===undefined){
-            var color = 'hsl(' + whatHues[this.props.category] + ',100%,' + whatLightness[this.props.category] + '%)';
-        } else {
-            var color = this.props.color;
-        }
 
-        var size = this.props.size || 18;
-        if(this.props.category =='Arts'){ return <VectorIcons.Ionicons name='ios-color-palette' size={size} color={color}/>
-        } else if (this.props.category == 'Activism'){ return <VectorIcons.FontAwesome name='hand-rock-o' size={size} color={color}/>
-        } else if (this.props.category == 'Books'){ return  <VectorIcons.Entypo name='book' size={size} color={color}/>
-        } else if (this.props.category == 'Comedy'){ return <VectorIcons.Octicons name='smiley' size={size} color={color}/>
-        } else if (this.props.category == 'Community'){ return <VectorIcons.MaterialIcons name='location-city' size={size} color={color}/>
-        } else if (this.props.category == 'Concerts'){ return <VectorIcons.FontAwesome name='hand-peace-o' size={size} color={color}/>
-        } else if (this.props.category == 'Dance'){ return <VectorIcons.Entypo name='sound' size={size} color={color}/>
-        } else if (this.props.category == 'Educational'){ return  <VectorIcons.Entypo name='blackboard' size={size} color={color}/>
-        } else if (this.props.category == 'Festivals'){ return  <VectorIcons.Ionicons name='ios-beer' size={size} color={color}/>
-        } else if (this.props.category == 'Food & Drink'){ return <VectorIcons.MaterialIcons name='local-dining' size={size} color={color}/>
-        } else if (this.props.category == 'Health & Fitness'){ return <VectorIcons.MaterialIcons name='fitness-center' size={size} color={color}/>
-        } else if (this.props.category == 'Kids & Family'){ return <VectorIcons.MaterialIcons name='child-friendly' size={size} color={color}/>
-        } else if (this.props.category == 'Meetup'){ return <VectorIcons.FontAwesome name='meetup' size={size} color={color}/>
-        } else if (this.props.category == 'Movies'){ return <VectorIcons.MaterialIcons name='local-movies' size={size} color={color}/>
-        } else if (this.props.category == 'Museums & Attractions'){ return <VectorIcons.FontAwesome name='building' size={size} color={color}/>
-        } else if (this.props.category == 'Music'){ return  <VectorIcons.MaterialIcons name='music-note' size={size} color={color}/>
-        } else if (this.props.category == 'Shopping'){ return  <VectorIcons.MaterialIcons name='shopping-basket' size={size} color={color}/>
-        } else if (this.props.category == 'Nightlife'){ return <VectorIcons.Ionicons name='ios-cloudy-night' size={size} color={color}/>
-        } else if (this.props.category == 'Outdoors'){ return  <VectorIcons.MaterialIcons name='nature-people' size={size} color={color}/>
-        } else if (this.props.category == 'Religious'){ return <VectorIcons.Entypo name='moon' size={size} color={color}/>
-        } else if (this.props.category == 'Theater'){ return <VectorIcons.Entypo name='mask' size={size} color={color}/>
-        } else if (this.props.category == 'Sports'){ return  <VectorIcons.Ionicons name='ios-american-football-outline' size={size} color={color}/>
-        } else { return <VectorIcons.MaterialIcons name='check-box-outline-blank' size={size}/>
-        }
-    }
-}
-
-let when = [
-{key: 'today', label: 'today'},
-{key: 'tomorrow', label: 'tomorrow'},
-{key: 'days_2', label: moment(moment.now()).add(2, "days").format("dddd")},
-{key: 'days_3', label: moment(moment.now()).add(3, "days").format("dddd")},
-{key: 'days_4', label: moment(moment.now()).add(4, "days").format("dddd")},
-{key: 'days_5', label: moment(moment.now()).add(5, "days").format("dddd")},
-{key: 'days_6', label: moment(moment.now()).add(6, "days").format("dddd")},
-{key: 'any', label: 'any day'},
-];
-
-
-
-function getCategoryHue(result){
-    if(result !== null && result !== undefined){
-        if(result.categories !== null && result.categories!==undefined && result.categories.length > 0){
-            if(whatHues[result.categories[0]]!==undefined){
-                return whatHues[result.categories[0]]
-            } else {
-                return constants.PRIMARY_HUE;
-            }
-        } else {
-            return constants.PRIMARY_HUE;
-        }
-    } else {
-        /*console.log("Warning: getCategoryHue received undefined result.");*/
-        return constants.PRIMARY_HUE
-    }
-}
-
-
-function getCategoryLightness(result){
-    if(result !== null && result !== undefined){
-        if(result.categories !== null && result.categories !== undefined &&  result.categories.length > 0){
-
-            if(whatLightness[result.categories[0]]!==undefined){
-                return whatLightness[result.categories[0]]
-            } else {
-                return constants.PRIMARY_LIGHTNESS
-            }
-        } else {
-            return constants.PRIMARY_LIGHTNESS
-        }
-    } else {
-        /*console.log("Warning: getCategoryHue received undefined result.");*/
-        return constants.PRIMARY_HUE
-    }
-}
-
-
-
-
-/*var EventSelection = t.struct({*/
-/*what: what,*/
-/*when: when*/
-/*})*/
 
 import moment from 'moment-timezone';
 /*import styles from '../styles/styles';*/
 
-const styles = ReactNative.StyleSheet.create({
-    contentContainer:{
-        paddingTop: 400,
-        paddingBottom: 600,
-        alignItems: 'flex-start',
-        flex: 1,
-    },
-    clickable: {
-        borderWidth: 1.,
-        borderRadius: 2,
-        borderColor: PRIMARY_COLOR,
-        padding: 2,
-        margin: 2,
-    },
-    customcallout: {
-        width: 140,
-        /*backgroundColor: '#4da2ab',*/
-        paddingHorizontal: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 2,
-        borderRadius: 6,
-        borderColor: '#007a87',
-        borderWidth: 0.5,
-    },
-    topContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    container: {
-        position: 'absolute',
-        top: Exponent.Constants.statusBarHeight,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        alignItems: 'center',
-    },
-    menu: {
-        flex: 1,
-        width: window.width,
-        height: window.height,
-        backgroundColor: 'white',
-        padding: 20,
-    },
-    map: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: BOTTOM_HEIGHT,
-    },
-    fullmap: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    bottomline: {
-        position: 'absolute',
-        top: window.height - BOTTOM_HEIGHT - Exponent.Constants.statusBarHeight,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 15,
-    },
-    nobottomline: {
-        position: 'absolute',
-        top: window.height+100,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    bubble: {
-        flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 5,
-        paddingVertical: 5,
-        borderRadius: 5,
-    },
-    button: {
-        width: 80,
-        paddingHorizontal: 5,
-        alignItems: 'center',
-        marginHorizontal: 5,
-    },
-    menu_button: {
-        position: 'absolute',
-        top: 20,
-        padding: 10,
-    },
-    marker: {
-        backgroundColor: PRIMARY_COLOR,
-        position: 'relative',
-        borderRadius: 3,
-        padding: 2
-    },
-    marker_info: {
-        backgroundColor: 'crimson',
-        position: 'absolute',
-        color: 'white',
-        borderRadius: 2,
-        padding: 0,
-        fontSize: 8,
-        top:-3,
-        left:-2,
-    },
-    mini_action_link : {
-        /*textAlign: 'center',*/
-        paddingVertical: 2,
-    },
-    action_link : {
-        flex: 1,
-        flexDirection: 'row',
-        textAlign: 'center',
-        paddingVertical: 6,
-        width: window.width/2. - 10,
-        justifyContent: 'center',
-        height: 50,
-        alignItems: 'center',
-    },
-    bottom_message: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    p: {
-        fontSize: 16,
-        textAlign: 'center',
-        margin: 10,
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    buttonContainer: {
-        flexDirection: 'column',
-        marginVertical: 20,
-        marginHorizontal: 10,
-        alignItems: 'flex-start',
-        backgroundColor: 'transparent',
-    }
-});
 
 class MenuButton extends React.Component {
     constructor(props){
@@ -511,8 +177,8 @@ class MyMapView extends React.Component {
             markers: [],
             mapRegion: {},
             mapMoved: false,
-            what: what,
-            when: when,
+            what: constants.what,
+            when: constants.when,
             hour_count: null,
             day_count: null,
             category: 'All',
@@ -770,7 +436,7 @@ class MyMapView extends React.Component {
                                                                         j++;
                                                                     }
                                                                 }
-                                                                this.listView.scrollTo({x: j * LISTVIEW_BLOCKWIDTH + 90, y: 0});
+                                                                this.listView.scrollTo({x: j * constants.LISTVIEW_BLOCKWIDTH + 90, y: 0});
                                                                 this.setState({activeEventID: j});
                                                                 this.setState({activeEventLeftSeparatorID: j});
                                                             }).catch((error) => {
@@ -986,13 +652,12 @@ class MyMapView extends React.Component {
                                                                 key={rowID}
                                                                 style={{
                                                                     height: 15,
-                                                                    width:  LISTVIEW_BLOCKWIDTH,
+                                                                    width:  constants.LISTVIEW_BLOCKWIDTH,
                                                                     borderColor: '#cccccc',
                                                                     borderWidth: StyleSheet.hairLineWidth,
                                                                     borderBottomWidth: StyleSheet.hairLineWidth,
-                                                                    /*width:  this.state.activeEventLeftSeparatorID === parseInt(rowID) ? LISTVIEW_BORDER : 0 ,*/
-                                                                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
-                                                                    marginRight: - LISTVIEW_BLOCKWIDTH,
+                                                                    backgroundColor: this.state.activeEventLeftSeparatorID === parseInt(rowID) ? 'hsl(' + services.getCategoryHue(this.state.meetings[parseInt(rowID)+1])+ ',100%,' +services.getCategoryLightness(this.state.meetings[parseInt(rowID)+1])+ '%)' : '#fff',
+                                                                    marginRight: - constants.LISTVIEW_BLOCKWIDTH,
                                                                     zIndex:10,
                                                                     shadowColor:(this.state.meetings[parseInt(rowID)+1] != undefined && this.state.meetings[parseInt(rowID)+1].categories != undefined) ?'#000000' :'#ffffff',
                                                                     shadowRadius: 1,
@@ -1032,7 +697,7 @@ class MyMapView extends React.Component {
                                                                         borderColor: '#cccccc',
                                                                         backgroundColor: '#ffffff',
                                                                         borderWidth: event.title!==undefined ? 1 : 0,
-                                                                        width: LISTVIEW_BLOCKWIDTH,
+                                                                        width: constants.LISTVIEW_BLOCKWIDTH,
                                                                         padding: 0,
                                                                         marginRight: 10,
                                                                         flex: 1,
@@ -1052,7 +717,7 @@ class MyMapView extends React.Component {
                                                                         <View
                                                                         style={{
                                                                             height: 0,
-                                                                            backgroundColor: 'hsl('+getCategoryHue(event)+',' + '100%,'+getCategoryLightness(event)+'%)',
+                                                                            backgroundColor: 'hsl('+services.getCategoryHue(event)+',' + '100%,'+services.getCategoryLightness(event)+'%)',
                                                                         }}/>
                                                                     {event.title!==undefined?
                                                                         <View
@@ -1106,7 +771,7 @@ class MyMapView extends React.Component {
                                                                     <TouchableHighlight
                                                                         onPress={() => {
                                                                             this.navigate.bind(this, "event_details", {event: {event: event}})();
-                                                                            this.listView.scrollTo({x: rowID * LISTVIEW_BLOCKWIDTH + 90, y: 0});
+                                                                            this.listView.scrollTo({x: rowID * constants.LISTVIEW_BLOCKWIDTH + 90, y: 0});
                                                                             ReactNative.InteractionManager.runAfterInteractions(()=>{
                                                                                 let newPos = {longitude: event.lon, latitude: event.lat};
                                                                                 /*console.log("SCROLL TO");*/
@@ -1123,8 +788,8 @@ class MyMapView extends React.Component {
                                                                                     uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(event.image_url).toString() + '.png'
                                                                                 }}
                                                                             style={{
-                                                                                height: BOTTOM_HEIGHT-90,
-                                                                                width: LISTVIEW_BLOCKWIDTH -2,
+                                                                                height: constants.BOTTOM_HEIGHT-90,
+                                                                                width: constants.LISTVIEW_BLOCKWIDTH -2,
                                                                             }}
                                                                             />
                                                                         }
@@ -1159,7 +824,7 @@ class MyMapView extends React.Component {
                                                         let later = time + 1000000;
                                                         const menu = <Menu onItemSelected={this.onMenuItemSelected}
                                                         parent={this}
-                                                        whatHues={whatHues}
+                                                        whatHues={constants.whatHues}
                                                         />;
                                                         var time_span = 60*60*24*1000;
                                                         var min_time = -1
@@ -1228,11 +893,11 @@ class MyMapView extends React.Component {
                                                                         }})
                                                                     .map((result, x) =>
                                                                             <Exponent.MapView.Marker
-                                                                            pinColor={'hsl('+getCategoryHue(result)+',' + '100%,'+getCategoryLightness(result)+'%)'}
+                                                                            pinColor={'hsl('+services.getCategoryHue(result)+',' + '100%,'+services.getCategoryLightness(result)+'%)'}
                                                                             ref={(marker)=>{this.state.markers[x] = marker}}
                                                                             coordinate={{
-                                                                                longitude: result.lon + LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
-                                                                                latitude: result.lat + LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
+                                                                                longitude: result.lon + constants.LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
+                                                                                latitude: result.lat + constants.LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
                                                                             }}
                                                                             calloutOffset={{ x: -15, y: -12  }} // for ios
                                                                             /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
@@ -1244,7 +909,7 @@ class MyMapView extends React.Component {
                                                                             key={'marker_' + x}
                                                                             onPress={()=>{
                                                                                 ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                                                                    this.listView.scrollTo({x: (x+1) * LISTVIEW_BLOCKWIDTH  + 90, y: 0});
+                                                                                    this.listView.scrollTo({x: (x+1) * constants.LISTVIEW_BLOCKWIDTH  + 90, y: 0});
                                                                                 });
                                                                                 if(parseInt(x) + 1 === parseInt(this.state.activeEventID)){
                                                                                     this.navigate.bind(this, "event_details", {event: {event: result}})();
@@ -1254,7 +919,7 @@ class MyMapView extends React.Component {
                                                                                 <ReactNative.View
                                                                                 style={[styles.marker,
                                                                                     {
-                                                                                        backgroundColor: 'hsl('+getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+getCategoryLightness(result)+'%)',
+                                                                                        backgroundColor: 'hsl('+services.getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+services.getCategoryLightness(result)+'%)',
                                                                                         borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
                                                                                         zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
                                                                                         borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
@@ -1298,7 +963,7 @@ class MyMapView extends React.Component {
                                                                     styles.bottomline,
                                                                     styles.clickable,
                                                                     {
-                                                                    borderColor: 'hsl('+getCategoryHue(this.state.event)+',' + '100%,'+getCategoryLightness(this.state.event)+'%)',
+                                                                    borderColor: 'hsl('+services.getCategoryHue(this.state.event)+',' + '100%,'+services.getCategoryLightness(this.state.event)+'%)',
 
                                                                     }
                                                                     ]}>
@@ -1330,7 +995,7 @@ class MyMapView extends React.Component {
                                                                     renderRow={this.renderRow.bind(this)}
                                                                     renderSeparator={this.renderSeparator.bind(this)}
                                                                     childSizes={this.childSizes}
-                                                                    defaultRowSize={LISTVIEW_BLOCKWIDTH}
+                                                                    defaultRowSize={constants.LISTVIEW_BLOCKWIDTH}
                                                                     />
                                                                 }
                                                                 </View>
@@ -1437,281 +1102,7 @@ class MyMapView extends React.Component {
 
 }
 
-class EventDetails extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            sharing_visible: true,
-        };
-    }
-    _renderTruncatedFooter = (handlePress) => {
-        return (
-                <ReactNative.Text style={{fontWeight: 'bold', marginTop: 5}} onPress={handlePress}>
-                Read more
-                </ReactNative.Text>
-               );
-    }
 
-    _renderRevealedFooter = (handlePress) => {
-        return (
-                <ReactNative.Text style={{fontWeight: 'bold', marginTop: 5}} onPress={handlePress}>
-                Show less
-                </ReactNative.Text>
-               );
-    }
-    render () {
-        /*console.log("DETAIL PROPS");*/
-        /*console.log(this.props);*/
-        /*console.log('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+')) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')*/
-        var shareOptions = {
-            title: "nmrfmo",
-            message: "Check this out",
-            url: this.props.event.event.url,
-            subject: "Let's go here", //  for email
-        };
-
-        return (
-                <ReactNative.ScrollView
-                style={{
-                    flex: 1,
-                }}
-                >
-                <ReactNative.View
-                style={{
-                }}
-                >
-                <ReactNative.TouchableHighlight
-                style={[styles.clickable,
-                    {
-                        marginTop:30,
-                        marginBottom:20,
-                        borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        justifyContent: 'center',
-                        flex: 1,
-                        height: 45,
-                    }]}
-                    onPress={()=>this.props.navigator.pop()}>
-                        <ReactNative.Text>
-                        <FontAwesome name='chevron-left' color='#000000'/>
-                        Back to Map</ReactNative.Text>
-
-                        </ReactNative.TouchableHighlight>
-                        <ReactNative.Text style={[styles.welcome]}>
-                        {this.props.event.event.title}
-                    </ReactNative.Text>
-                    {this.props.event.event.image_url===undefined ? null :
-                        <Image
-                            source={{
-                                uri: 'https://s3.amazonaws.com/aws-website-nomorefomo-7sn9f/' + CryptoJS.MD5(this.props.event.event.image_url).toString() + '.png'
-                            }}
-                        style={{
-                            width: window.width,
-                            height: 300,
-                        }}
-                        />
-                    }
-                    <ReactNative.Text style={styles.p}>
-                    {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
-                    </ReactNative.Text>
-                        <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <ReadMore
-                        numberOfLines={3}
-                    renderTruncatedFooter={this._renderTruncatedFooter}
-                    renderRevealedFooter={this._renderRevealedFooter}
-                    onReady={this._handleTextReady}
-                    >
-                        <ReactNative.Text
-                        style={[styles.p,{
-                            textAlign: 'justify',
-                        }]}
-                    >
-                    {this.props.event.event.description == null ? "" :  this.props.event.event.description}
-                    </ReactNative.Text>
-
-                        </ReadMore>
-                        <ReactNative.Text style={styles.p}>
-                        {this.props.event.event.cost}
-                    </ReactNative.Text>
-
-
-
-
-
-                        <Hr lineColor='#b3b3b3' text='Remember' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <ReactNative.TouchableHighlight
-                        onPress={()=>{ReactNative.Share.share({
-                            title: "Event",
-                            message: this.props.event.event.url + "\n\n" + moment(this.props.event.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
-                            url: "http://facebook.github.io/react-native/",
-                            subject: "Share Link" //  for email
-                        });
-                        }}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={styles.action_link}>Share <Ionicons size={18} name="md-share" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://calendar.google.com/calendar/gp#~calendar:view=e&bm=1?action=TEMPLATE&text=' + encodeURI(this.props.event.event.title.replace(/\s+/gi, '+')) + '&dates=' + moment(this.props.event.event.datetime).format("YYYYMMDD[T]HHmmssz/") + moment(this.props.event.event.datetime).add(1, "hours").format("YYYYMMDD[T]HHmmssz") + '&details=' + encodeURI(this.props.event.event.description.replace(/\s+/gi, '+') + '\n\n' + this.props.event.event.url) + '&location=' + encodeURI(this.props.event.event.address.replace(/\s+/gi, '+')) + '&sf=true&output=xml')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link,
-                        ]}>Add to Google Calendar <FontAwesome size={18} name="calendar-plus-o" color="#000"/></ReactNative.Text>
-                            </ReactNative.TouchableHighlight>
-                            </View>
-
-
-
-
-
-                            <Hr lineColor='#b3b3b3' text='Getting There' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                            <ReactNative.TouchableHighlight onPress={(index)=>Communications.web('https://maps.google.com/maps?daddr=' + encodeURI( '' + this.props.event.event.lat + ',' + this.props.event.event.lon )  +  '/')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Directions <VectorIcons.MaterialIcons size={18} name="directions" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>{
-                            Communications.web('lyft://ridetype?id=lyft_line&partner=hF0YCfyHmBhZ&destination[longitude]=' + this.props.event.event.lon + '&destination[latitude]=' + this.props.event.event.lat + '&pickup[latitude]=' + this.props.parent.mapView.state.latitude + '&pickup[longitude]=' + this.props.parent.mapView.state.longitude );
-                        }}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Lyft <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
-
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('https://m.uber.com/ul/?action=setPickup&dropoff[longitude]=' + this.props.event.event.longitude + '&dropoff[latitude]=' + this.props.event.event.latitude +  '&dropoff[formatted_address]=' + this.props.event.event.address.replace(/ /gi, '%20') +'&pickup=my_location&client_id=qnzCX5gbWpvalF4QpJw0EjRfqNbNIgSm')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Uber <Ionicons size={18} name="ios-car" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
-
-
-
-
-
-
-
-
-
-
-
-                        <Hr lineColor='#b3b3b3' text='Further Info' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-
-                        <View style={{
-                            flex: 1,
-                            flexDirection: 'row'
-                        }}>
-
-                    <ReactNative.TouchableHighlight style={[styles.clickable,
-                        {
-                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        }
-
-                    ]} onPress={(index)=>Communications.web(this.props.event.event.publisher_url)}>
-                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}> Venue: {this.props.event.event.publisher} <FontAwesome name='home' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        <ReactNative.TouchableHighlight
-                        onPress={(index)=>Communications.web('http://maps.google.com/maps?layer=c&cbll=' + this.props.event.event.latitude + ',' + this.props.event.event.longitude + '/')}
-                    style={[styles.clickable, { borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'} ]}>
-                        <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Street View <FontAwesome size={18} name="street-view" color="#000"/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-                        <ReactNative.TouchableHighlight style={[styles.clickable,{
-                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        }]} onPress={(index)=>Communications.web(this.props.event.event.url)} >
-                    <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}>Event Website <FontAwesome name='external-link' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
-
-
-
-                        <Hr lineColor='#b3b3b3' text='Rate' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <View style={{
-                            flex: 1,
-                            flexDirection: 'row'
-                        }}>
-
-                    <ReactNative.TouchableHighlight style={[styles.clickable,
-                        {
-                            borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                        }
-
-                    ]} onPress={(index)=>{
-                        let vl = this.props.parent.mapView.state.venue_lists;
-                        console.log(vl);
-                        (vl.blocked || (vl.blocked = {}))[this.props.event.event.publisher] = true;
-                        this.props.parent.mapView.setState({
-                            venue_lists: vl
-                        });
-                        ReactNative.AsyncStorage.setItem('venue_lists', JSON.stringify(vl));
-
-                    }}>
-                    <ReactNative.Text style={[styles.action_link]}>Block Venue <MaterialIcons name='block' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-
-
-                        <ReactNative.TouchableHighlight style={[styles.clickable,
-                            {
-                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' + getCategoryLightness(this.props.event.event)+ '%)',
-                            }
-
-                        ]} onPress={(index)=>{
-                            let vl = this.props.parent.mapView.state.venue_lists;
-                            console.log(vl);
-                            (vl.favorites || (vl.favorites = {}))[this.props.event.event.publisher] = true;
-                            this.props.parent.mapView.setState({
-                                venue_lists: vl
-                            });
-                            ReactNative.AsyncStorage.setItem('venue_lists', JSON.stringify(vl));
-                        }}>
-                    <ReactNative.Text style={[styles.action_link]}>Add to Favorites <SimpleLineIcons name='heart' size={18}/></ReactNative.Text>
-                        </ReactNative.TouchableHighlight>
-                        </View>
-
-
-
-
-                        <Hr lineColor='#b3b3b3' text='Location' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <ReactNative.Text style={styles.p}>{this.props.event.event.address}</ReactNative.Text>
-
-                        <Hr lineColor='#b3b3b3' text='Categories' textColor={'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)'}/>
-                        <ReactNative.Text style={styles.p}>
-                        { this.props.event.event.categories==null ?  "" :
-                            /*this.props.event.event.categories.join(" | ")*/
-                            this.props.event.event.categories.map((category, cx)=>{
-                                return <Text key={'mkld_' + this.props.event.event.id + '_' + cx} ><CategoryIcon key={'mkl_' + this.props.event.event.id + '_' + cx} size={14} category={category}/> {category} </Text>
-                            })
-                        }
-                    </ReactNative.Text>
-                        <ReactNative.Text style={styles.p}></ReactNative.Text>
-                        <ReactNative.TouchableHighlight
-                        style={[styles.clickable,
-                            {
-                                marginBottom:20,
-                                borderColor: 'hsl(' +getCategoryHue(this.props.event.event) + ',100%,' +getCategoryLightness(this.props.event.event)+ '%)',
-                                justifyContent: 'center',
-                                flex: 1,
-                                height: 45,
-                            }]}
-                    onPress={()=>this.props.navigator.pop()}>
-                        <ReactNative.Text><FontAwesome name='chevron-left' color='#000000'/> Back to Map</ReactNative.Text>
-
-                        </ReactNative.TouchableHighlight>
-
-                        </ReactNative.View>
-
-
-
-
-
-
-                        </ReactNative.ScrollView>
-                        )
-    }
-}
 
 class Navi extends React.Component {
     constructor(props){
