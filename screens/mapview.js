@@ -45,7 +45,6 @@ const window = ReactNative.Dimensions.get('window');
 
 import Menu from './Menu';
 import EventDetails from './detailView';
-/*import CustomCallout from './CustomCallout'*/
 import constants from './constants';
 import services from './services';
 import styles from './styles';
