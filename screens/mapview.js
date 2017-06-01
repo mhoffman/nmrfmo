@@ -520,11 +520,6 @@ class MyMapView extends React.Component {
                                                         }
                                                     }
                                                     navigate(routeName, passProps) {
-                                                        /*console.log("NAVIGATE KLASS NAME");*/
-                                                        /*console.log(this.constructor.name);*/
-                                                        /*console.log("NAVIGATE KLASS END");*/
-                                                        /*console.log(Object.keys(this));*/
-                                                        /*console.log(Object.keys(this.props));*/
                                                         this.props.navigator.push({
                                                             name: routeName,
                                                             passProps: passProps
@@ -1040,7 +1035,7 @@ class MyMapView extends React.Component {
                                                                         padding: 5,
                                                                         borderRadius: 25,
                                                                     }}
-                                                                    >
+                                                                >
                                                                     <SimpleLineIcons size={40} name='reload'
                                                                     />
                                                                     </ReactNative.View>
@@ -1066,10 +1061,36 @@ class MyMapView extends React.Component {
 
                                                                     </DrawerLayout>
                                                                     );
-
-
                                                                 return map
                                                     }
+}
+
+class WebPreview extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleBack = (() => {
+            if (this.props.navigator && this.props.navigator.getCurrentRoutes().length > 1){
+                this.props.navigator.pop();
+                return true; //avoid closing the app
+            }
+            return false; //close the app
+        }).bind(this) ;
+    }
+    componentDidMount() {
+        ReactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    componentWillUnmount() {
+        ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
+    }
+
+    render(){
+        return (
+                <ReactNative.WebView
+                source={{uri: this.props.url}}
+                />
+               );
+    }
 
 }
 
@@ -1123,12 +1144,17 @@ class Navi extends React.Component {
                 navigator={navigator}
             ref={(x) => {this.mapView = x;}} // Make MapView component available to other methods in this component under this.map
             parent={this}/>
-        }
-        if(route.name == 'event_details') {
+        }else if(route.name == 'event_details') {
             return <EventDetails
                 navigator={navigator}
             parent={this}
             {...route.passProps}/>
+        } else if(route.name == 'web_preview'){
+            return <WebPreview
+                navigator={navigator}
+            parent={this}
+            {...route.passProps}
+            />
         }
     }
 }
