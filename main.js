@@ -1,5 +1,20 @@
 'use strict';
 import Exponent from 'expo';
-import MapView from './screens/mapview';
+import React from 'react';
 
-Exponent.registerRootComponent(MapView);
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
+import MapView from './screens/mapview';
+import reducers from './store/reducers'
+
+const store = createStore(reducers, applyMiddleware(thunk))
+
+const ReduxApp = () => (
+    <Provider store={store}>
+        <MapView />
+        </Provider>
+)
+
+Exponent.registerRootComponent(ReduxApp);
