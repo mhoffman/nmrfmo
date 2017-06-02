@@ -1,7 +1,8 @@
 // Just define all actions here like enums
 const actions = [
 
-    'GET_FILTER_SETTINGS',
+    'CHANGE_EVENT_TIMERANGE',
+    'CHANGE_EVENT_CATEGORY',
 
 ]
 

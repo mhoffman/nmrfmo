@@ -19,6 +19,7 @@ import { Components, Location, Permissions } from 'expo';
 const window = ReactNative.Dimensions.get('window');
 
 import Menu from './Menu';
+import MenuButton from './menu_button';
 import EventDetails from './detailView';
 import constants from './constants';
 import services from './services';
@@ -26,58 +27,12 @@ import styles from './styles';
 import CategoryIcon from './categoryIcon';
 
 var t = require('tcomb-form-native');
-class ReportEventError extends React.Component {
-    constructor(props){
-        super(props);
-    }
-    send_feedback(){
-    }
-
-    render(){
-        return (
-                <ReactNative.View
-                style={{marginTop: 30}}
-                >
-                <Modal
-                animationType={"slide"}
-                transparent={false}
-                >
-                </Modal>
-                </ReactNative.View>
-               );
-    }
-}
-
-
 import moment from 'moment-timezone';
+
 /*import styles from '../styles/styles';*/
 
 
-class MenuButton extends React.Component {
-    constructor(props){
-        super(props);
-    }
-    handlePress(e) {
-        if (this.props.onPress) {
-            this.props.onPress(e);
-        }
-    }
 
-    render() {
-        return (
-                <ReactNative.TouchableOpacity
-                /*onPress={this.handlePress.bind(this)}*/
-                onPress={() =>{
-                    this.props.parent._drawerLayout.openDrawer();
-                    this.props.parent.toggle();
-                }
-                }
-                style={this.props.style}>
-                {this.props.children}
-                </ReactNative.TouchableOpacity>
-               );
-    }
-}
 
 class ResultIcons extends React.Component{
     constructor(props){

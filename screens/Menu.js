@@ -16,6 +16,7 @@ import {
 import ReactNative from 'react-native';
 import Communications from 'react-native-communications';
 import ModalPicker from 'react-native-modal-picker';
+import { connect } from 'react-redux'
 import { FontAwesome } from '@expo/vector-icons';
 import VectorIcons from '@expo/vector-icons';
 import moment from 'moment-timezone';
@@ -27,6 +28,7 @@ import _ from 'lodash';
 
 
 import constants from './constants'
+import * as actions from '../store/actions'
 
 
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
@@ -221,7 +223,7 @@ class FBLogin extends Component {
 
 
 /*module.exports = class Menu extends Component {*/
-export default class Menu extends Component {
+class Menu extends Component {
     constructor(props){
         super(props);
         /*console.log("MENU PARENT");*/
@@ -400,7 +402,7 @@ export default class Menu extends Component {
                     data={this.props.parent.state.when}
                 key={"whenPicker"}
                 initValue="When"
-                    onChange={this.onChangeWhen.bind(this)}
+                    onChange={(timerange)=>this.props.changeTimerange(timerange)}
                 >
                 {
                     <Text
@@ -413,9 +415,9 @@ export default class Menu extends Component {
                             fontSize: 18,
                             width: 280}}
                     editable={false}
-                    value={this.state.when}
+                    value={this.props.eventTimerange}
                     >
-                    {this.state.when} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                    {this.props.eventTimerange} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
                     </Text>
                 }
                 </ModalPicker>
@@ -541,3 +543,21 @@ export default class Menu extends Component {
                     );
     };
     };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeTimerange: (timerange) => {
+            dispatch(actions.changeEventTimerange(timerange))
+        },
+        changeCategory: (category) => {
+            dispatch(action.changeEventCategory(category))
+        }
+    }
+}
+
+const mapStateToProps = (state, ownProps) => {
+     const { eventTimerange, eventCategory } = state.filterReducer
+     return { eventTimerange, eventCategory }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)
