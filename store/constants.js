@@ -1,3 +1,15 @@
-module.exports = {
-    GET_FILTER_SETTINGS: 'GET_FILTER_SETTINGS',
-}
+// Just define all actions here like enums
+const actions = [
+
+    'GET_FILTER_SETTINGS',
+
+]
+
+
+
+// Export Section
+var actions_enums = {}
+actions.map(key=>{
+    actions_enums[key] = key
+})
+module.exports = actions_enums
