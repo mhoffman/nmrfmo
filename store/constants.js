@@ -3,6 +3,7 @@ const actions = [
 
     'CHANGE_EVENT_TIMERANGE',
     'CHANGE_EVENT_CATEGORY',
+    'CHANGE_EVENT_SEARCHSTRING',
 
 ]
 

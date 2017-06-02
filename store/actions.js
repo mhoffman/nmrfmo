@@ -1,6 +1,15 @@
 import constants from './constants'
 
 
+export function changeEventSearchstring(searchstring){
+    return {
+        type: constants.CHANGE_EVENT_SEARCHSTRING,
+        payload: {
+            searchstring
+        }
+    }
+}
+
 export function changeEventTimerange(timerange){
     return {
         type: constants.CHANGE_EVENT_TIMERANGE,

@@ -219,8 +219,8 @@ class Menu extends Component {
             accessToken: '',
             startTime: 0,
             endTime: 24,
-            when: this.props.parent.props.parent.state.timeRange,
-            what: this.props.parent.props.parent.state.category,
+            when: this.props.eventTimerange,
+            what: this.props.eventCategory,
             value: {
                 lastUpdatedAt: 0,
                 search: this.props.parent.props.parent.state.search,
@@ -532,8 +532,8 @@ class Menu extends Component {
     };
 
 const mapStateToProps = (state, ownProps) => {
-     const { eventTimerange, eventCategory } = state.filterReducer
-     return { eventTimerange, eventCategory }
+     const { eventTimerange, eventCategory, eventSearchstring } = state.filterReducer
+     return { eventTimerange, eventCategory, eventSearchstring }
 }
 
 
@@ -544,6 +544,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         changeCategory: (category) => {
             dispatch(action.changeEventCategory(category))
+        },
+        changeSearchstring: (searchstring) => {
+            dispatch(action.changeEventSearchstring(searchstring))
         }
     }
 }

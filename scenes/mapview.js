@@ -21,7 +21,6 @@ const window = ReactNative.Dimensions.get('window');
 import Menu from './menu';
 import MenuButton from './menu_button';
 import EventDetails from './detailView';
-import WebPreview from './web_preview'
 import constants from './constants';
 import services from './services';
 import styles from './styles';
@@ -30,61 +29,6 @@ import CategoryIcon from './categoryIcon';
 var t = require('tcomb-form-native');
 import moment from 'moment-timezone';
 
-/*import styles from '../styles/styles';*/
-
-
-
-
-class ResultIcons extends React.Component{
-    constructor(props){
-        super(props)
-    }
-    render(){
-        return (null);
-        /*return (*/
-        /*let icons = ({this.props.result.categories.map( (category) => */
-        /*if(category=='Arts'){*/
-        /*<MaterialIcons name='palette'/>*/
-        /*}else if(category=="Business"){*/
-        /*<MaterialIcons name="business-center"/>*/
-        /*}else if(category=="Charity"){*/
-        /*<FontAwesome name='heart-o'/>*/
-        /*}else if(category=="Comedy"){*/
-        /*<FontAwesome name='smile-o'/>*/
-        /*}else if(category=="Community"){*/
-        /*<FontAwesome name='group'/>*/
-        /*}else if(category=="Concerts"){*/
-        /*<FontAwesome name='music'/>*/
-        /*}else if(category=="Dance"){*/
-        /*<MaterialIcons name='speaker'/>*/
-        /*}else if(category=="Educational"){*/
-        /*<FontAwesome name='graduation-cap'/>*/
-        /*}else if(category=="Festivals"){*/
-        /*<FontAwesome name='tree'/>*/
-        /*}else if(category=="Film"){*/
-        /*<FontAwesome name='film'/>*/
-        /*}else if(category=="Food & Drink"){*/
-        /*<MaterialIcons name='dining'/>*/
-        /*}else if(category=="Health & Fitness"){*/
-        /*<MaterialIcons name='fitness-center'/>*/
-        /*}else if(category=="Holiday"){*/
-        /*}else if(category=="Kids & Family"){*/
-        /*<FontAwesome name='child'/>*/
-        /*}else if(category=="Museums & Attractions"){*/
-        /*}else if(category=="Nightlife"){*/
-        /*}else if(category=="Outdoors"){*/
-        /*<Foundation name='mountains'/>*/
-        /*}else if(category=="Religious"){*/
-        /*}else if(category=="Shopping"){*/
-        /*<FontAwesome name='shopping-cart'/>*/
-        /*}else if(category=="Sports"){*/
-        /*<Ionicons name='ios-american-football'/>*/
-        /*}*/
-
-        /*)});*/
-        /*);*/
-    }
-}
 
 class MyMapView extends React.Component {
     constructor(props) {
@@ -847,7 +791,6 @@ class MyMapView extends React.Component {
                                                                                         borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
                                                                                     }]}
                                                                             >
-                                                                            {/*<ResultIcons result={result}/>*/}
                                                                             <ReactNative.Text style={[
                                                                             ], {
                                                                                 fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 12,
@@ -1022,67 +965,6 @@ class MyMapView extends React.Component {
 }
 
 
-class Navi extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            category: 'All',
-            timeRange: parseInt(moment(moment.now()).format('hh')) < 10 ? 'today': 'tomorrow',
-            startTime: 0,
-            endTime: 24,
-            search: '',
-            lastUpdatedAt: 0
-        };
-        this.handleBack = (() => {
-            if (this.navigator && this.navigator.getCurrentRoutes().length > 1){
-                this.navigator.pop();
-                return true; //avoid closing the app
-            }
 
-            return false; //close the app
-        }).bind(this) ;
-    }
-    componentDidMount() {
-        ReactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
 
-    componentWillUnmount() {
-        ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    /*Main navigator class, defines routes and everything */
-    /*else. All other screens get called from here.*/
-    render () {
-
-        return (
-                <DeprecatedComponents.Navigator initialRoute={{name: 'main'}}
-                ref={(nav)=>{this.navigator = nav;} }
-                renderScene={this.renderScene.bind(this)}
-                configureScene={(route, routeStack)=>
-                    DeprecatedComponents.Navigator.SceneConfigs.PushFromRight
-                } />
-               );
-    }
-
-    renderScene(route, navigator) {
-        if(route.name == 'main') {
-            return <MyMapView
-                navigator={navigator}
-            ref={(x) => {this.mapView = x;}} // Make MapView component available to other methods in this component under this.map
-            parent={this}/>
-        }else if(route.name == 'event_details') {
-            return <EventDetails
-                navigator={navigator}
-            parent={this}
-            {...route.passProps}/>
-        } else if(route.name == 'web_preview'){
-            return <WebPreview
-                navigator={navigator}
-            parent={this}
-            {...route.passProps}
-            />
-        }
-    }
-}
-
-module.exports = Navi
+module.exports = MyMapView 

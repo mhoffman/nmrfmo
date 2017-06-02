@@ -19,6 +19,11 @@ function filterReducer (state=initialFilter, action){
                 ...state,
                 category: action.payload.category
             }
+        case constants.CHANGE_EVENT_SEARCHSTRING:
+            return {
+                ...state,
+                searchstring: action.payload.category
+            }
         default:
             return state
     }
