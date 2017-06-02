@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Exponent from 'expo'
+import { connect } from 'react-redux'
 
 import UpdatingListView from './vendor/UpdatingListView'
 import CryptoJS from 'crypto-js'
@@ -264,14 +265,14 @@ class MyMapView extends React.Component {
                                                                     },
                                                                     body : JSON.stringify({
                                                                         q: this.props.parent.state.search,
-                                                                        timeRange: this.props.parent.state.timeRange,
+                                                                        timeRange: this.props.eventTimerange.key,
+                                                                        category: this.props.eventCategory.key,
                                                                         startTime: this.props.parent.state.startTime,
                                                                         endTime: this.props.parent.state.endTime,
                                                                         mapRegion: this.state.mapRegion,
                                                                         deviceId: Exponent.Constants.deviceId,
                                                                         isDevice: Exponent.Constants.isDevice,
                                                                         searchString: this.props.parent.state.search,
-                                                                        category: this.props.parent.state.category,
                                                                         venue_lists: this.state.venue_lists,
                                                                     }),
                                                                     }).then((response) => response.json())
@@ -964,7 +965,15 @@ class MyMapView extends React.Component {
                                                     }
 }
 
+const mapStateToProps = (state, ownProps) => {
+     const { eventTimerange, eventCategory, eventSearchstring } = state.filterReducer
+     return { eventTimerange, eventCategory, eventSearchstring }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+    }
+}
 
 
-
-module.exports = MyMapView 
+export default connect(mapStateToProps, mapDispatchToProps)(MyMapView )

@@ -248,7 +248,7 @@ class Menu extends Component {
         this.setState({
             what: option.label
         });
-        InteractionManager.runAfterInteractions(()=>{
+        ReactNative.InteractionManager.runAfterInteractions(()=>{
             this.props.parent.props.parent.setState({
                 category: option.key
             })
@@ -259,7 +259,7 @@ class Menu extends Component {
         this.setState({
             when: option.label
         });
-        InteractionManager.runAfterInteractions(()=>{
+        ReactNative.InteractionManager.runAfterInteractions(()=>{
             this.props.parent.props.parent.setState({
                 timeRange: option.key
             });
@@ -271,7 +271,7 @@ class Menu extends Component {
         /*if(JSON.stringify(this.state.value) !== JSON.stringify(value)){*/
         this.setState({value});
         if(true){
-            InteractionManager.runAfterInteractions(()=>{
+            ReactNative.InteractionManager.runAfterInteractions(()=>{
                 this.props.parent.setState({meetings: []});
                 this.props.parent.props.parent.setState({lastUpdatedAt: 0, timeRange: value.when, category: value.what, search: ''});
                 this.props.parent.setState({event: {title: ''}})
@@ -402,9 +402,9 @@ class Menu extends Component {
                             fontSize: 18,
                             width: 280}}
                     editable={false}
-                    value={this.props.eventTimerange}
+                    value={this.props.eventTimerange.key}
                     >
-                    {this.props.eventTimerange} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                    {this.props.eventTimerange.label} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
                     </ReactNative.Text>
                 }
                 </ModalPicker>
@@ -541,6 +541,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeTimerange: (timerange) => {
             dispatch(actions.changeEventTimerange(timerange))
+            console.log("CHANGE TIMERANGE")
+            console.log(timerange)
         },
         changeCategory: (category) => {
             dispatch(action.changeEventCategory(category))

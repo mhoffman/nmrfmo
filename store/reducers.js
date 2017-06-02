@@ -3,8 +3,9 @@ import constants from './constants'
 import { combineReducers } from 'redux'
 
 const initialFilter = {
-    eventTimerange: 'tomorrow',
+    eventTimerange: {key: 'tomorrow', label: 'tomorrow'},
     eventCategory: 'Recommended',
+    eventSearchstring: '',
 }
 
 function filterReducer (state=initialFilter, action){
@@ -12,17 +13,17 @@ function filterReducer (state=initialFilter, action){
         case constants.CHANGE_EVENT_TIMERANGE:
             return {
                 ...state,
-                timerange: action.payload.timerange
+                eventTimerange: action.payload.timerange
             }
         case constants.CHANGE_EVENT_CATEGORY:
             return {
                 ...state,
-                category: action.payload.category
+                eventCategory: action.payload.category
             }
         case constants.CHANGE_EVENT_SEARCHSTRING:
             return {
                 ...state,
-                searchstring: action.payload.category
+                eventSearchstring: action.payload.category
             }
         default:
             return state
