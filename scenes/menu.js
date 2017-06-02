@@ -462,9 +462,9 @@ class Menu extends Component {
                         fontSize: 18,
                         width: 280}}
                 editable={false}
-                value={this.state.what}
+                value={this.props.eventCategory}
                 >
-                {this.state.what} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                {this.props.eventCategory} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
                 </ReactNative.Text>
                     </ModalPicker>
                     </ReactNative.View>

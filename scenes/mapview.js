@@ -21,6 +21,7 @@ const window = ReactNative.Dimensions.get('window');
 import Menu from './menu';
 import MenuButton from './menu_button';
 import EventDetails from './detailView';
+import WebPreview from './web_preview'
 import constants from './constants';
 import services from './services';
 import styles from './styles';
@@ -1019,36 +1020,6 @@ class MyMapView extends React.Component {
                                                                 return map
                                                     }
 }
-
-class WebPreview extends React.Component {
-    constructor(props){
-        super(props);
-        this.handleBack = (() => {
-            if (this.props.navigator && this.props.navigator.getCurrentRoutes().length > 1){
-                this.props.navigator.pop();
-                return true; //avoid closing the app
-            }
-            return false; //close the app
-        }).bind(this) ;
-    }
-    componentDidMount() {
-        ReactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    componentWillUnmount() {
-        ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
-    }
-
-    render(){
-        return (
-                <ReactNative.WebView
-                source={{uri: this.props.url}}
-                />
-               );
-    }
-
-}
-
 
 
 class Navi extends React.Component {
