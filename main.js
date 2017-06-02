@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import MapView from './screens/mapview';
+import MapView from './scenes/mapview';
 import reducers from './store/reducers'
 
 const store = createStore(reducers, applyMiddleware(thunk))
