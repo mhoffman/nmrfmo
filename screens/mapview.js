@@ -18,7 +18,7 @@ import { Components, Location, Permissions } from 'expo';
 
 const window = ReactNative.Dimensions.get('window');
 
-import Menu from './Menu';
+import Menu from './menu';
 import MenuButton from './menu_button';
 import EventDetails from './detailView';
 import constants from './constants';
