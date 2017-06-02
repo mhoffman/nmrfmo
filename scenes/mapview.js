@@ -983,6 +983,8 @@ class MyMapView extends React.Component {
 
                                                                 >
                                                                     <ReactNative.View
+                                                                >
+                                                                    <SimpleLineIcons size={40} name='reload'
                                                                     style={{
                                                                         backgroundColor: 'limegreen',
                                                                         height: 50,
@@ -990,8 +992,6 @@ class MyMapView extends React.Component {
                                                                         padding: 5,
                                                                         borderRadius: 25,
                                                                     }}
-                                                                >
-                                                                    <SimpleLineIcons size={40} name='reload'
                                                                     />
                                                                     </ReactNative.View>
                                                                     </ReactNative.TouchableOpacity>
