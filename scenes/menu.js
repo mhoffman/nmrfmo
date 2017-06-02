@@ -1,18 +1,5 @@
 'use strict';
 import React, { PropTypes, Component } from 'react';
-import {
-    Alert,
-    Dimensions,
-    Picker,
-    StyleSheet,
-    ScrollView,
-    View,
-    Image,
-    InteractionManager,
-    Text,
-    TextInput,
-    TouchableOpacity,
-} from 'react-native';
 import ReactNative from 'react-native';
 import Communications from 'react-native-communications';
 import ModalPicker from 'react-native-modal-picker';
@@ -66,10 +53,10 @@ const options = {
     }
 }
 
-const window = Dimensions.get('window');
+const window = ReactNative.Dimensions.get('window');
 const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
 
-const styles = StyleSheet.create({
+const styles = ReactNative.StyleSheet.create({
     menu: {
         flex: 1,
         flexDirection: 'column',
@@ -112,7 +99,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const menuStyle = StyleSheet.create({
+const menuStyle = ReactNative.StyleSheet.create({
     menuList : {
         backgroundColor: 'red',
     }
@@ -195,7 +182,7 @@ class FBLogin extends Component {
     }
 
     render() {
-        return (<View>
+        return (<ReactNative.View>
                 <LoginButton
                 readPermissions={["public_profile", "user_events"]}
                 onLoginFinished={
@@ -214,7 +201,7 @@ class FBLogin extends Component {
                     }
                 }
                 onLogoutFinished={() => console.log("User logged out")}/>
-                </View>
+                </ReactNative.View>
                );
     }
 }
@@ -340,9 +327,9 @@ class Menu extends Component {
 
     render() {
         return (
-                <View style={[styles.menu]}>
+                <ReactNative.View style={[styles.menu]}>
 
-                <View
+                <ReactNative.View
                 style={{
                     flex: 0,
                     flexDirection: 'row',
@@ -350,7 +337,7 @@ class Menu extends Component {
                     /*borderWidth: 1,*/
                 }}
                 >
-                <TouchableOpacity
+                <ReactNative.TouchableOpacity
                 onPress={()=>{
                     this.props.parent._drawerLayout.closeDrawer();
                     this.props.parent.toggle();
@@ -365,26 +352,26 @@ class Menu extends Component {
                 }}
                 >
                     <VectorIcons.MaterialIcons name='chevron-left' size={30}
-                /><Text
+                /><ReactNative.Text
                     style={{
                         fontSize: 20
                     }}
-                > back</Text>
-                    </TouchableOpacity>
-                    </View>
+                > back</ReactNative.Text>
+                    </ReactNative.TouchableOpacity>
+                    </ReactNative.View>
 
 
-                    <View
+                    <ReactNative.View
                     style={{
                         /*borderWidth: 1*/
                     }}
                 >
-                    <View
+                    <ReactNative.View
                     style={{
                         /*borderWidth: 1,*/
                     }}
                 >
-                    <TextInput
+                    <ReactNative.TextInput
                     autCorrect={true}
                 style={{
                     borderWidth: 1,
@@ -397,7 +384,7 @@ class Menu extends Component {
                 placeholder="Keywords ..."
                     onSubmitEditing={this.textSearch.bind(this)}
                 />
-                    </View>
+                    </ReactNative.View>
                     <ModalPicker
                     data={this.props.parent.state.when}
                 key={"whenPicker"}
@@ -405,7 +392,7 @@ class Menu extends Component {
                     onChange={(timerange)=>this.props.changeTimerange(timerange)}
                 >
                 {
-                    <Text
+                    <ReactNative.Text
                         style={{marginTop: 10,
                             marginBottom: 10,
                             borderWidth:1,
@@ -418,15 +405,15 @@ class Menu extends Component {
                     value={this.props.eventTimerange}
                     >
                     {this.props.eventTimerange} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
-                    </Text>
+                    </ReactNative.Text>
                 }
                 </ModalPicker>
-                    </View>
+                    </ReactNative.View>
 
-                    <View style={{
+                    <ReactNative.View style={{
                         /*borderWidth: 1,*/
                     }}>
-                <Text
+                <ReactNative.Text
                     style={{
                         marginBottom: 30,
                         fontSize: 18,
@@ -435,16 +422,16 @@ class Menu extends Component {
 
                     }}
                 >
-                    <Text style={{
+                    <ReactNative.Text style={{
                         fontWeight: 'bold',
-                    }}>Time Range: </Text>
-                {moment(this.state.startTime, 'HH').format('h A')} to {moment(this.state.endTime, 'HH').format('h A')}</Text>
-                <View
+                    }}>Time Range: </ReactNative.Text>
+                {moment(this.state.startTime, 'HH').format('h A')} to {moment(this.state.endTime, 'HH').format('h A')}</ReactNative.Text>
+                <ReactNative.View
                     style={{
                         /*borderWidth: 1,*/
                     }}
                 >
-                    </View>
+                    </ReactNative.View>
 
                     <MultiSlider
                     values={[this.state.startTime, this.state.endTime]}
@@ -465,7 +452,7 @@ class Menu extends Component {
                 initValue="What"
                     onChange={this.onChangeWhat.bind(this)}
                 >
-                    <Text
+                    <ReactNative.Text
                     style={{marginTop: 10,
                         marginBottom: 10,
                         borderWidth:1,
@@ -478,28 +465,28 @@ class Menu extends Component {
                 value={this.state.what}
                 >
                 {this.state.what} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
-                </Text>
+                </ReactNative.Text>
                     </ModalPicker>
-                    </View>
+                    </ReactNative.View>
                     {/*
 
-                        <View>
+                        <ReactNative.View>
 
-                        <Text>
+                        <ReactNative.Text>
                         {this.state.what}
-                        </Text>
+                        </ReactNative.Text>
                         {this.state.what.match(/[0-9]+/)!=null ?
-                        <Text>
+                        <ReactNative.Text>
                         Found {this.state.what.match(/[0-9]+/)[0]} events
-                        </Text>
+                        </ReactNative.Text>
                         :
                         null
                         }
-                        </View>
+                        </ReactNative.View>
                         */}
                 {/*}
 
-                   <TextInput
+                   <ReactNative.TextInput
                    ref='VenueFeedback'
                    style={{
                    marginBottom:20,
@@ -509,22 +496,22 @@ class Menu extends Component {
                    onSubmitEditing={this.venueFeedback.bind(this)}
                    />
 
-                   <Text>Private Events</Text>
+                   <ReactNative.Text>Private Events</ReactNative.Text>
                    <FBLogin parent={this}/>
                    */}
 
 
-                    <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>
+                    <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>
                         Communications.web('https://goo.gl/forms/tusQJD96Z40jF9A72')
                     }>
-                    <Text>
+                    <ReactNative.Text>
                         <VectorIcons.MaterialIcons name='add-circle-outline' color='#000000' size={20}/> Add a Venue
-                        </Text>
-                        </TouchableOpacity>
+                        </ReactNative.Text>
+                        </ReactNative.TouchableOpacity>
 
 
                 {/*
-                    <TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
+                    <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
                     /*Communications.email(*/
                     /*['feedback@nmrfmo.33mail.com'],*/
                     /*null,*/
@@ -533,16 +520,22 @@ class Menu extends Component {
                     /*'Have you found a bug or miss a venue? Thx. Max.'*/
                     /*)*/
                     /*}>*/
-                    /*<Text>*/
+                    /*<ReactNative.Text>*/
                     /*Feedback    <FontAwesome name='envelope-o' color='#000000' size={20}/>*/
-                    /*</Text>*/
-                    /*</TouchableOpacity>*/}
+                    /*</ReactNative.Text>*/
+                    /*</ReactNative.TouchableOpacity>*/}
 
 
-                </View>
+                </ReactNative.View>
                     );
     };
     };
+
+const mapStateToProps = (state, ownProps) => {
+     const { eventTimerange, eventCategory } = state.filterReducer
+     return { eventTimerange, eventCategory }
+}
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -553,11 +546,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(action.changeEventCategory(category))
         }
     }
-}
-
-const mapStateToProps = (state, ownProps) => {
-     const { eventTimerange, eventCategory } = state.filterReducer
-     return { eventTimerange, eventCategory }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)
