@@ -244,40 +244,6 @@ class Menu extends Component {
     componentWillUnmount() {
         ReactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
-    onChangeWhat(option){
-        this.setState({
-            what: option.label
-        });
-        ReactNative.InteractionManager.runAfterInteractions(()=>{
-            this.props.parent.props.parent.setState({
-                category: option.key
-            })
-        });
-
-    };
-    onChangeWhen(option){
-        this.setState({
-            when: option.label
-        });
-        ReactNative.InteractionManager.runAfterInteractions(()=>{
-            this.props.parent.props.parent.setState({
-                timeRange: option.key
-            });
-            this.props.parent.getCounts();
-        });
-    };
-    onChange(value){
-        /*if(this.state.value.when !== value.when){*/
-        /*if(JSON.stringify(this.state.value) !== JSON.stringify(value)){*/
-        this.setState({value});
-        if(true){
-            ReactNative.InteractionManager.runAfterInteractions(()=>{
-                this.props.parent.setState({meetings: []});
-                this.props.parent.props.parent.setState({lastUpdatedAt: 0, timeRange: value.when, category: value.what, search: ''});
-                this.props.parent.setState({event: {title: ''}})
-            });
-        }
-    };
     onTimeRangeSliderChange(values){
         const start = values[0];
         const end = values[1];
@@ -450,7 +416,7 @@ class Menu extends Component {
                     data={this.props.parent.state.what}
                 key={"whatPicker"}
                 initValue="What"
-                    onChange={this.onChangeWhat.bind(this)}
+                    onChange={(category)=>this.props.changeCategory(category)}
                 >
                     <ReactNative.Text
                     style={{marginTop: 10,
@@ -462,9 +428,9 @@ class Menu extends Component {
                         fontSize: 18,
                         width: 280}}
                 editable={false}
-                value={this.props.eventCategory}
+                value={this.props.eventCategory.key}
                 >
-                {this.props.eventCategory} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
+                {this.props.eventCategory.key} <VectorIcons.FontAwesome name='chevron-right' color='#000000'/>
                 </ReactNative.Text>
                     </ModalPicker>
                     </ReactNative.View>
@@ -545,10 +511,10 @@ const mapDispatchToProps = (dispatch) => {
             console.log(timerange)
         },
         changeCategory: (category) => {
-            dispatch(action.changeEventCategory(category))
+            dispatch(actions.changeEventCategory(category))
         },
         changeSearchstring: (searchstring) => {
-            dispatch(action.changeEventSearchstring(searchstring))
+            dispatch(actions.changeEventSearchstring(searchstring))
         }
     }
 }

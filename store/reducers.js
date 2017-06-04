@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 
 const initialFilter = {
     eventTimerange: {key: 'tomorrow', label: 'tomorrow'},
-    eventCategory: 'Recommended',
+    eventCategory: {key: 'All', label: 'All'},
     eventSearchstring: '',
 }
 
