@@ -408,7 +408,8 @@ class Menu extends Component {
                 min={0}
                 max={24}
                 sliderLength={280}
-                onValuesChange={this.onTimeRangeSliderChange.bind(this)}
+            /*onValuesChange={this.onTimeRangeSliderChange.bind(this)}*/
+            onChange={(hours)=>this.props.changeHours(hours)}
                 />
 
 
@@ -498,8 +499,8 @@ class Menu extends Component {
     };
 
 const mapStateToProps = (state, ownProps) => {
-     const { eventTimerange, eventCategory, eventSearchstring } = state.filterReducer
-     return { eventTimerange, eventCategory, eventSearchstring }
+     const { eventTimerange, eventCategory, eventSearchstring, eventHours } = state.filterReducer
+     return { eventTimerange, eventCategory, eventSearchstring, eventHours }
 }
 
 
@@ -507,11 +508,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeTimerange: (timerange) => {
             dispatch(actions.changeEventTimerange(timerange))
-            console.log("CHANGE TIMERANGE")
-            console.log(timerange)
         },
         changeCategory: (category) => {
             dispatch(actions.changeEventCategory(category))
+        },
+        changeHours: (values) => {
+            dispatch(actions.changeEventHours(values))
         },
         changeSearchstring: (searchstring) => {
             dispatch(actions.changeEventSearchstring(searchstring))

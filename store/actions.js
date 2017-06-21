@@ -27,3 +27,19 @@ export function changeEventCategory(category){
         }
     }
 }
+
+export function changeEventHours(values){
+    const start = values[0];
+    const end = values[1];
+
+    return {
+        type: constants.CHANGE_EVENT_HOURS,
+        payload: {
+            hours: {
+                start,
+                end
+            }
+        }
+    }
+    
+}

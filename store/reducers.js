@@ -6,6 +6,7 @@ const initialFilter = {
     eventTimerange: {key: 'tomorrow', label: 'tomorrow'},
     eventCategory: {key: 'All', label: 'All'},
     eventSearchstring: '',
+    eventHours: {start: 0, end: 24},
 }
 
 function filterReducer (state=initialFilter, action){
@@ -24,6 +25,11 @@ function filterReducer (state=initialFilter, action){
             return {
                 ...state,
                 eventSearchstring: action.payload.category
+            }
+        case constants.CHANGE_EVENT_HOURS:
+            return {
+                ...state,
+                eventHours: action.payload.hours
             }
         default:
             return state

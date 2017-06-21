@@ -75,7 +75,7 @@ class MyMapView extends React.Component {
 
     }
     async componentDidMount(){
-        this.getMeetupData();
+        /*this.getMeetupData();*/
         let loc_permission = await Exponent.Permissions.askAsync(Exponent.Permissions.LOCATION);
         /*console.log(loc_permission);*/
 
@@ -89,7 +89,7 @@ class MyMapView extends React.Component {
                         );
                 /*console.log("Fetched location.");*/
                 this.map.animateToCoordinate(position.coords);
-                this.getMeetupData();
+                this.getMeetupData(position);
             } catch(e){
                 console.log("Could not fetch location.");
                 console.log(e);
@@ -244,7 +244,7 @@ class MyMapView extends React.Component {
                                                         this.getDayCount();
                                                     }
 
-                                                    getMeetupData(){
+                                                    getMeetupData(position){
                                                         /*console.log("TRYING UPDATE");*/
                                                         /*console.log(this.state);*/
                                                         this.setState({
@@ -269,7 +269,7 @@ class MyMapView extends React.Component {
                                                                         category: this.props.eventCategory.key,
                                                                         startTime: this.props.parent.state.startTime,
                                                                         endTime: this.props.parent.state.endTime,
-                                                                        mapRegion: this.state.mapRegion,
+                                                                        mapRegion: {latitude: this.state.latitude, longitude: this.state.longitude},
                                                                         deviceId: Exponent.Constants.deviceId,
                                                                         isDevice: Exponent.Constants.isDevice,
                                                                         searchString: this.props.parent.state.search,
@@ -966,8 +966,8 @@ class MyMapView extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-     const { eventTimerange, eventCategory, eventSearchstring } = state.filterReducer
-     return { eventTimerange, eventCategory, eventSearchstring }
+     const { eventTimerange, eventCategory, eventSearchstring, eventHours } = state.filterReducer
+     return { eventTimerange, eventCategory, eventSearchstring, eventHours }
 }
 
 const mapDispatchToProps = (dispatch) => {
