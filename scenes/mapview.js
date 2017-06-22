@@ -244,7 +244,7 @@ class MyMapView extends React.Component {
                                                         this.getDayCount();
                                                     }
 
-                                                    getMeetupData(position){
+                                                    getMeetupData(){
                                                         /*console.log("TRYING UPDATE");*/
                                                         /*console.log(this.state);*/
                                                         this.setState({
@@ -269,7 +269,7 @@ class MyMapView extends React.Component {
                                                                         category: this.props.eventCategory.key,
                                                                         startTime: this.props.parent.state.startTime,
                                                                         endTime: this.props.parent.state.endTime,
-                                                                        mapRegion: {latitude: this.state.latitude, longitude: this.state.longitude},
+                                                                        mapRegion: this.state.mapMoved ? this.state.mapRegion : {latitude: this.state.latitude, longitude: this.state.longitude},
                                                                         deviceId: Exponent.Constants.deviceId,
                                                                         isDevice: Exponent.Constants.isDevice,
                                                                         searchString: this.props.parent.state.search,
@@ -920,9 +920,6 @@ class MyMapView extends React.Component {
                                                                     /*console.log('Refresh button clicked');*/
                                                                     ReactNative.InteractionManager.runAfterInteractions(()=>{
                                                                         this.getMeetupData();
-                                                                    });
-                                                                    this.setState({
-                                                                        mapMoved: false,
                                                                     });
                                                                 }}
 
