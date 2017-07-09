@@ -16,5 +16,4 @@ const ReduxApp = () => (
         <Navigator />
         </Provider>
 )
-
-Exponent.registerRootComponent(ReduxApp);
+export default ReduxApp
