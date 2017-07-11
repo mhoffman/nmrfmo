@@ -699,6 +699,7 @@ class MyMapView extends React.Component {
                             let later = time + 1000000;
                             const menu = <Menu onItemSelected={this.onMenuItemSelected}
                             parent={this}
+                            navigator={this.props.navigator}
                             whatHues={constants.whatHues}
                                 />;
                             var time_span = 60*60*24*1000;

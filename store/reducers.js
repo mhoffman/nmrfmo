@@ -2,6 +2,21 @@ import constants from './constants'
 
 import { combineReducers } from 'redux'
 
+const initialUser = {
+    clientId: '',
+    username: '',
+    facebookToken: '',
+    googleToken: '',
+    meetupToken: '',
+}
+
+function userReducer(state=initialUser, action){
+    switch(action.type) {
+        default:
+            return state
+    }
+}
+
 const initialFilter = {
     eventTimerange: {key: 'tomorrow', label: 'tomorrow'},
     eventCategory: {key: 'All', label: 'All'},

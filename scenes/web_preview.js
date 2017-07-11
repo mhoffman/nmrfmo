@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import VectorIcons from '@expo/vector-icons'
 import Exponent from 'expo'
+import moment from 'moment-timezone';
+
+import styles from './styles';
+import services from './services'
 
 class WebPreview extends React.Component {
     constructor(props){
@@ -51,11 +55,12 @@ class WebPreview extends React.Component {
             </ReactNative.TouchableHighlight>
             <ReactNative.View
             style={{
-                flexDirection: 'column'
+                flex: 5,
+                    flexDirection: 'column'
             }}>
             <ReactNative.Text
             style={{
-                    color: 'white'
+                color: 'white'
             }}
             numberOfLines={1}
             ellipsizeMode={'tail'}
@@ -64,13 +69,39 @@ class WebPreview extends React.Component {
             </ReactNative.Text>
             <ReactNative.Text
             style={{
-                    color: 'white'
+                color: 'white',
+                    fontSize: 8
             }}
             numberOfLines={1}
             ellipsizeMode={'tail'}
             >
             {this.props.url}
             </ReactNative.Text>
+            </ReactNative.View>
+
+
+            <ReactNative.View
+            style={{
+                flex: 1
+            }}>
+
+
+                <ReactNative.TouchableHighlight
+            onPress={()=>{ReactNative.Share.share({
+                title: "Let's go to " + this.props.event.title,
+                message: this.props.event.title + "\npresented by " + this.props.event.publisher + "\n\n" + this.props.event.url + "\n\n" + moment(this.props.event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + this.props.event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
+                url: "http://facebook.github.io/react-native/",
+                subject: "Share Link" //  for email
+            });
+            }}
+                >
+                <VectorIcons.Ionicons size={24} name="md-share" color="#ffffff"
+                style={{
+                    margin: 10,
+                }}
+            />
+
+            </ReactNative.TouchableHighlight>
             </ReactNative.View>
             </ReactNative.View>
             <ReactNative.View
