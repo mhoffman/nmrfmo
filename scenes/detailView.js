@@ -126,7 +126,7 @@ class EventDetails extends React.Component {
 
 
 
-            <Hr lineColor='#b3b3b3' text='Remember' textColor={'hsl(' +services.getCategoryHue(this.props.event.event) + ',100%,' + services.getCategoryLightness(this.props.event.event)+ '%)'}/>
+            <Hr lineColor='#b3b3b3' text='Keep' textColor={'hsl(' +services.getCategoryHue(this.props.event.event) + ',100%,' + services.getCategoryLightness(this.props.event.event)+ '%)'}/>
             <ReactNative.View style={{ flex: 1, flexDirection: 'row' }}>
             <ReactNative.TouchableHighlight
             onPress={()=>{ReactNative.Share.share({
