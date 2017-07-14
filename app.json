@@ -20,13 +20,22 @@
             "assetExts": ["ttf", "mp4"]
         },
         "ios":{
-            "bundleIdentifier": "nmrfmo"
+            "bundleIdentifier": "nmrfmo",
+            "config":{
+                "googleSignIn": {
+                    "reservedClientId": "320954026159-c32fsv04hl9429shhortdn7upgi9agkt.apps.googleusercontent.com"
+                }
+            }
         },
         "android":{
             "package":"com.nmrfmo",
             "config": {
                 "googleMaps": {
                     "apiKey": "AIzaSyCxEElDKdsU6gWBJ7L6JMQ_2otOcrW1Ivw"
+                },
+                "googleSignIn":{
+                    "certificateHash": "9E7E7D1CE9DA4143586D093B4521B2508376483B",
+                    "reservedClientId": "320954026159-1sfn8nh9gbsm9dbep2gncfnng6sep9he.apps.googleusercontent.com"
                 }
             }
         }

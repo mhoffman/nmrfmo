@@ -12,6 +12,8 @@ import DrawerLayout from 'react-native-drawer-layout'
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import _ from 'lodash';
+import fs from 'fs';
+import app from '../app.json';
 
 
 import constants from './constants'
@@ -303,8 +305,8 @@ class Menu extends Component {
 			const { type, accessToken, user } = await Exponent.Google.logInAsync({
 				androidStandaloneAppClientId: '<ANDROID_CLIENT_ID>',
 				iosStandaloneAppClientId: '<IOS_CLIENT_ID>',
-				androidClientId: '603386649315-9rbv8vmv2vvftetfbvlrbufcps1fajqf.apps.googleusercontent.com',
-				iosClientId: '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com',
+				androidClientId: app.expo.android.config.googleSignIn.reservedClientId,
+				iosClientId: app.expo.ios.config.googleSignIn.reservedClientId,
 				scopes: ['profile', 'email', 'https://www.googleapis.com/auth/calendar']
 			});
 
