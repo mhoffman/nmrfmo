@@ -2,16 +2,19 @@ import constants from './constants'
 
 import { combineReducers } from 'redux'
 
-const initialUser = {
+function userReducer(state={
     clientId: '',
     username: '',
     facebookToken: '',
-    googleToken: '',
+    googleAccessToken: '',
     meetupToken: '',
-}
-
-function userReducer(state=initialUser, action){
+}, action){
     switch(action.type) {
+        case constants.CHANGE_GOOGLE_ACCESS_TOKEN:
+            return {
+                ...state,
+                googleAccessToken: action.payload.token
+            }
         default:
             return state
     }
@@ -54,4 +57,5 @@ function filterReducer (state=initialFilter, action){
 
 export default combineReducers({
     filterReducer,
+    userReducer,
 })

@@ -34,8 +34,7 @@
                     "apiKey": "AIzaSyCxEElDKdsU6gWBJ7L6JMQ_2otOcrW1Ivw"
                 },
                 "googleSignIn":{
-                    "certificateHash": "9E7E7D1CE9DA4143586D093B4521B2508376483B",
-                    "reservedClientId": "320954026159-1sfn8nh9gbsm9dbep2gncfnng6sep9he.apps.googleusercontent.com"
+                    "certificateHash": "9E7E7D1CE9DA4143586D093B4521B2508376483B"
                 }
             }
         }

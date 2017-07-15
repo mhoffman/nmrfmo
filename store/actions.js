@@ -41,5 +41,13 @@ export function changeEventHours(values){
             }
         }
     }
-    
+}
+
+export function changeGoogleAccessToken(token){
+    return {
+        type: constants.CHANGE_GOOGLE_ACCESS_TOKEN,
+        payload: {
+            token: token
+        }
+    }
 }
