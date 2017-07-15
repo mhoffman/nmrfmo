@@ -88,6 +88,9 @@ class EventDetails extends React.Component {
             <ReactNative.Text style={[styles.welcome]}>
             {this.props.event.event.title}
             </ReactNative.Text>
+            <ReactNative.TouchableHighlight
+            onPress={(index)=>{ this.navigate.bind(this, "web_preview", {url: this.props.event.event.url, title: this.props.event.event.publisher, event: this.props.event.event})(); }}
+            >
             {this.props.event.event.image_url===undefined ? null :
                 <ReactNative.Image
                 source={{
@@ -99,6 +102,7 @@ class EventDetails extends React.Component {
                 }}
                 />
             }
+            </ReactNative.TouchableHighlight>
             <ReactNative.Text style={styles.p}>
             {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
             </ReactNative.Text>
@@ -200,7 +204,7 @@ class EventDetails extends React.Component {
                             }
 
                         ]}
-                            onPress={(index)=>{ this.navigate.bind(this, "web_preview", {url: this.props.event.event.publisher_url, title: this.props.event.event.publisher, event: this.props.event.event})(); }}
+                        onPress={(index)=>{ this.navigate.bind(this, "web_preview", {url: this.props.event.event.publisher_url, title: this.props.event.event.publisher, event: this.props.event.event})(); }}
                         >
                         <ReactNative.Text style={[styles.action_link, {width: window.width/3. - 10}]}> Venue: {this.props.event.event.publisher} <VectorIcons.FontAwesome name='home' size={18}/></ReactNative.Text>
                         </ReactNative.TouchableHighlight>
