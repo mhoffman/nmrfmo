@@ -7,6 +7,7 @@ import { AsyncStorage } from 'react-native'
 import { Provider } from 'react-redux'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { persistStore, autoRehydrate } from 'redux-persist'
+import { logger } from 'redux-logger';
 import thunk from 'redux-thunk'
 
 import Navigator from './scenes/navigator';
@@ -20,7 +21,8 @@ import reducers from './store/reducers'
 /*)*/
 /*)*/
 
-const store = compose(autoRehydrate())(createStore)(reducers)
+/*const store = compose(autoRehydrate())(createStore)(reducers)*/
+const store = compose(autoRehydrate())(createStore)(reducers, applyMiddleware(logger), applyMiddleware(thunk))
 if (typeof self === 'object'){
     persistStore(store, {storage: AsyncStorage}, () => {
         console.log('restored')
