@@ -20,6 +20,8 @@ import constants from './constants'
 import * as actions from '../store/actions'
 import WebPreview from './web_preview'
 
+import app_constants from '../constants.json'
+
 
 const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 /*const FBSDK = require('react-native-fbsdk');*/
@@ -282,7 +284,7 @@ class Menu extends Component {
     venueFeedback(event){
         this.refs.VenueFeedback.clear()
         let feedback = event.nativeEvent.text;
-        let url = 'https://nomorefomo.herokuapp.com/venue_feedback?feedback=' + encodeURI(feedback);
+        let url = app_constants.backend_url + '/venue_feedback?feedback=' + encodeURI(feedback);
         fetch (url, {
             headers: {
                 'Accept': 'application/json',
@@ -300,12 +302,85 @@ class Menu extends Component {
             })
     };
 
+    _fetchGoogleCalenderEvents = async () => {
+        const timeMin = moment.tz().add(-5, 'hours').format()
+        const timeMax = moment.tz().add(1, 'weeks').format()
+        const user_email = this.props.googleUser.email;
+        const url = 'https://www.googleapis.com/calendar/v3/calendars/' + user_email + '/events?' + params({
+            timeMin: timeMin,
+            timeMax: timeMax
+        });
+        console.log(url)
+        console.log("BLAG")
+        let eventList = await fetch(url, {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${this.props.googleAccessToken}`},
+
+        },
+        );
+        console.log(JSON.stringify(JSON.parse(eventList._bodyInit), null, '\t'));
+        /*console.log(Object.keys(JSON.parse(eventList._bodyInit).items))*/
+        console.log(Object.keys(JSON.parse(eventList._bodyInit).items[0]))
+        console.log("PREPARING PRIVATE EVENTS REPACKAGE")
+        var privateGoogleEvents = []
+        JSON.parse(eventList._bodyInit).items.map(function(event){
+            console.log(event.summary)
+            console.log(event.summary)
+            console.log(event.location);
+            console.log(JSON.stringify(event, null, '\t'));
+
+            if(event.location!==undefined){
+                console.log(app_constants.backend_url + '/_reverse_geocode');
+                fetch((app_constants.backend_url + '/_reverse_geocode'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        address: event.location
+                    })}
+                )
+                    .then((response) => { console.log(response); return response.json(); })
+                    .then((response)=>{
+                        console.log(JSON.stringify(response, null, '\t'));
+                        let gps_location = response
+                        if(gps_location!==undefined){
+
+                            let privateGoogleEvent = ({
+                                categories : ["Private"],
+                                title: event.summary,
+                                address: event.location,
+                                description: event.description,
+                                url: event.htmlLink,
+                                publisher_url: 'https://calendar.google.com',
+                                publisher: 'Google Calendar [' + user_email + ']',
+                                datetime: event.start.dateTime,
+                                lon: gps_location.lon,
+                                lat: gps_location.lat,
+                                image_url: 'http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/calendar-icon.png',
+                                location: {type: "Point",
+                                    coordinates: [gps_location.lat, gps_location.lon]
+                                }
+                            });
+                            privateGoogleEvents.push(privateGoogleEvent);
+                            console.log(privateGoogleEvent);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        });
+        this.props.saveGoogleCalendarEvents(privateGoogleEvents)
+
+    };
     _unlinkGoogleLogin = async () => {
-                    this.props.changeGoogleAccessToken('')
+        this.props.changeGoogleAccessToken('')
     };
     _handleGoogleLogin = async () => {
         try {
-            const { type, accessToken, user } = await Exponent.Google.logInAsync({
+            const { type, accessToken, user, refreshToken } = await Exponent.Google.logInAsync({
                 androidStandaloneAppClientId: '<ANDROID_CLIENT_ID>',
                 iosStandaloneAppClientId: '<IOS_CLIENT_ID>',
                 androidClientId: "320954026159-1sfn8nh9gbsm9dbep2gncfnng6sep9he.apps.googleusercontent.com",
@@ -315,7 +390,7 @@ class Menu extends Component {
 
             switch (type) {
                 case 'success': {
-                    this.setState({user})
+                    this.props.saveGoogleUser(user)
                     this.props.changeGoogleAccessToken(accessToken)
                     ReactNative.Alert.alert(
                         'Logged in!',
@@ -324,31 +399,10 @@ class Menu extends Component {
                     console.log(JSON.stringify(user))
                     console.log("Access Token")
                     console.log(accessToken)
-                    let calendarList = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
-                        headers: { Authorization: `Bearer ${accessToken}`}, })
+                    /*let calendarList = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {*/
+                    /*headers: { Authorization: `Bearer ${accessToken}`}, })*/
                     /*console.log(JSON.stringify(calendarList))*/
                     /*console.log((JSON.parse(calendarList._bodyInit).items))*/
-                    let url = 'https://www.googleapis.com/calendar/v3/calendars/' + user.email + '/events?' + params({
-                        timeMin: moment.tz().add(-5, 'hours').format(),
-                        timeMax: moment.tz().add(1, 'weeks').format()
-                    })
-                    let eventList = await fetch(url, {
-                        method: 'GET',
-                        headers: { Authorization: `Bearer ${this.props.googleAccessToken}`},
-
-                    },
-                    );
-                    console.log(JSON.stringify(eventList))
-                    /*console.log(Object.keys(JSON.parse(eventList._bodyInit).items))*/
-                    /*console.log(Object.keys(JSON.parse(eventList._bodyInit).items[0]))*/
-                    JSON.parse(eventList._bodyInit).items.map(function(event){
-                        console.log(event.summary)
-                        if(event.location != undefined){
-                            /*console.log(Object.keys(event))*/
-                            console.log(event.location)
-                        }
-                        /*console.log(JSON.stringify(event, null, '\t'));*/
-                    });
                     /*console.log(user.id)*/
                     /*console.log(JSON.stringify(user))*/
                     /*Object.keys(eventList._bodyInit).map((event_i)=>{*/
@@ -566,21 +620,30 @@ class Menu extends Component {
             </ReactNative.TouchableOpacity>
 
             {  this.props.googleAccessToken == '' ?
-                <ReactNative.Button 
+                <ReactNative.Button
                 onPress={this._handleGoogleLogin}
                 title="Integrate with Google Calendar"
                 style={{
                     marginTop: 10
                 }}
-                /> 
-            :
-                <ReactNative.Button 
+                />
+                :
+                <ReactNative.View>
+                <ReactNative.Button
                 onPress={this._unlinkGoogleLogin}
                 title="Unlink Google Calendar"
                 style={{
                     marginTop: 10
                 }}
-                /> 
+                />
+                <ReactNative.Button
+                onPress={this._fetchGoogleCalenderEvents}
+                title="Reload Calendar Events"
+                style={{
+                    marginTop: 10
+                }}
+                />
+                </ReactNative.View>
             }
             {/*
                     <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
@@ -605,8 +668,8 @@ class Menu extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     const { eventTimerange, eventCategory, eventSearchstring, eventHours } = state.filterReducer
-    const { googleAccessToken } = state.userReducer
-    return { eventTimerange, eventCategory, eventSearchstring, eventHours, googleAccessToken }
+    const { googleAccessToken, googleUser } = state.userReducer
+    return { eventTimerange, eventCategory, eventSearchstring, eventHours, googleAccessToken, googleUser }
 }
 
 
@@ -626,6 +689,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         changeSearchstring: (searchstring) => {
             dispatch(actions.changeEventSearchstring(searchstring))
+        },
+        saveGoogleCalendarEvent: (events) => {
+            dispatch(actions.saveGoogleCalendarEvents(events))
+        },
+        saveGoogleUser: (user) => {
+            dispatch(actions.saveGoogleUser(user))
         }
     }
 }

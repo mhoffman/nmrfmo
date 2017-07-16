@@ -8,6 +8,7 @@ function userReducer(state={
     facebookToken: '',
     googleAccessToken: '',
     meetupToken: '',
+    googleCalendarEvents: {},
 }, action){
     switch(action.type) {
         case constants.CHANGE_GOOGLE_ACCESS_TOKEN:
@@ -15,6 +16,18 @@ function userReducer(state={
                 ...state,
                 googleAccessToken: action.payload.token
             }
+        case constants.SAVE_GOOGLE_CALENDAR_EVENTS:
+            return {
+                ...state,
+                googleCalendarEvents: action.payload.events
+            }
+
+        case constants.SAVE_GOOGLE_USER:
+            return {
+                ...state,
+                googleUser: action.payload.googleUser,
+            }
+
         default:
             return state
     }

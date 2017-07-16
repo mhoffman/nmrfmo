@@ -26,6 +26,7 @@ import constants from './constants';
 import services from './services';
 import styles from './styles';
 import CategoryIcon from './categoryIcon';
+import app_constants from '../constants.json'
 
 var t = require('tcomb-form-native');
 import moment from 'moment-timezone';
@@ -118,7 +119,7 @@ class MyMapView extends React.Component {
     };
 
     getDayCount(){
-        fetch('https://nomorefomo.herokuapp.com/day_count',{
+        fetch(app_constants.backend_url + '/day_count',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -170,7 +171,7 @@ class MyMapView extends React.Component {
     };
 
     getHourCount(){
-        fetch('https://nomorefomo.herokuapp.com/hour_count',{
+        fetch(app_constants.backend_url + '/hour_count',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -199,7 +200,7 @@ class MyMapView extends React.Component {
     };
 
     getCategoryCount(){
-        fetch('https://nomorefomo.herokuapp.com/category_count',{
+        fetch(app_constants.backend_url + '/category_count',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -257,7 +258,7 @@ class MyMapView extends React.Component {
                 let lon = this.state.longitude;
                 let lat = this.state.latitude;
 
-                fetch('https://nomorefomo.herokuapp.com/query',{
+                fetch(app_constants.backend_url + '/query',{
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -287,6 +288,9 @@ class MyMapView extends React.Component {
                         });
                         response = response.filter(function(x){
                             return !_.isEmpty(x);
+                        })
+                        response.map((event)=>{
+                            console.log(JSON.stringify(event, null, '\t'));
                         })
                         response.push({});
                         /*response.push({});*/

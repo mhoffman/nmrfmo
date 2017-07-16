@@ -51,3 +51,23 @@ export function changeGoogleAccessToken(token){
         }
     }
 }
+
+export function saveGoogleAccessToken(events){
+    return {
+        type: constants.SAVE_GOOGLE_CALENDAR_EVENTS,
+        payload: {
+            events: events
+        }
+
+    }
+}
+
+export function saveGoogleUser(user){
+    return {
+        type: constants.SAVE_GOOGLE_USER,
+        payload: {
+            googleUser: user
+        }
+
+    }
+}
