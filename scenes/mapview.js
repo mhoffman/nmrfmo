@@ -1,4 +1,5 @@
 'use strict';
+
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import Exponent from 'expo'
@@ -601,7 +602,7 @@ class MyMapView extends React.Component {
                     }}>
 
                     <ReactNative.TouchableHighlight
-                    onPress={()=>{Share.share({
+                    onPress={()=>{ReactNative.Share.share({
                         title: "Event",
                         message: event.url + "\n\n" + moment(event.datetime).format('dddd, MMMM D @ h:mm A') + '\n' + event.address + "\n\n--\n(Discovered with nmrfmo - http://exp.host/@mhoffman/nmrfmo/)",
                         url: "http://facebook.github.io/react-native/",
