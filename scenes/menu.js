@@ -187,7 +187,8 @@ class FBLogin extends Component {
     }
 
     render() {
-        return (<ReactNative.View>
+        return (
+            <ReactNative.View>
             <LoginButton
             readPermissions={["public_profile", "user_events"]}
             onLoginFinished={
@@ -302,6 +303,8 @@ class Menu extends Component {
             })
     };
 
+    _fetchFacebookCalenderEvents = async () => {
+    };
     _fetchGoogleCalenderEvents = async () => {
         const timeMin = moment.tz().add(-5, 'hours').format()
         const timeMax = moment.tz().add(1, 'weeks').format()
@@ -374,6 +377,9 @@ class Menu extends Component {
         });
         this.props.saveGoogleCalendarEvents(privateGoogleEvents)
 
+    };
+    _unlinkFacebookLogin = async () => {
+        this.props.saveFacebookAccessToken('')
     };
     _unlinkGoogleLogin = async () => {
         this.props.saveGoogleAccessToken('')
@@ -493,6 +499,11 @@ class Menu extends Component {
 
     render() {
         return (
+            <ReactNative.ScrollView
+            style={{
+                flex: 1
+            }}
+            >
             <ReactNative.View style={[styles.menu]}>
 
             <ReactNative.View
@@ -668,7 +679,9 @@ class Menu extends Component {
                    */}
 
 
-            <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable]}
+            <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable, {
+                paddingBottom: 25
+            }]}
             /*onPress={()=> Communications.web('https://goo.gl/forms/tusQJD96Z40jF9A72') }*/
             onPress={(index)=>{ this.navigate.bind(this, "web_preview", {url: "https://goo.gl/forms/tusQJD96Z40jF9A72", title: "Add a Venue"})(); }}
             >
@@ -677,38 +690,63 @@ class Menu extends Component {
             </ReactNative.Text>
             </ReactNative.TouchableOpacity>
 
-            <ReactNative.Button
-            onPress={this._handleFacebookLogin}
-            title="Integrate with Facebook"
-            style={{
-                marginTop: 10
-            }}
-            />
-            {  this.props.googleAccessToken == '' ?
+            { this.props.facebookAccessToken == ''?
                 <ReactNative.Button
+                onPress={this._handleFacebookLogin}
+                title="Integrate with Facebook"
+                style={{
+                    marginTop: 10
+                }}
+                />:
+                <ReactNative.View>
+                <ReactNative.Text>Facebook</ReactNative.Text>
+                <ReactNative.Button
+                onPress={this._unlinkFacebookLogin}
+                title="Unlink "
+                style={{
+                    marginTop: 10,
+                }}
+                />
+                <ReactNative.Button
+                onPress={this._fetchFacebookCalenderEvents}
+                title="Reload "
+                style={{
+                    marginTop: 10,
+                        height: 20,
+                        width: 60
+                }}
+                />
+                </ReactNative.View>
+
+            }
+
+
+            {  this.props.googleAccessToken == '' ?
+                    <ReactNative.Button
                 onPress={this._handleGoogleLogin}
                 title="Integrate with Google Calendar"
                 style={{
                     marginTop: 10
                 }}
-                />
-                :
-                <ReactNative.View>
-                <ReactNative.Button
+                    />
+                    :
+                    <ReactNative.View>
+                    <ReactNative.Text>Google Calendar</ReactNative.Text>
+                    <ReactNative.Button
                 onPress={this._unlinkGoogleLogin}
-                title="Unlink Google Calendar"
+                title="Unlink"
                 style={{
                     marginTop: 10
                 }}
-                />
-                <ReactNative.Button
+                    />
+                    <ReactNative.Button
                 onPress={this._fetchGoogleCalenderEvents}
-                title="Reload Calendar Events"
+                title="Reload"
                 style={{
                     marginTop: 10
                 }}
-                />
-                </ReactNative.View>
+                    />
+                    </ReactNative.View>
             }
             {/*
                     <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable]} onPress={()=>*/
@@ -727,6 +765,7 @@ class Menu extends Component {
 
 
                 </ReactNative.View>
+                    </ReactNative.ScrollView>
             );
     };
 };
