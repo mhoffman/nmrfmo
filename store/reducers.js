@@ -5,12 +5,25 @@ import { combineReducers } from 'redux'
 function userReducer(state={
     clientId: '',
     username: '',
-    facebookToken: '',
+    facebookAccessToken: '',
     googleAccessToken: '',
     meetupToken: '',
-    googleCalendarEvents: {},
+    googleCalendarEvents: [],
+    googleUser: {},
+    facebookUser: {}
+
 }, action){
     switch(action.type) {
+        case constants.SAVE_FACEBOOK_USER:
+            return {
+                ...state,
+                facebookUser: action.payload.user
+            }
+        case constants.SAVE_FACEBOOK_ACCESS_TOKEN:
+            return {
+                ...state,
+                facebookAccessToken: action.payload.token
+            }
         case constants.CHANGE_GOOGLE_ACCESS_TOKEN:
             return {
                 ...state,

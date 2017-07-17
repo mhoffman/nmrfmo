@@ -376,7 +376,7 @@ class Menu extends Component {
 
     };
     _unlinkGoogleLogin = async () => {
-        this.props.changeGoogleAccessToken('')
+        this.props.saveGoogleAccessToken('')
     };
     _handleGoogleLogin = async () => {
         try {
@@ -391,7 +391,7 @@ class Menu extends Component {
             switch (type) {
                 case 'success': {
                     this.props.saveGoogleUser(user)
-                    this.props.changeGoogleAccessToken(accessToken)
+                    this.props.saveGoogleAccessToken(accessToken)
                     ReactNative.Alert.alert(
                         'Logged in!',
                         `Hi ${user.name}!`,
@@ -428,6 +428,64 @@ class Menu extends Component {
             ReactNative.Alert.alert(
                 'Oops!',
                 'Login failed!' + e,
+            );
+        }
+    };
+    _handleFacebookLogin = async () => {
+        try {
+            const { type, token } = await Exponent.Facebook.logInWithReadPermissionsAsync(
+                '1666953796951055', // Replace with your own app id in standalone app
+                { permissions: ['public_profile', 'user_events'] }
+            );
+            console.log(type)
+            console.log(token)
+            this.props.saveFacebookAccessToken(token)
+
+            switch (type) {
+                case 'success': {
+                    // Get the user's name using Facebook's Graph API
+                    const profile_url = `https://graph.facebook.com/me?access_token=${token}`
+                    console.log(profile_url);
+                    fetch(profile_url,{
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        method: 'GET'
+                    })
+                        .then((response)=>response.json())
+                        .then((profile)=>{
+                            console.log(JSON.stringify(profile, null ,'\t'))
+                            this.props.saveFacebookUser(profile)
+                            ReactNative.Alert.alert(
+                                'Logged in!',
+                                `Hi ${profile.name}!`,
+                            );
+                            console.log(JSON.stringify(profile, null, '\t'))
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                    break;
+                }
+                case 'cancel': {
+                    Alert.alert(
+                        'Cancelled!',
+                        'Login was cancelled!',
+                    );
+                    break;
+                }
+                default: {
+                    Alert.alert(
+                        'Oops!',
+                        'Login failed!',
+                    );
+                }
+            }
+        } catch (e) {
+            Alert.alert(
+                'Oops!',
+                'Login failed!',
             );
         }
     };
@@ -619,6 +677,13 @@ class Menu extends Component {
             </ReactNative.Text>
             </ReactNative.TouchableOpacity>
 
+            <ReactNative.Button
+            onPress={this._handleFacebookLogin}
+            title="Integrate with Facebook"
+            style={{
+                marginTop: 10
+            }}
+            />
             {  this.props.googleAccessToken == '' ?
                 <ReactNative.Button
                 onPress={this._handleGoogleLogin}
@@ -668,16 +733,13 @@ class Menu extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     const { eventTimerange, eventCategory, eventSearchstring, eventHours } = state.filterReducer
-    const { googleAccessToken, googleUser } = state.userReducer
-    return { eventTimerange, eventCategory, eventSearchstring, eventHours, googleAccessToken, googleUser }
+    const { googleAccessToken, googleUser, facebookAccessToken, facebookUser } = state.userReducer
+    return { eventTimerange, eventCategory, eventSearchstring, eventHours, googleAccessToken, googleUser, facebookAccessToken }
 }
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeGoogleAccessToken: (token) => {
-            dispatch(actions.changeGoogleAccessToken(token))
-        },
         changeTimerange: (timerange) => {
             dispatch(actions.changeEventTimerange(timerange))
         },
@@ -690,11 +752,20 @@ const mapDispatchToProps = (dispatch) => {
         changeSearchstring: (searchstring) => {
             dispatch(actions.changeEventSearchstring(searchstring))
         },
-        saveGoogleCalendarEvent: (events) => {
+        saveGoogleAccessToken: (token) => {
+            dispatch(actions.saveGoogleAccessToken(token))
+        },
+        saveGoogleCalendarEvents: (events) => {
             dispatch(actions.saveGoogleCalendarEvents(events))
         },
         saveGoogleUser: (user) => {
             dispatch(actions.saveGoogleUser(user))
+        },
+        saveFacebookAccessToken : (token) => {
+            dispatch(actions.saveFacebookAccessToken(token))
+        },
+        saveFacebookUser : (user) => {
+            dispatch(actions.saveFacebookUser(user))
         }
     }
 }

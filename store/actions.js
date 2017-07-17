@@ -43,7 +43,7 @@ export function changeEventHours(values){
     }
 }
 
-export function changeGoogleAccessToken(token){
+export function saveGoogleAccessToken(token){
     return {
         type: constants.CHANGE_GOOGLE_ACCESS_TOKEN,
         payload: {
@@ -52,7 +52,7 @@ export function changeGoogleAccessToken(token){
     }
 }
 
-export function saveGoogleAccessToken(events){
+export function saveGoogleEvents(events){
     return {
         type: constants.SAVE_GOOGLE_CALENDAR_EVENTS,
         payload: {
@@ -67,6 +67,25 @@ export function saveGoogleUser(user){
         type: constants.SAVE_GOOGLE_USER,
         payload: {
             googleUser: user
+        }
+
+    }
+}
+
+export function saveFacebookAccessToken(token){
+    return {
+        type: constants.SAVE_FACEBOOK_ACCESS_TOKEN,
+        payload: {
+            token: token
+        }
+    }
+}
+
+export function saveFacebookUser(user){
+    return {
+        type: constants.SAVE_FACEBOOK_USER,
+        payload: {
+            user: user
         }
 
     }
