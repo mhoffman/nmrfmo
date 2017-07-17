@@ -22,7 +22,8 @@ import reducers from './store/reducers'
 /*)*/
 
 /*const store = compose(autoRehydrate())(createStore)(reducers)*/
-const store = compose(autoRehydrate())(createStore)(reducers, applyMiddleware(logger), applyMiddleware(thunk))
+/*const store = compose(autoRehydrate())(createStore)(reducers, applyMiddleware(logger), applyMiddleware(thunk))*/
+const store = compose(autoRehydrate())(createStore)(reducers, applyMiddleware(logger))
 if (typeof self === 'object'){
     persistStore(store, {storage: AsyncStorage}, () => {
         console.log('restored')
