@@ -33,9 +33,6 @@ const PRIMARY_COLOR = constants.PRIMARY_COLOR;
 /*} = FBSDK;*/
 
 
-
-
-
 import t from 'tcomb-form-native';
 var form_styles = t.form.Form.stylesheet;
 
@@ -109,110 +106,6 @@ const menuStyle = ReactNative.StyleSheet.create({
         backgroundColor: 'red',
     }
 });
-
-
-
-// Create a graph request asking for user information with a callback to handle the response.
-
-class FBLogin extends Component {
-    constructor(props) {
-        super(props);
-        this.handleUserEvents = this.handleUserEvents.bind(this);
-    }
-    //Create response callback.
-    async responseInfoCallback(error, result) {
-        if (error) {
-            console.log('Error fetching data: ' + error.toString());
-            console.log(error);
-        } else {
-            console.log('Success fetching data: ' + result.toString());
-            console.log(result);
-        }
-    }
-
-    async handleUserEvents(error, result){
-        if (error) {
-            console.log('Error fetching data: ' + error.toString());
-            console.log(error);
-        } else {
-            /*console.log('Success fetching data: ' + result.toString());*/
-            /*console.log(result);*/
-            result.data.map((event, ievent) =>{
-            });
-            /*console.log("PROCESSING PRIVATE MEETINGS");*/
-            /*console.log(result.data);*/
-            AccessToken.getCurrentAccessToken().then( (data) =>{
-                console.log(data.accessToken.toString());
-                this.props.parent.setState({accessToken: data.accessToken.toString()})
-            });
-            try {
-                const private_meetings = await result.data
-                    .filter((event) => {
-                        /*console.log(moment(event.start_time));*/
-                        /*console.log(event.start_time);*/
-                        /*console.log(event.hasOwnProperty('place')*/
-                        /*&& event.place.hasOwnProperty('location')*/
-                        /*&& event.hasOwnProperty('start_time')*/
-                        /*&& (moment(event.start_time) > moment().startOf('day').subtract(1, 'day').toDate())*/
-                        /*);*/
-                        return (event.hasOwnProperty('place')
-                            && event.place.hasOwnProperty('location')
-                            && event.hasOwnProperty('start_time')
-                            && (moment(event.start_time) > moment().startOf('day').subtract(1, 'day').toDate()));
-                    })
-                    .map((event, ievent) =>{
-                        return {
-                            lon: event.place.location.longitude,
-                            lat: event.place.location.latitude,
-                            title: event.name,
-                            description: event.description,
-                            url: 'https://www.facebook.com/events/' + event.id + '/',
-                            cost: '',
-                            publisher: 'Facebook',
-                            publisher_url: 'https://facebook.com',
-                            datetime: moment(event.start_time).toDate(),
-                            address: '' + event.place.name + ', ' + event.place.location.street + ', ' + ', ' + event.place.location.city + ', ' + event.place.location.state + ', ' + event.place.location.zip,
-
-                        };
-                    });
-                this.props.parent.props.parent.setState({private_meetings});
-                /*console.log("SET PRIVATE MEETINGS");*/
-                /*console.log(private_meetings);*/
-                /*console.log(this.props.parent.props.parent.state);*/
-            } catch (error) {
-                console.log("ASYNC ERROR");
-                console.log(error);
-            }
-        }
-    }
-
-    render() {
-        return (
-            <ReactNative.View>
-            <LoginButton
-            readPermissions={["public_profile", "user_events"]}
-            onLoginFinished={
-                (error, result) => {
-                    if (error) {
-                        /*console.log("Login failed with error: " + result.error);*/
-                    } else if (result.isCancelled) {
-                        /*console.log("Login was cancelled");*/
-                    } else {
-                        console.log("Login was successful with permissions: " + result.grantedPermissions);
-                        console.log("USER LOGGED INTO FACEBOOK");
-                        console.log(result);
-                        new GraphRequestManager().addRequest(new GraphRequest( '/me', null, _responseInfoCallback)).start();
-                        new GraphRequestManager().addRequest(new GraphRequest( '/me/events', null, this.handleUserEvents)).start();
-                    }
-                }
-            }
-            onLogoutFinished={() => console.log("User logged out")}/>
-            </ReactNative.View>
-        );
-    }
-}
-
-
 
 
 /*module.exports = class Menu extends Component {*/
@@ -303,7 +196,41 @@ class Menu extends Component {
             })
     };
 
-    _fetchFacebookCalenderEvents = async () => {
+    _fetchFacebookEvents = async () => {
+        const url = `https://graph.facebook.com/me/events?access_token=${this.props.facebookAccessToken}`
+         followUp = async (url) => {
+            fetch(url)
+                .then((response)=>response.json())
+                .then((response)=>{
+                    /*console.log(JSON.stringify(response, null, '\t'))*/
+                    response.data.map(showEvent, facebookEvents)
+                    if(response.paging.next!=undefined){
+                        followUp(response.next, facebookEvents)
+                    }
+                })
+        }
+        showEvent = async (event_id) => {
+            const url  = `https://graph.facebook.com/event/${event_id}/?access_token=${this.props.facebookAccessToken}`
+            fetch(url)
+                .then((response)=>response.json())
+                .then((response)=>{
+                    /*console.log(JSON.stringify(response, null, '\t'))*/
+                    response.data.map(showEvent)
+                })
+        }
+        console.log(url)
+        fetch(url)
+            .then((response)=>response.json())
+            .then((response)=>{
+                console.log(JSON.stringify(response, null, '\t'))
+                console.log(JSON.stringify(response.paging, null, '\t'))
+                let facebookEvents = []
+
+                if(response.paging.next!=undefined){
+                    followUp(response.paging.next, facebookEvents)
+                    response.data.map(showEvent, facebookEvents)
+                }
+            });
     };
     _fetchGoogleCalenderEvents = async () => {
         const timeMin = moment.tz().add(-5, 'hours').format()
@@ -405,15 +332,6 @@ class Menu extends Component {
                     console.log(JSON.stringify(user))
                     console.log("Access Token")
                     console.log(accessToken)
-                    /*let calendarList = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {*/
-                    /*headers: { Authorization: `Bearer ${accessToken}`}, })*/
-                    /*console.log(JSON.stringify(calendarList))*/
-                    /*console.log((JSON.parse(calendarList._bodyInit).items))*/
-                    /*console.log(user.id)*/
-                    /*console.log(JSON.stringify(user))*/
-                    /*Object.keys(eventList._bodyInit).map((event_i)=>{*/
-                    /*console.log(eventList._bodyInit['' + event_i ]);*/
-                    /*});*/
                     break;
                 }
                 case 'cancel': {
@@ -602,7 +520,7 @@ class Menu extends Component {
             <ReactNative.Text style={{
                 fontWeight: 'bold',
             }}>Time Range: </ReactNative.Text>
-            {moment(this.state.startTime, 'HH').format('h A')} to {moment(this.state.endTime, 'HH').format('h A')}</ReactNative.Text>
+            {moment(this.props.eventHours.start, 'HH').format('h A')} to {moment(this.props.eventHours.end, 'HH').format('h A')}</ReactNative.Text>
             <ReactNative.View
             style={{
                 /*borderWidth: 1,*/
@@ -611,7 +529,7 @@ class Menu extends Component {
             </ReactNative.View>
 
             <MultiSlider
-            values={[this.state.startTime, this.state.endTime]}
+            values={[this.props.eventHours.start, this.props.eventHours.end]}
             markerStyle={{
                 height: 30,
                     width: 30,
@@ -620,7 +538,9 @@ class Menu extends Component {
             max={24}
             sliderLength={280}
             /*onValuesChange={this.onTimeRangeSliderChange.bind(this)}*/
-            onChange={(hours)=>this.props.changeHours(hours)}
+            onValuesChangeFinish={(hours)=>{
+                this.props.changeHours(hours);
+            }}
             />
 
 
@@ -646,38 +566,6 @@ class Menu extends Component {
             </ReactNative.Text>
             </ModalPicker>
             </ReactNative.View>
-            {/*
-
-                        <ReactNative.View>
-
-                        <ReactNative.Text>
-                        {this.state.what}
-                        </ReactNative.Text>
-                        {this.state.what.match(/[0-9]+/)!=null ?
-                        <ReactNative.Text>
-                        Found {this.state.what.match(/[0-9]+/)[0]} events
-                        </ReactNative.Text>
-                        :
-                        null
-                        }
-                        </ReactNative.View>
-                        */}
-            {/*}
-
-                   <ReactNative.TextInput
-                   ref='VenueFeedback'
-                   style={{
-                   marginBottom:20,
-                   height:60
-                   }}
-                   placeholder="Suggest a venue."
-                   onSubmitEditing={this.venueFeedback.bind(this)}
-                   />
-
-                   <ReactNative.Text>Private Events</ReactNative.Text>
-                   <FBLogin parent={this}/>
-                   */}
-
 
             <ReactNative.TouchableOpacity style={[styles.menuentry,styles.clickable, {
                 paddingBottom: 25
@@ -708,7 +596,7 @@ class Menu extends Component {
                 }}
                 />
                 <ReactNative.Button
-                onPress={this._fetchFacebookCalenderEvents}
+                onPress={this._fetchFacebookEvents}
                 title="Reload "
                 style={{
                     marginTop: 10,
@@ -786,6 +674,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.changeEventCategory(category))
         },
         changeHours: (values) => {
+            console.log(JSON.stringify(values))
             dispatch(actions.changeEventHours(values))
         },
         changeSearchstring: (searchstring) => {
