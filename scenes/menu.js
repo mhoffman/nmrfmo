@@ -107,6 +107,16 @@ const menuStyle = ReactNative.StyleSheet.create({
     }
 });
 
+let _facebookEventsFollowUp = async (url) => {
+    fetch(url)
+        .then((response)=>response.json())
+        .then((response)=>{
+            console.log(JSON.stringify(response, null, '\t'))
+        })
+        .catch(e=>{
+            console.log(e);
+        });
+}
 
 /*module.exports = class Menu extends Component {*/
 class Menu extends Component {
@@ -197,41 +207,12 @@ class Menu extends Component {
     };
 
     _fetchFacebookEvents = async () => {
-        const url = `https://graph.facebook.com/me/events?access_token=${this.props.facebookAccessToken}`
-         followUp = async (url) => {
-            fetch(url)
-                .then((response)=>response.json())
-                .then((response)=>{
-                    /*console.log(JSON.stringify(response, null, '\t'))*/
-                    response.data.map(showEvent, facebookEvents)
-                    if(response.paging.next!=undefined){
-                        followUp(response.next, facebookEvents)
-                    }
-                })
-        }
-        showEvent = async (event_id) => {
-            const url  = `https://graph.facebook.com/event/${event_id}/?access_token=${this.props.facebookAccessToken}`
-            fetch(url)
-                .then((response)=>response.json())
-                .then((response)=>{
-                    /*console.log(JSON.stringify(response, null, '\t'))*/
-                    response.data.map(showEvent)
-                })
-        }
-        console.log(url)
-        fetch(url)
-            .then((response)=>response.json())
-            .then((response)=>{
-                console.log(JSON.stringify(response, null, '\t'))
-                console.log(JSON.stringify(response.paging, null, '\t'))
-                let facebookEvents = []
-
-                if(response.paging.next!=undefined){
-                    followUp(response.paging.next, facebookEvents)
-                    response.data.map(showEvent, facebookEvents)
-                }
-            });
+        let url = `https://graph.facebook.com/me/events?access_token=${this.props.facebookAccessToken}`
+        _facebookEventsFollowUp(url)
     };
+
+
+
     _fetchGoogleCalenderEvents = async () => {
         const timeMin = moment.tz().add(-5, 'hours').format()
         const timeMax = moment.tz().add(1, 'weeks').format()

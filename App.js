@@ -43,6 +43,7 @@ class ReduxApp extends Component{
             console.log('restored')
 
         })
+        /*.purge()*/
     }
     render(){
         if(!this.state.rehydrated){
