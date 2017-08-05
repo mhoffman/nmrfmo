@@ -187,7 +187,7 @@ class MyMapView extends React.Component {
                 deviceId: Exponent.Constants.deviceId,
                 isDevice: Exponent.Constants.isDevice,
                 searchString: this.props.parent.state.search,
-                category: this.props.parent.state.what,
+                category: this.props.eventCategory,
                 venue_lists: this.state.venue_lists,
             }),
         }).then((response) => response.json())
@@ -216,7 +216,7 @@ class MyMapView extends React.Component {
                 deviceId: Exponent.Constants.deviceId,
                 isDevice: Exponent.Constants.isDevice,
                 searchString: this.props.parent.state.search,
-                category: this.props.parent.state.what,
+                category: this.props.eventCategory,
                 venue_lists: this.state.venue_lists,
             }),
         }).then((response) => response.json())
@@ -290,9 +290,9 @@ class MyMapView extends React.Component {
                         response = response.filter(function(x){
                             return !_.isEmpty(x);
                         })
-                        response.map((event)=>{
-                            console.log(JSON.stringify(event, null, '\t'));
-                        })
+                        /*response.map((event)=>{*/
+                        /*console.log(JSON.stringify(event, null, '\t'));*/
+                        /*})*/
                         response.push({});
                         /*response.push({});*/
                         response.unshift({});
@@ -765,9 +765,9 @@ class MyMapView extends React.Component {
 
                                         if(_.isEmpty(elem)){
                                             return false
-                                        }else if(this.props.parent.state.category === 'All'){
+                                        }else if(this.props.eventCategory.key === 'All'){
                                             return true;
-                                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.parent.state.category)>-1) {
+                                        }else if(elem.categories !== null && elem.categories.indexOf(this.props.eventCategory.key)>-1) {
                                             return true;
                                         } else {
                                             return false;
