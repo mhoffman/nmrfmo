@@ -62,6 +62,22 @@ export function saveGoogleEvents(events){
     }
 }
 
+export function saveGoogleEvent(event){
+    return {
+        type: constants.SAVE_GOOGLE_CALENDAR_EVENTS,
+        payload: {
+            event: event
+        }
+
+    }
+}
+
+export function purgeGoogleEvents(){
+    return {
+        type: constants.PURGE_GOOGLE_CALENDAR_EVENTS
+    }
+}
+
 export function saveGoogleUser(user){
     return {
         type: constants.SAVE_GOOGLE_USER,

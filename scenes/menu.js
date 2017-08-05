@@ -214,6 +214,9 @@ class Menu extends Component {
 
 
     _fetchGoogleCalenderEvents = async () => {
+        console.log("Refetch Google Calendar")
+        console.log("BLAG")
+        /*this.props.purgeGoogleCalenderEvents()*/
         const timeMin = moment.tz().add(-5, 'hours').format()
         const timeMax = moment.tz().add(1, 'weeks').format()
         const user_email = this.props.googleUser.email;
@@ -221,8 +224,8 @@ class Menu extends Component {
             timeMin: timeMin,
             timeMax: timeMax
         });
-        console.log(url)
         console.log("BLAG")
+        console.log(url)
         let eventList = await fetch(url, {
             method: 'GET',
             headers: { Authorization: `Bearer ${this.props.googleAccessToken}`},
@@ -275,6 +278,7 @@ class Menu extends Component {
                                 }
                             });
                             privateGoogleEvents.push(privateGoogleEvent);
+                            this.props.saveGoogleEvent(privateGoogleEvent);
                             console.log(privateGoogleEvent);
                         }
                     })
@@ -564,7 +568,8 @@ class Menu extends Component {
                 onPress={this._handleFacebookLogin}
                 title="Integrate with Facebook"
                 style={{
-                    marginTop: 10
+                    marginTop: 10,
+                    width: 100,
                 }}
                 />:
                 <ReactNative.View>
@@ -581,7 +586,6 @@ class Menu extends Component {
                 title="Reload "
                 style={{
                     marginTop: 10,
-                        height: 20,
                         width: 60
                 }}
                 />
@@ -602,15 +606,15 @@ class Menu extends Component {
                     <ReactNative.View>
                     <ReactNative.Text>Google Calendar</ReactNative.Text>
                     <ReactNative.Button
-                onPress={this._unlinkGoogleLogin}
-                title="Unlink"
+                onPress={this._fetchGoogleCalenderEvents}
+                title="Reload"
                 style={{
                     marginTop: 10
                 }}
                     />
                     <ReactNative.Button
-                onPress={this._fetchGoogleCalenderEvents}
-                title="Reload"
+                onPress={this._unlinkGoogleLogin}
+                title="Unlink"
                 style={{
                     marginTop: 10
                 }}
@@ -666,6 +670,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         saveGoogleCalendarEvents: (events) => {
             dispatch(actions.saveGoogleCalendarEvents(events))
+        },
+        saveGoogleCalendarEvent: (event) => {
+            dispatch(actions.saveGoogleCalendarEvent(event))
+        },
+        purgeGoogleCalenderEvents: () => {
+            dispatch(actions.purgeGoogleCalendarEvents())
         },
         saveGoogleUser: (user) => {
             dispatch(actions.saveGoogleUser(user))
