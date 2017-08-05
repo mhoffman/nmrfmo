@@ -29,6 +29,7 @@ let what = [
 {key: "Museums & Attractions", label:"Museums & Attractions"},
 {key: "Nightlife", label:"Nightlife"},
 {key: "Outdoors", label:"Outdoors"},
+{key: "Personal", label: "Personal"},
 {key: "Sports", label:"Sports"},
 {key: "Religious", label:"Religious"},
 {key: "Theater", label:"Theater"},

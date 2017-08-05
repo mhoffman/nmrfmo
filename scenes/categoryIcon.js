@@ -36,6 +36,7 @@ class CategoryIcon extends React.Component {
         } else if (this.props.category == 'Shopping'){ return  <VectorIcons.MaterialIcons name='shopping-basket' size={size} color={color}/>
         } else if (this.props.category == 'Nightlife'){ return <VectorIcons.Ionicons name='ios-cloudy-night' size={size} color={color}/>
         } else if (this.props.category == 'Outdoors'){ return  <VectorIcons.MaterialIcons name='nature-people' size={size} color={color}/>
+        } else if (this.props.category == 'Personal'){ return  <VectorIcons.FontAwesome name='heart-o' size={size} color={color}/>
         } else if (this.props.category == 'Religious'){ return <VectorIcons.Entypo name='moon' size={size} color={color}/>
         } else if (this.props.category == 'Theater'){ return <VectorIcons.Entypo name='mask' size={size} color={color}/>
         } else if (this.props.category == 'Sports'){ return  <VectorIcons.Ionicons name='ios-american-football-outline' size={size} color={color}/>
