@@ -805,13 +805,10 @@ class MyMapView extends React.Component {
                                             numberOfLines={2}
                                             ellipsizeMode={'tail'}
                                             >
-                                            {
-                                                /*{result.categories == null ? null :*/
-                                                /*result.categories.map((category, cx)=>{*/
-                                                /*return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>*/
-                                                /*})}*/
-                                            }
-                                            {this.marker_format_title(result)}</ReactNative.Text>
+                                            {result.categories == null ? null : result.categories.map((category, cx)=>{
+                                                    return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>
+                                                })}
+                                            {this.marker_format_title(result, 'personal')}</ReactNative.Text>
                                             <ReactNative.Text style={[
                                                 styles.marker_info,
                                             ]}>
@@ -890,7 +887,7 @@ class MyMapView extends React.Component {
                                                 result.categories.map((category, cx)=>{
                                                     return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>
                                                 })}
-                                            {this.marker_format_title(result, 'personal')}</ReactNative.Text>
+                                            {this.marker_format_title(result)}</ReactNative.Text>
                                             <ReactNative.Text style={[
                                                 styles.marker_info,
                                             ]}>
