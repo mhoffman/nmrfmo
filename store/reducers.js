@@ -36,7 +36,7 @@ function userReducer(state={
             }
 
         case constants.SAVE_GOOGLE_CALENDAR_EVENT:
-            let events = state.googleCalenderEvents
+            let events = state.googleCalendarEvents
             events.push(action.payload.event)
             return {
                 ...state,

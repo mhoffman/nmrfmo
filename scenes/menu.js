@@ -213,10 +213,10 @@ class Menu extends Component {
 
 
 
-    _fetchGoogleCalenderEvents = async () => {
+    _fetchGoogleCalendarEvents = async () => {
         console.log("Refetch Google Calendar")
         console.log("BLAG")
-        /*this.props.purgeGoogleCalenderEvents()*/
+        this.props.purgeGoogleCalendarEvents()
         const timeMin = moment.tz().add(-5, 'hours').format()
         const timeMax = moment.tz().add(1, 'weeks').format()
         const user_email = this.props.googleUser.email;
@@ -237,6 +237,7 @@ class Menu extends Component {
         console.log(Object.keys(JSON.parse(eventList._bodyInit).items[0]))
         console.log("PREPARING PRIVATE EVENTS REPACKAGE")
         var privateGoogleEvents = []
+        let self = this;
         JSON.parse(eventList._bodyInit).items.map(function(event){
             console.log(event.summary)
             console.log(event.summary)
@@ -262,7 +263,8 @@ class Menu extends Component {
                         if(gps_location!==undefined){
 
                             let privateGoogleEvent = ({
-                                categories : ["Private"],
+                                count: 1,
+                                categories : ["Personal"],
                                 title: event.summary,
                                 address: event.location,
                                 description: event.description,
@@ -278,7 +280,7 @@ class Menu extends Component {
                                 }
                             });
                             privateGoogleEvents.push(privateGoogleEvent);
-                            this.props.saveGoogleEvent(privateGoogleEvent);
+                            self.props.saveGoogleCalendarEvent(privateGoogleEvent);
                             console.log(privateGoogleEvent);
                         }
                     })
@@ -287,7 +289,7 @@ class Menu extends Component {
                     });
             }
         });
-        this.props.saveGoogleCalendarEvents(privateGoogleEvents)
+        /*this.props.saveGoogleCalendarEvents(privateGoogleEvents)*/
 
     };
     _unlinkFacebookLogin = async () => {
@@ -606,7 +608,7 @@ class Menu extends Component {
                     <ReactNative.View>
                     <ReactNative.Text>Google Calendar</ReactNative.Text>
                     <ReactNative.Button
-                onPress={this._fetchGoogleCalenderEvents}
+                onPress={this._fetchGoogleCalendarEvents}
                 title="Reload"
                 style={{
                     marginTop: 10
@@ -674,7 +676,7 @@ const mapDispatchToProps = (dispatch) => {
         saveGoogleCalendarEvent: (event) => {
             dispatch(actions.saveGoogleCalendarEvent(event))
         },
-        purgeGoogleCalenderEvents: () => {
+        purgeGoogleCalendarEvents: () => {
             dispatch(actions.purgeGoogleCalendarEvents())
         },
         saveGoogleUser: (user) => {

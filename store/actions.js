@@ -62,9 +62,9 @@ export function saveGoogleEvents(events){
     }
 }
 
-export function saveGoogleEvent(event){
+export function saveGoogleCalendarEvent(event){
     return {
-        type: constants.SAVE_GOOGLE_CALENDAR_EVENTS,
+        type: constants.SAVE_GOOGLE_CALENDAR_EVENT,
         payload: {
             event: event
         }
@@ -72,7 +72,7 @@ export function saveGoogleEvent(event){
     }
 }
 
-export function purgeGoogleEvents(){
+export function purgeGoogleCalendarEvents(){
     return {
         type: constants.PURGE_GOOGLE_CALENDAR_EVENTS
     }

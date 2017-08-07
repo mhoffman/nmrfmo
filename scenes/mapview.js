@@ -187,7 +187,7 @@ class MyMapView extends React.Component {
                 deviceId: Exponent.Constants.deviceId,
                 isDevice: Exponent.Constants.isDevice,
                 searchString: this.props.parent.state.search,
-                category: this.props.eventCategory,
+                category: this.props.eventCategory.key,
                 venue_lists: this.state.venue_lists,
             }),
         }).then((response) => response.json())
@@ -216,7 +216,7 @@ class MyMapView extends React.Component {
                 deviceId: Exponent.Constants.deviceId,
                 isDevice: Exponent.Constants.isDevice,
                 searchString: this.props.parent.state.search,
-                category: this.props.eventCategory,
+                category: this.props.eventCategory.key,
                 venue_lists: this.state.venue_lists,
             }),
         }).then((response) => response.json())
@@ -282,19 +282,18 @@ class MyMapView extends React.Component {
                         this.setState({
                             loadingEvents: false,
                         })
-                        /*console.log('POST RESPONSE');*/
-                        /*console.log(response);*/
+
+                        if(this.props.eventCategory.key === 'Personal'){
+                            response = this.props.personalEvents.slice()
+                        }
+
                         response.sort((x, y) => {
                             return new Date(x.datetime) - new Date(y.datetime)
                         });
                         response = response.filter(function(x){
                             return !_.isEmpty(x);
                         })
-                        /*response.map((event)=>{*/
-                        /*console.log(JSON.stringify(event, null, '\t'));*/
-                        /*})*/
                         response.push({});
-                        /*response.push({});*/
                         response.unshift({});
                         this.setState({
                             meetings: response,
@@ -561,6 +560,7 @@ class MyMapView extends React.Component {
         renderRow(event, sectionID, rowID){
             /*console.log("RENDERROW " + this.state.activeEventID);*/
             /*console.log(rowID);*/
+            console.log(JSON.stringify(event, null, '\t'))
             return(
                 <ReactNative.View
                 onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}
@@ -754,14 +754,84 @@ class MyMapView extends React.Component {
                                 showPointsOfInterest={true}
                                 >
 
-                                {this.state.meetings
+                                {this.props.eventCategory.key === 'Personal' ?
+                                    //***************************************
+                                    //Markers For Personal Events
+                                    //***************************************
+                                    this.props.personalEvents.filter((elem)=> {
+                                        return (elem.lon!=undefined && elem.lat!=undefined )
+                                    }
+                                    ).map((result, x)=>{
+                                        return (
+                                            <Exponent.MapView.Marker
+                                            pinColor={'hsl('+services.getCategoryHue(result)+',' + '100%,'+services.getCategoryLightness(result)+'%)'}
+                                            ref={(marker)=>{this.state.markers[x] = marker}}
+                                            coordinate={{
+                                                longitude: result.lon,
+                                                    latitude: result.lat
+                                            }}
+                                            calloutOffset={{ x: -15, y: -12  }} // for ios
+                                            /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
+                                            style={[
+                                                {
+                                                    zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 1 : 0,
+                                                }
+                                            ]}
+                                            key={'marker_' + x}
+                                            onPress={()=>{
+                                                ReactNative.InteractionManager.runAfterInteractions(()=>{
+                                                    this.listView.scrollTo({x: (x+1) * constants.LISTVIEW_BLOCKWIDTH  + 90, y: 0});
+                                                });
+                                                if(parseInt(x) + 1 === parseInt(this.state.activeEventID)){
+                                                    this.navigate.bind(this, "event_details", {event: {event: result}})();
+                                                }
+                                            }}
+                                            >
+                                            <ReactNative.View
+                                            style={[styles.marker,
+                                                {
+                                                    backgroundColor: 'hsl('+services.getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+services.getCategoryLightness(result)+'%)',
+                                                    borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
+                                                    zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
+                                                    borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
+                                                }]}
+                                            >
+                                            <ReactNative.Text style={[
+                                            ], {
+                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 12,
+                                                fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
+                                                color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
+                                            }}
+                                            numberOfLines={2}
+                                            ellipsizeMode={'tail'}
+                                            >
+                                            {
+                                                /*{result.categories == null ? null :*/
+                                                /*result.categories.map((category, cx)=>{*/
+                                                /*return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>*/
+                                                /*})}*/
+                                            }
+                                            {this.marker_format_title(result)}</ReactNative.Text>
+                                            <ReactNative.Text style={[
+                                                styles.marker_info,
+                                            ]}>
+
+                                            {this.marker_infotext(result)}</ReactNative.Text>
+                                            </ReactNative.View>
+                                            <ReactNative.Text numberOfLines={1} style={{
+                                                fontSize:8,
+                                                    width: 60,
+                                            }}>{result.title == undefined ? '' : result.title}</ReactNative.Text>
+                                            </Exponent.MapView.Marker>
+                                        );
+                                    })
+                                    :
+                                    //***************************************
+                                    // Markers for All Other Events
+                                    //***************************************
+
+                                    this.state.meetings
                                     .filter((elem) => {
-                                        /*console.log("MEETINGS FILTER");*/
-                                        /*console.log(elem);*/
-                                        /*console.log("PARENT STATE");*/
-                                        /*console.log(this.props.parent.state);*/
-                                        /*console.log('activeEventId');*/
-                                        /*console.log(parseInt(this.listView.state.activeEventId) )*/
 
                                         if(_.isEmpty(elem)){
                                             return false
@@ -772,91 +842,74 @@ class MyMapView extends React.Component {
                                         } else {
                                             return false;
                                         }})
-                                    .map((result, x) =>
-                                        <Exponent.MapView.Marker
-                                        pinColor={'hsl('+services.getCategoryHue(result)+',' + '100%,'+services.getCategoryLightness(result)+'%)'}
-                                        ref={(marker)=>{this.state.markers[x] = marker}}
-                                        coordinate={{
-                                            longitude: result.lon + constants.LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
-                                                latitude: result.lat + constants.LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
-                                        }}
-                                        calloutOffset={{ x: -15, y: -12  }} // for ios
-                                        /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
-                                        style={[
-                                            {
-                                                zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 1 : 0,
-                                            }
-                                        ]}
-                                        key={'marker_' + x}
-                                        onPress={()=>{
-                                            ReactNative.InteractionManager.runAfterInteractions(()=>{
-                                                this.listView.scrollTo({x: (x+1) * constants.LISTVIEW_BLOCKWIDTH  + 90, y: 0});
-                                            });
-                                            if(parseInt(x) + 1 === parseInt(this.state.activeEventID)){
-                                                this.navigate.bind(this, "event_details", {event: {event: result}})();
-                                            }
-                                        }}
-                                        >
-                                        <ReactNative.View
-                                        style={[styles.marker,
-                                            {
-                                                backgroundColor: 'hsl('+services.getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+services.getCategoryLightness(result)+'%)',
-                                                borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
-                                                zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
-                                                borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
-                                            }]}
-                                        >
-                                        <ReactNative.Text style={[
-                                        ], {
-                                            fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 12,
-                                            fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
-                                            color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
-                                        }}
-                                        numberOfLines={2}
-                                        ellipsizeMode={'tail'}
-                                        >
-                                        {result.categories == null ? null :
-                                            result.categories.map((category, cx)=>{
-                                                return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>
-                                            })}
-                                        {this.marker_format_title(result)}</ReactNative.Text>
-                                        <ReactNative.Text style={[
-                                            styles.marker_info,
-                                        ]}>
+                                    .map((result, x) => {
+                                        return (
+                                            <Exponent.MapView.Marker
+                                            pinColor={'hsl('+services.getCategoryHue(result)+',' + '100%,'+services.getCategoryLightness(result)+'%)'}
+                                            ref={(marker)=>{this.state.markers[x] = marker}}
+                                            coordinate={{
+                                                longitude: result.lon + constants.LOCATION_RADIUS * Math.sin(result.row_number/result.count*2*Math.PI),
+                                                    latitude: result.lat + constants.LOCATION_RADIUS * Math.cos(result.row_number/result.count*2*Math.PI)
+                                            }}
+                                            calloutOffset={{ x: -15, y: -12  }} // for ios
+                                            /*calloutAnchor={{x:0.5, y:1.75}} // for android*/
+                                            style={[
+                                                {
+                                                    zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 1 : 0,
+                                                }
+                                            ]}
+                                            key={'marker_' + x}
+                                            onPress={()=>{
+                                                ReactNative.InteractionManager.runAfterInteractions(()=>{
+                                                    this.listView.scrollTo({x: (x+1) * constants.LISTVIEW_BLOCKWIDTH  + 90, y: 0});
+                                                });
+                                                if(parseInt(x) + 1 === parseInt(this.state.activeEventID)){
+                                                    this.navigate.bind(this, "event_details", {event: {event: result}})();
+                                                }
+                                            }}
+                                            >
+                                            <ReactNative.View
+                                            style={[styles.marker,
+                                                {
+                                                    backgroundColor: 'hsl('+services.getCategoryHue(result)+',' + this.getSaturation(result.datetime, time_span, min_time) + '%,'+services.getCategoryLightness(result)+'%)',
+                                                    borderWidth: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 2 : 1,
+                                                    zIndex: parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 10: 1,
+                                                    borderColor:parseInt(x) + 1 === parseInt(this.state.activeEventID) ? 'white' : 'black',
+                                                }]}
+                                            >
+                                            <ReactNative.Text style={[
+                                            ], {
+                                                fontSize: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 20 : 12,
+                                                fontWeight: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'bold' : 'normal',
+                                                color: parseInt(x) + 1 === parseInt(this.state.activeEventID)? 'white' : 'black',
+                                            }}
+                                            numberOfLines={2}
+                                            ellipsizeMode={'tail'}
+                                            >
+                                            {result.categories == null ? null :
+                                                result.categories.map((category, cx)=>{
+                                                    return <CategoryIcon key={'mk_' + x + '_' + cx} size={parseInt(x) + 1 === parseInt(this.state.activeEventID)? 14 : 8} category={category} color='#ffffff'/>
+                                                })}
+                                            {this.marker_format_title(result, 'personal')}</ReactNative.Text>
+                                            <ReactNative.Text style={[
+                                                styles.marker_info,
+                                            ]}>
 
-                                        {this.marker_infotext(result)}</ReactNative.Text>
-                                        </ReactNative.View>
-                                        <ReactNative.Text numberOfLines={1} style={{
-                                            fontSize:8,
-                                                width: 60,
-                                        }}>{result.title == undefined ? '' : result.title}</ReactNative.Text>
-                                        </Exponent.MapView.Marker>
-                                    )}
+                                            {this.marker_infotext(result)}</ReactNative.Text>
+                                            </ReactNative.View>
+                                            <ReactNative.Text numberOfLines={1} style={{
+                                                fontSize:8,
+                                                    width: 60,
+                                            }}>{result.title == undefined ? '' : result.title}</ReactNative.Text>
+                                            </Exponent.MapView.Marker>
+                                        );
+                                    })}
 
 
 
 
                                 </Exponent.MapView>
 
-                                {/*
-                                                                    <ReactNative.View style={this.state.event.title == "" ? styles.nobottomline : [
-                                                                    styles.bottomline,
-                                                                    styles.clickable,
-                                                                    {
-                                                                    borderColor: 'hsl('+services.getCategoryHue(this.state.event)+',' + '100%,'+services.getCategoryLightness(this.state.event)+'%)',
-
-                                                                    }
-                                                                    ]}>
-                                                                    <ReactNative.TouchableHighlight
-                                                                    onPress={this.navigate.bind(this, "event_details",
-                                                                    {event: this.state})}
-                                                                    >
-                                                                    <ReactNative.Text style={styles.bottom_message}>
-                                                                    {this.state.event.title == null ? " " : this.state.event.title.slice(0, 100)} {this.publisher_text(this.state.event)} <FontAwesome name='chevron-right' color='#000000' size={20}/>
-                                                                    </ReactNative.Text>
-                                                                    </ReactNative.TouchableHighlight>
-                                                                    </ReactNative.View>
-                                                                    */}
                                 <ReactNative.View style={styles.bottomline}>
                                 { this.state.loadingEvents ?
                                     <ReactNative.ActivityIndicator
@@ -978,7 +1031,11 @@ class MyMapView extends React.Component {
 
                     const mapStateToProps = (state, ownProps) => {
                         const { eventTimerange, eventCategory, eventSearchstring, eventHours } = state.filterReducer
-                        return { eventTimerange, eventCategory, eventSearchstring, eventHours }
+                        const { googleCalendarEvents } = state.userReducer
+                        let personalEvents = []
+                        personalEvents.push.apply(personalEvents, googleCalendarEvents)
+
+                        return { eventTimerange, eventCategory, eventSearchstring, eventHours, personalEvents }
                     }
 
                     const mapDispatchToProps = (dispatch) => {
