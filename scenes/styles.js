@@ -103,6 +103,9 @@ const styles = ReactNative.StyleSheet.create({
         paddingHorizontal: 5,
         alignItems: 'center',
         marginHorizontal: 5,
+        borderWidth: 1,
+        borderRadius: 2,
+        borderColor: '#cccccc'
     },
     menu_button: {
         position: 'absolute',

@@ -19,6 +19,7 @@ import app from '../app.json';
 import constants from './constants'
 import * as actions from '../store/actions'
 import WebPreview from './web_preview'
+import styles from './styles';
 
 import app_constants from '../constants.json'
 
@@ -57,49 +58,6 @@ const options = {
 
 const window = ReactNative.Dimensions.get('window');
 const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
-
-const styles = ReactNative.StyleSheet.create({
-    menu: {
-        flex: 1,
-        flexDirection: 'column',
-        width: window.width,
-        height: window.height,
-        backgroundColor: 'white',
-        justifyContent: 'flex-start',
-        padding: 20,
-        zIndex: -10,
-    },
-    clickable: {
-        borderWidth: 1.,
-        borderRadius: 2,
-        borderColor: PRIMARY_COLOR,
-        padding: 2,
-    },
-    menuentry: {
-        marginTop: 60,
-        width: 120,
-    },
-    avatarContainer: {
-        marginBottom: 20,
-        marginTop: 20,
-    },
-    avatar: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        flex: 1,
-    },
-    name: {
-        position: 'absolute',
-        left: 70,
-        top: 20,
-    },
-    item: {
-        fontSize: 14,
-        fontWeight: '300',
-        paddingTop: 5,
-    },
-});
 
 const menuStyle = ReactNative.StyleSheet.create({
     menuList : {
@@ -566,61 +524,53 @@ class Menu extends Component {
             </ReactNative.TouchableOpacity>
 
             { this.props.facebookAccessToken == ''?
-                <ReactNative.Button
-                onPress={this._handleFacebookLogin}
-                title="Integrate with Facebook"
-                style={{
-                    marginTop: 10,
-                    width: 100,
-                }}
-                />:
-                <ReactNative.View>
-                <ReactNative.Text>Facebook</ReactNative.Text>
-                <ReactNative.Button
-                onPress={this._unlinkFacebookLogin}
-                title="Unlink "
-                style={{
-                    marginTop: 10,
-                }}
-                />
-                <ReactNative.Button
-                onPress={this._fetchFacebookEvents}
-                title="Reload "
-                style={{
-                    marginTop: 10,
-                        width: 60
-                }}
-                />
+                <ReactNative.View
+                style={{ flex: 1, flexDirection: 'row' }}
+                >
+                <ReactNative.TouchableHighlight
+                onPress={this._handleFacebookLogin} >
+                <ReactNative.Text style={styles.button}>Integrate with Facebook</ReactNative.Text>
+                </ReactNative.TouchableHighlight>
                 </ReactNative.View>
+                :
+                <ReactNative.View
+                style={{ flex: 1, flexDirection: 'row' }}
+                >
+                <ReactNative.Text>Facebook</ReactNative.Text>
+                <ReactNative.TouchableHighlight onPress={this._unlinkFacebookLogin}>
+                <ReactNative.Text style={styles.button}>Unlink <VectorIcons.Foundation name='unlink' size={12}/></ReactNative.Text>
+                </ReactNative.TouchableHighlight>
 
+                <ReactNative.TouchableHighlight onPress={this._fetchFacebookEvents}>
+                <ReactNative.Text style={styles.button}>Reload <VectorIcons.SimpleLineIcons name='reload' size={12} /></ReactNative.Text>
+                </ReactNative.TouchableHighlight>
+
+                </ReactNative.View>
             }
 
 
             {  this.props.googleAccessToken == '' ?
-                    <ReactNative.Button
-                onPress={this._handleGoogleLogin}
-                title="Integrate with Google Calendar"
-                style={{
-                    marginTop: 10
-                }}
-                    />
+                    <ReactNative.View
+                style={{ flex: 1, flexDirection: 'row' }}
+                    >
+                    <ReactNative.TouchableHighlight onPress={this._handleGoogleLogin} >
+                    <ReactNative.Text style={styles.button}>Integrate with GCalendar</ReactNative.Text>
+                    </ReactNative.TouchableHighlight>
+                    </ReactNative.View>
                     :
-                    <ReactNative.View>
-                    <ReactNative.Text>Google Calendar</ReactNative.Text>
-                    <ReactNative.Button
-                onPress={this._fetchGoogleCalendarEvents}
-                title="Reload"
-                style={{
-                    marginTop: 10
-                }}
-                    />
-                    <ReactNative.Button
-                onPress={this._unlinkGoogleLogin}
-                title="Unlink"
-                style={{
-                    marginTop: 10
-                }}
-                    />
+                    <ReactNative.View
+                style={{ flex: 1, flexDirection: 'row' }}
+                    >
+                    <ReactNative.Text>GCalendar</ReactNative.Text>
+
+                    <ReactNative.TouchableHighlight  onPress={this._unlinkGoogleLogin} >
+                    <ReactNative.Text style={styles.button}>Unlink <VectorIcons.Foundation name='unlink' size={12}/></ReactNative.Text>
+                    </ReactNative.TouchableHighlight>
+
+                    <ReactNative.TouchableHighlight onPress={this._fetchGoogleCalendarEvents} >
+                    <ReactNative.Text style={styles.button}>Reload <VectorIcons.SimpleLineIcons name='reload' size={12} /></ReactNative.Text>
+                    </ReactNative.TouchableHighlight>
+
                     </ReactNative.View>
             }
             {/*
