@@ -228,6 +228,11 @@ class MyMapView extends React.Component {
                     what_keys.push({key: key.unnest, label: <ReactNative.Text>{<CategoryIcon key={'c_' + key.unnest} category={key.unnest} />} {key.unnest} ({key.count})</ReactNative.Text>});
                     sum = sum + parseInt(key.count);
                 });
+
+                    if(this.props.personalEvents.length > 0){
+                        n_personal = this.props.personalEvents.length
+                        what_keys.unshift({key: 'Personal', label: <ReactNative.Text>Personal ({n_personal})</ReactNative.Text>})
+                    }
                     what_keys.unshift({key: 'All', label: <ReactNative.Text>All ({sum}) </ReactNative.Text> });
                     /*console.log(response[0]);*/
                     /*console.log("CATEGORY COUNT");*/
