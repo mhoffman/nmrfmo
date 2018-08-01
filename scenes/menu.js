@@ -1,5 +1,6 @@
 'use strict';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactNative from 'react-native';
 import Communications from 'react-native-communications';
 import ModalPicker from 'react-native-modal-picker';

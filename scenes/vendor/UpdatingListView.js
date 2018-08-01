@@ -46,7 +46,8 @@ var cloneReferencedElement = require('react-clone-referenced-element');
 var isEmpty = require('isEmpty');
 var merge = require('merge');
 
-var PropTypes = React.PropTypes;
+var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 
 var DEFAULT_PAGE_SIZE = 1;
 var DEFAULT_INITIAL_ROWS = 20;
@@ -106,7 +107,7 @@ var DEFAULT_SCROLL_CALLBACK_THROTTLE = 1;
  *    rendering rows.
  */
 
-var UpdatingListView = React.createClass({
+var UpdatingListView = createReactClass({
     _childFrames: ([]: Array<Object>),
     _sentEndForContentLength: (null: ?number),
     _scrollComponent: (null: any),
@@ -207,12 +208,12 @@ var UpdatingListView = React.createClass({
          * A function that returns the scrollable component in which the list rows
          * are rendered. Defaults to returning a ScrollView with the given props.
          */
-        renderScrollComponent: React.PropTypes.func.isRequired,
+        renderScrollComponent: PropTypes.func.isRequired,
         /**
          * How early to start rendering rows before they come on screen, in
          * pixels.
          */
-        scrollRenderAheadDistance: React.PropTypes.number.isRequired,
+        scrollRenderAheadDistance: PropTypes.number.isRequired,
         /**
          * (visibleRows, changedRows) => void
          *
@@ -222,13 +223,13 @@ var UpdatingListView = React.createClass({
          * that have changed their visibility, with true indicating visible, and
          * false indicating the view has moved out of view.
          */
-        onChangeVisibleRows: React.PropTypes.func,
+        onChangeVisibleRows: PropTypes.func,
         /**
          * A performance optimization for improving scroll perf of
          * large lists, used in conjunction with overflow: 'hidden' on the row
          * containers.  This is enabled by default.
          */
-        removeClippedSubviews: React.PropTypes.bool,
+        removeClippedSubviews: PropTypes.bool,
         /**
          * An array of child indices determining which children get docked to the
          * top of the screen when scrolling. For example, passing
