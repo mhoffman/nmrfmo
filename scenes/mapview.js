@@ -917,7 +917,7 @@ class MyMapView extends React.Component {
                                     <ReactNative.ActivityIndicator
                                     style={{
                                         height: 40,
-                                            width: 40
+                                        width: 40
                                     }}
                                     />
                                     :
