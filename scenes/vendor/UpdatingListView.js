@@ -129,7 +129,7 @@ var UpdatingListView = createReactClass({
      * - renderSectionHeader(sectionData, sectionID);
      */
     propTypes: {
-        ...ScrollView.propTypes,
+      /*...ScrollView.propTypes,*/
         /**
          * An instance of [ListView.DataSource](docs/listviewdatasource.html) to use
          */

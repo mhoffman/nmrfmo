@@ -93,12 +93,9 @@ class MyMapView extends React.Component {
                 this.map.animateToCoordinate(position.coords);
                 this.getMeetupData(position);
             } catch(e){
-                console.log("Could not fetch location.");
-                console.log(e);
             }
         } else {
             /*ReactNative.Alert.alert("Too bad. nmrfmo doesn't permanently store your location.");*/
-            console.log("Permission was not granted.")
         }
     }
 
@@ -321,7 +318,6 @@ class MyMapView extends React.Component {
                         this.setState({activeEventID: j});
                         this.setState({activeEventLeftSeparatorID: j});
                     }).catch((error) => {
-                        console.log('Error in post ' + error)
                     });
 
             }else{
@@ -565,7 +561,6 @@ class MyMapView extends React.Component {
         renderRow(event, sectionID, rowID){
             /*console.log("RENDERROW " + this.state.activeEventID);*/
             /*console.log(rowID);*/
-            console.log(JSON.stringify(event, null, '\t'))
             return(
                 <ReactNative.View
                 onLayout={(e) => {this.listView.props.childSizes[parseInt(rowID)] = e.nativeEvent.layout.height;}}

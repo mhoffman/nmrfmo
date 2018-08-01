@@ -70,10 +70,8 @@ let _facebookEventsFollowUp = async (url) => {
     fetch(url)
         .then((response)=>response.json())
         .then((response)=>{
-            console.log(JSON.stringify(response, null, '\t'))
         })
         .catch(e=>{
-            console.log(e);
         });
 }
 
@@ -81,8 +79,6 @@ let _facebookEventsFollowUp = async (url) => {
 class Menu extends Component {
     constructor(props){
         super(props);
-        /*console.log("MENU PARENT");*/
-        /*console.log(this);*/
         this.state = {
             accessToken: '',
             startTime: 0,
@@ -173,8 +169,6 @@ class Menu extends Component {
 
 
     _fetchGoogleCalendarEvents = async () => {
-        console.log("Refetch Google Calendar")
-        console.log("BLAG")
         this.props.purgeGoogleCalendarEvents()
         const timeMin = moment.tz().add(-5, 'hours').format()
         const timeMax = moment.tz().add(1, 'weeks').format()
@@ -183,28 +177,18 @@ class Menu extends Component {
             timeMin: timeMin,
             timeMax: timeMax
         });
-        console.log("BLAG")
-        console.log(url)
         let eventList = await fetch(url, {
             method: 'GET',
             headers: { Authorization: `Bearer ${this.props.googleAccessToken}`},
 
         },
         );
-        console.log(JSON.stringify(JSON.parse(eventList._bodyInit), null, '\t'));
         /*console.log(Object.keys(JSON.parse(eventList._bodyInit).items))*/
-        console.log(Object.keys(JSON.parse(eventList._bodyInit).items[0]))
-        console.log("PREPARING PRIVATE EVENTS REPACKAGE")
         var privateGoogleEvents = []
         let self = this;
         JSON.parse(eventList._bodyInit).items.map(function(event){
-            console.log(event.summary)
-            console.log(event.summary)
-            console.log(event.location);
-            console.log(JSON.stringify(event, null, '\t'));
 
             if(event.location!==undefined){
-                console.log(app_constants.backend_url + '/_reverse_geocode');
                 fetch((app_constants.backend_url + '/_reverse_geocode'), {
                     method: 'POST',
                     headers: {
@@ -215,9 +199,8 @@ class Menu extends Component {
                         address: event.location
                     })}
                 )
-                    .then((response) => { console.log(response); return response.json(); })
+                    .then((response) => { return response.json(); })
                     .then((response)=>{
-                        console.log(JSON.stringify(response, null, '\t'));
                         let gps_location = response
                         if(gps_location!==undefined){
 
@@ -240,7 +223,6 @@ class Menu extends Component {
                             });
                             privateGoogleEvents.push(privateGoogleEvent);
                             self.props.saveGoogleCalendarEvent(privateGoogleEvent);
-                            console.log(privateGoogleEvent);
                         }
                     })
                     .catch((error) => {
@@ -275,9 +257,6 @@ class Menu extends Component {
                         'Logged in!',
                         `Hi ${user.name}!`,
                     );
-                    console.log(JSON.stringify(user))
-                    console.log("Access Token")
-                    console.log(accessToken)
                     break;
                 }
                 case 'cancel': {
@@ -307,15 +286,12 @@ class Menu extends Component {
                 '1666953796951055', // Replace with your own app id in standalone app
                 { permissions: ['public_profile', 'user_events'] }
             );
-            console.log(type)
-            console.log(token)
             this.props.saveFacebookAccessToken(token)
 
             switch (type) {
                 case 'success': {
                     // Get the user's name using Facebook's Graph API
                     const profile_url = `https://graph.facebook.com/me?access_token=${token}`
-                    console.log(profile_url);
                     fetch(profile_url,{
                         headers: {
                             'Accept': 'application/json',
@@ -325,13 +301,11 @@ class Menu extends Component {
                     })
                         .then((response)=>response.json())
                         .then((profile)=>{
-                            console.log(JSON.stringify(profile, null ,'\t'))
                             this.props.saveFacebookUser(profile)
                             ReactNative.Alert.alert(
                                 'Logged in!',
                                 `Hi ${profile.name}!`,
                             );
-                            console.log(JSON.stringify(profile, null, '\t'))
                         })
                         .catch((error) => {
                             console.error(error);
@@ -612,7 +586,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actions.changeEventCategory(category))
         },
         changeHours: (values) => {
-            console.log(JSON.stringify(values))
             dispatch(actions.changeEventHours(values))
         },
         changeSearchstring: (searchstring) => {
