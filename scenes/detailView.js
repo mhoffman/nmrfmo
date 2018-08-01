@@ -9,7 +9,6 @@ import CryptoJS from 'crypto-js'
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 import VectorIcons from '@expo/vector-icons'
-import Hr from 'react-native-hr';
 import ReadMore from '@expo/react-native-read-more-text';
 import Communications from 'react-native-communications';
 
@@ -106,7 +105,6 @@ class EventDetails extends React.Component {
             <ReactNative.Text style={styles.p}>
             {moment(this.props.event.event.datetime).format('dddd, MMMM Do, YYYY, h:mm A')}
             </ReactNative.Text>
-            <Hr lineColor='#b3b3b3' text='Description' textColor={'hsl(' +services.getCategoryHue(this.props.event.event) + ',100%,' + services.getCategoryLightness(this.props.event.event)+ '%)'}/>
             <ReadMore
             numberOfLines={3}
             renderTruncatedFooter={this._renderTruncatedFooter}
